@@ -10,7 +10,7 @@ import {
 export default function Header() {
   return (
     <header className="sticky px-8 py-[13px] top-0 rounded-2xl shadow-xl bg-white">
-      <nav className="flex justify-between items-center border">
+      <nav className="flex justify-between items-center">
         <div className="flex items-center gap-2.5">
           <img src="/logo.svg" alt="logo" />
           <h1 className="text-[16px] font-semibold text-primary">CogniAI</h1>
