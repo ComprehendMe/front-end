@@ -60,6 +60,9 @@ function App() {
           </div>
         </div>
       </section>
+      <section className="flex mt-[102px] flex-col gap-14">
+        <span className="font-bold text-4xl">Preços</span>
+      </section>
     </div>
   );
 }
