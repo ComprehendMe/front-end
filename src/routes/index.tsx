@@ -31,7 +31,7 @@ function App() {
       <section className="grid grid-cols-3 m-auto gap-[30px] mt-40">
         <div className="p-5 border rounded-xl space-y-5">
           <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
-            <img src="/public/Group.svg" alt="Grupo" className="w-7 h-7 object-contain" />
+            <img src="/Group.svg" alt="Grupo" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col gap-1">
             <h2 className="text-lg font-medium">Escolha um paciente</h2>
@@ -43,7 +43,7 @@ function App() {
         </div>
         <div className="p-5 border rounded-xl space-y-5">
           <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
-            <img src="/public/Vector.svg" alt="Vetor" className="w-7 h-7 object-contain" />
+            <img src="/Vector.svg" alt="Vetor" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col gap-1">
             <h2 className="text-lg font-medium">Converse em tempo real</h2>
@@ -54,7 +54,7 @@ function App() {
         </div>
         <div className="p-5 border rounded-xl space-y-5">
           <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
-            <img src="/public/carbon_report.svg" alt="Relatório" className="w-7 h-7 object-contain" />
+            <img src="/carbon_report.svg" alt="Relatório" className="w-7 h-7 object-contain" />
           </div>
           <div className="flex flex-col gap-1">
             <h2 className="text-lg font-medium">Receba um relatório</h2>

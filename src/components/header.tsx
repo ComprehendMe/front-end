@@ -12,7 +12,7 @@ export default function Header() {
     <header className="sticky px-8 py-[13px] top-0 rounded-2xl shadow-xl bg-white">
       <nav className="flex justify-between items-center">
         <div className="flex items-center gap-2.5">
-          <img src="/public/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
+          <img src="/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
           <h1 className="text-[16px] font-semibold text-primary">CogniAI</h1>
         </div>
         <div className="flex items-center">
