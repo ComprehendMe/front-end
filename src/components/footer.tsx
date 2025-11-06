@@ -3,6 +3,7 @@ export default function Footer() {
     <footer className="flex justify-between px-20 py-16">
       <div className="flex flex-col border gap-6">
         <div className="flex gap-2 items-center">
+          <img src="/public/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
           <span className="font-semibold text-[16px] text-blue-800">
             CogniAI
           </span>
