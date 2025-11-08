@@ -16,7 +16,7 @@ function App() {
         style={{
           height: "490px",
           background:
-            "linear-gradient(to right, #ddd 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px)",
+            "linear-gradient(to right, #ddd33 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           backgroundColor: "#fff",
         }}
