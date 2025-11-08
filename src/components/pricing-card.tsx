@@ -73,7 +73,7 @@ const PricingSection = ({
 }: Pricing2Props) => {
 	const [isYearly, setIsYearly] = useState(false);
 	return (
-		<section className="py-32">
+		<section className="pb-32 pt-36">
 			<div className="container">
 				<div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
 					<h2 className="text-pretty text-3xl font-bold">{heading}</h2>
