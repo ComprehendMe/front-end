@@ -123,7 +123,7 @@ const PricingSection = ({
 									{plan?.button && (
 										<Button
 											asChild
-											className="w-full rounded-full text-[18px] px-6 bg-linear-to-bl from-blue-500 to-blue-800"
+											className="w-full rounded-full text-[18px] px-6 bg-linear-to-bl from-[#18C6F1] via-[#1C97C8] via-60% to-[#0978AA]"
 										>
 											<a href={plan.button?.url} target="_blank">
 												{plan.button?.text}
