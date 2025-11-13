@@ -8,7 +8,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="flex justify-between px-20 py-16 border-t">
+    <footer className="flex justify-between px-20 py-16">
       <div className="flex flex-col gap-6">
         <div className="flex gap-2 items-center">
           <img src="/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
