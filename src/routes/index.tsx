@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import Header from "@/components/header";
 import { PricingSection } from "@/components/pricing-card";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -11,25 +12,14 @@ function App() {
   return (
     <div className="relative min-h-screen bg-white">
       <div
-        className="pointer-events-none absolute inset-0 z-0"
-        aria-hidden="true"
-        style={{
-          height: "490px",
-          background:
-            "linear-gradient(to right, #ddd33 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-          backgroundColor: "#fff",
-        }}
+        className={cn(
+          "absolute inset-0",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+        )}
       />
-      <div
-        className="pointer-events-none absolute left-0 right-0 z-10"
-        aria-hidden="true"
-        style={{
-          top: 360,
-          height: 80,
-          background: "linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%)"
-        }}
-      />
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white mask-[linear-gradient(to_bottom,transparent_0%,black)] dark:bg-black" />
       <div className="relative z-20 px-20 py-10">
         <Header />
         <main className="flex flex-col justify-center items-center text-center mt-44 z-50">
@@ -43,7 +33,7 @@ function App() {
             </p>
             <Button
               size="lg"
-              className="rounded-full text-lg px-6 w-fit bg-linear-to-bl from-[#18C6F1] via-[#1C97C8] via-60% to-[#0978AA]"
+              className="rounded-full text-lg px-6 w-fit bg-linear-to-r from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8]"
             >
               Começar
             </Button>
@@ -51,7 +41,7 @@ function App() {
         </main>
         <section className="grid grid-cols-3 m-auto gap-[30px] mt-40">
           <div className="p-5 rounded-xl space-y-5 bg-white z-50 border border-[#E5E5E5] shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-            <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
+            <div className="bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] rounded-lg w-fit p-4 flex items-center justify-center">
               <img
                 src="/Group.svg"
                 alt="Grupo"
@@ -67,7 +57,7 @@ function App() {
             </div>
           </div>
           <div className="p-5 rounded-xl space-y-5 bg-white z-50 border border-[#E5E5E5] shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-            <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
+            <div className="bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] rounded-lg w-fit p-4 flex items-center justify-center">
               <img
                 src="/Vector.svg"
                 alt="Vetor"
@@ -83,7 +73,7 @@ function App() {
             </div>
           </div>
           <div className="p-5 rounded-xl space-y-5 bg-white z-50 border border-[#E5E5E5] shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-            <div className="bg-blue-600 rounded-lg w-fit p-4 flex items-center justify-center">
+            <div className="bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] rounded-lg w-fit p-4 flex items-center justify-center">
               <img
                 src="/carbon_report.svg"
                 alt="Relatório"
@@ -101,15 +91,6 @@ function App() {
         </section>
         <PricingSection />
       </div>
-      <div
-        className="pointer-events-none absolute left-0 right-0 z-0"
-        aria-hidden="true"
-        style={{
-          top: "430px",
-          bottom: 0,
-          background: "#fff",
-        }}
-      />
     </div>
   );
 }
