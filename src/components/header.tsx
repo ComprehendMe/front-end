@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "./ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
+import StartHere from "./start-here";
 
 export default function Header() {
   return (
@@ -37,9 +37,7 @@ export default function Header() {
           </NavigationMenu>
         </div>
         <div className="flex items-center gap-2.5">
-          <Button className="rounded-full px-6 text-white bg-linear-to-r from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8]">
-            Começar
-          </Button>
+          <StartHere />
         </div>
       </nav>
     </header>
