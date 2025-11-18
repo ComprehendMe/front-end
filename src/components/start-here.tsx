@@ -19,7 +19,7 @@ export default function StartHere() {
         <DialogTrigger asChild>
           <Button className="rounded-full px-6 text-white">Começar</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[450px] gap-6">
+        <DialogContent showCloseButton className="sm:max-w-[450px] gap-6">
           <DialogHeader className=" items-center">
             <DialogTitle className="text-[24px] font-semibold">
               Bem vindo ao CogniAI
@@ -32,7 +32,7 @@ export default function StartHere() {
             </Button>
             <span>ou</span>
             <Input placeholder="E-mail" className="py-2.5 px-5 h-10" />
-            <Button size="lg">Continuar com Email</Button>
+            <Button size="lg">Continuar com e-mail</Button>
           </div>
           <DialogFooter className="justify-center">
             <Button variant="link">Criar conta</Button>

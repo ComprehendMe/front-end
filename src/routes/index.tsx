@@ -24,16 +24,16 @@ function App() {
         <Header />
         <main className="flex flex-col justify-center items-center text-center mt-44 z-50">
           <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-[40px] font-bold text-[#1C1F22]">
               Pratica sem medo. Atende sem dúvidas.
             </h1>
-            <p className="text-xl text-[#757575] font-medium tracking-tight max-w-4xl">
+            <p className="text-xl text-[#1C1F22] font-medium tracking-tight max-w-4xl">
               Pacientes virtuais realistas, feedback imediato e ambiente seguro
               para evoluíres como terapeuta.
             </p>
             <Button
               size="lg"
-              className="rounded-full text-lg px-6 w-fit bg-linear-to-r from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8]"
+              className="rounded-full text-lg px-6 w-fit"
             >
               Começar
             </Button>
