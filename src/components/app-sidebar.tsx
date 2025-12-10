@@ -15,31 +15,41 @@ import {
 } from "./ui/sidebar";
 import type { NavLink } from "@/lib/types";
 
-const items: NavLink[] = [
+const information: { name: string; items: NavLink[] }[] = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: IconDashboard,
+    name: "Overview",
+    items: [
+      {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: IconDashboard,
+      },
+      {
+        title: "Conversations",
+        url: "/",
+        icon: IconListDetails,
+      },
+      {
+        title: "History",
+        url: "/",
+        icon: IconChartBar,
+      },
+    ],
   },
   {
-    title: "Lifecycle",
-    url: "/",
-    icon: IconListDetails,
-  },
-  {
-    title: "Analytics",
-    url: "/",
-    icon: IconChartBar,
-  },
-  {
-    title: "Projects",
-    url: "/",
-    icon: IconFolder,
-  },
-  {
-    title: "Team",
-    url: "/",
-    icon: IconUsers,
+    name: "Settings",
+    items: [
+      {
+        title: "Settings",
+        url: "/",
+        icon: IconDashboard,
+      },
+      {
+        title: "To go out",
+        url: "/",
+        icon: IconListDetails,
+      },
+    ],
   },
 ];
 
@@ -48,7 +58,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="border">
+          <SidebarMenuItem className="flex items-center">
+            <img src="/logo.svg" alt="logo" className="w-10 h-10" />
             <h1 className="font-semibold text-[16px] text-blue-600">
               ComprehendMe
             </h1>
@@ -56,7 +67,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={items} />
+        <NavMain information={information[0]} />
+        <NavMain information={information[1]} />
       </SidebarContent>
     </Sidebar>
   );
