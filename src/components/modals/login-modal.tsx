@@ -20,6 +20,7 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
+import { Google } from "../ui/svgs/google";
 
 const LoginFormSchema = z.object({
   email: z
@@ -54,7 +55,7 @@ export default function LoginModal({
           Começar
         </Button>
       </DialogTrigger>
-      <DialogContent showCloseButton className="sm:max-w-[450px] gap-6">
+      <DialogContent showCloseButton={false} className="sm:max-w-[450px] gap-6">
         <DialogHeader className=" items-center">
           <DialogTitle className="text-[24px] font-semibold">
             Bem vindo ao CogniAI
@@ -64,7 +65,7 @@ export default function LoginModal({
           <form onSubmit={loginForm.handleSubmit(onSubmit)}>
             <div className="flex w-full flex-col gap-4 text-center">
               <Button variant="outline" size="lg">
-                <BsGoogle />
+                <Google className="w-6 h-6" />
                 <span className="font-normal">Continuar com Google</span>
               </Button>
               <span>ou</span>

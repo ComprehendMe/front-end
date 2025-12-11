@@ -17,31 +17,35 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Button } from "../ui/button";
-import { BsGoogle } from "react-icons/bs";
 import { Input } from "../ui/input";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { ChevronLeft, EyeIcon, EyeOffIcon } from "lucide-react";
+import { Google } from "../ui/svgs/google";
 
 const RegisterFormSchema = z.object({
-  name: z.string().min(3, "Minimo de 3 characteres"),
+  name: z
+    .string({ error: "Please provide your name!" })
+    .min(3, "Minimo de 3 characteres"),
   email: z
     .string()
-    .min(1, "Email é obrigatório")
-    .email({ message: "Porfavor, insira um email válido." }),
+    .min(1, "Invalid email format. Please provide a valid email address!")
+    .email({
+      message: "Invalid email format. Please provide a valid email address!",
+    }),
   password: z
-    .string()
+    .string({ error: "Please provide your password!" })
     .min(8, { message: "Uma senha deve ter no mínimo 8 caracteres." })
     .max(20, { message: "Uma senha deve ter no máximo 20 caracteres." })
     .refine((password) => /[A-Z]/.test(password), {
-      message: "Sua senha deve ter um caractere maiúsculo",
+      message: "The password must contain at least one uppercase letter",
     })
     .refine((password) => /[a-z]/.test(password), {
-      message: "Sua senha deve ter um caractere minusculo",
+      message: "The password must contain at least one lowercase letter",
     })
     .refine((password) => /[0-9]/.test(password), {
       message: "Sua senha deve ter um caractere numérico",
     })
     .refine((password) => /[!@#$%^&*]/.test(password), {
-      message: "Sua senha deve ter um caractere especial",
+      message: "The password must contain at least one special character",
     }),
 });
 
@@ -78,7 +82,7 @@ export default function RegisterModal({
           >
             <div className="flex w-full flex-col gap-4 text-center">
               <Button variant="outline" size="lg">
-                <BsGoogle />
+                <Google className="w-6 h-6" />
                 <span className="font-normal">Continuar com Google</span>
               </Button>
               <span>ou</span>
@@ -157,6 +161,7 @@ export default function RegisterModal({
                   setLogin(true);
                 }}
               >
+                <ChevronLeft className="w-6 h-6" />
                 <span>Voltar</span>
               </Button>
               <Button size="lg" type="submit">
