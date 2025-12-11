@@ -5,10 +5,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
-import LoginModal from "./modals/login-modal";
-import { useState } from "react";
-import RegisterModal from "./modals/register-modal";
-import AuthDialog from "./auth-dialog";
+import AuthDialog from "./auth/auth-dialog";
 
 export default function Header() {
   return (
