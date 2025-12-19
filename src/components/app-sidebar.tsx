@@ -1,75 +1,75 @@
 import {
-  IconChartBar,
-  IconDashboard,
-  IconFolder,
-  IconListDetails,
-  IconUsers,
+	IconChartBar,
+	IconDashboard,
+	IconFolder,
+	IconListDetails,
+	IconUsers,
 } from "@tabler/icons-react";
 import NavMain from "./nav-main";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
+	Sidebar,
+	SidebarContent,
+	SidebarHeader,
+	SidebarMenu,
+	SidebarMenuItem,
 } from "./ui/sidebar";
 import type { NavLink } from "@/lib/types";
 
 const information: { name: string; items: NavLink[] }[] = [
-  {
-    name: "Overview",
-    items: [
-      {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: IconDashboard,
-      },
-      {
-        title: "Conversations",
-        url: "/",
-        icon: IconListDetails,
-      },
-      {
-        title: "History",
-        url: "/",
-        icon: IconChartBar,
-      },
-    ],
-  },
-  {
-    name: "Settings",
-    items: [
-      {
-        title: "Settings",
-        url: "/",
-        icon: IconDashboard,
-      },
-      {
-        title: "To go out",
-        url: "/",
-        icon: IconListDetails,
-      },
-    ],
-  },
+	{
+		name: "Overview",
+		items: [
+			{
+				title: "Dashboard",
+				url: "/dashboard",
+				icon: IconDashboard,
+			},
+			{
+				title: "Conversations",
+				url: "/",
+				icon: IconListDetails,
+			},
+			{
+				title: "History",
+				url: "/",
+				icon: IconChartBar,
+			},
+		],
+	},
+	{
+		name: "Settings",
+		items: [
+			{
+				title: "Settings",
+				url: "/",
+				icon: IconDashboard,
+			},
+			{
+				title: "To go out",
+				url: "/",
+				icon: IconListDetails,
+			},
+		],
+	},
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem className="flex items-center">
-            <img src="/logo.svg" alt="logo" className="w-10 h-10" />
-            <h1 className="font-semibold text-[16px] text-blue-600">
-              ComprehendMe
-            </h1>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain information={information[0]} />
-        <NavMain information={information[1]} />
-      </SidebarContent>
-    </Sidebar>
-  );
+	return (
+		<Sidebar collapsible="offcanvas" {...props}>
+			<SidebarHeader>
+				<SidebarMenu>
+					<SidebarMenuItem className="flex items-center">
+						<img src="/logo.svg" alt="logo" className="w-10 h-10" />
+						<h1 className="font-semibold text-[16px] text-blue-600">
+							ComprehendMe
+						</h1>
+					</SidebarMenuItem>
+				</SidebarMenu>
+			</SidebarHeader>
+			<SidebarContent>
+				<NavMain information={information[0]} />
+				<NavMain information={information[1]} />
+			</SidebarContent>
+		</Sidebar>
+	);
 }
