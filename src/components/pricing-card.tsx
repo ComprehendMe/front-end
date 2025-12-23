@@ -35,11 +35,11 @@ interface Pricing2Props {
 }
 
 const PricingSection = ({
-	heading = "Preços",
+	heading = "Pricing",
 	plans = [
 		{
 			id: "free",
-			name: "Grátis",
+			name: "Free",
 			monthlyPrice: "€0",
 			yearlyPrice: "€0",
 			features: [
@@ -65,7 +65,7 @@ const PricingSection = ({
 				{ text: "Figma ipsum component" },
 			],
 			button: {
-				text: "Obter Premium",
+				text: "Get Premium",
 				url: "/",
 			},
 		},
@@ -76,7 +76,7 @@ const PricingSection = ({
 		<section className="pb-32 pt-36">
 			<div className="container">
 				<div className="mx-auto flex max-w-5xl flex-col items-center gap-6 text-center">
-					<h2 className="text-pretty text-3xl font-bold">{heading}</h2>
+					<h2 className="text-pretty text-[32px] font-bold">{heading}</h2>
 					<div className="flex items-center gap-3 text-lg">
 						<Tabs
 							value={isYearly ? "annual" : "monthly"}
@@ -84,16 +84,16 @@ const PricingSection = ({
 							defaultValue="annual"
 						>
 							<TabsList>
-								<TabsTrigger value="monthly">Mensal</TabsTrigger>
-								<TabsTrigger value="annual">Anual</TabsTrigger>
+								<TabsTrigger value="monthly">Monthly</TabsTrigger>
+								<TabsTrigger value="annual">Annual</TabsTrigger>
 							</TabsList>
 						</Tabs>
 					</div>
-					<div className="flex flex-col items-stretch gap-6 md:flex-row">
+					<div className="flex flex-col items-stretch gap-[30px] md:flex-row">
 						{plans.map((plan) => (
 							<Card
 								key={plan.id}
-								className="flex w-80 rounded-[20px] py-[30px] gap-[42px] flex-col justify-between text-left"
+								className="flex w-[420px] rounded-[20px] py-[30px] gap-7 flex-col justify-between text-left"
 							>
 								<CardHeader className="gap-2">
 									<p className="font-normal text-[24px]">{plan.name}</p>
@@ -102,16 +102,16 @@ const PricingSection = ({
 											{isYearly ? plan.yearlyPrice : plan.monthlyPrice}
 										</span>
 										<span className="text-muted-foreground text-[18px] font-normal">
-											{isYearly ? "euros/ano" : "euros/mês"}
+											{isYearly ? "euros/year" : "euros/month"}
 										</span>
 									</div>
 								</CardHeader>
 								<CardContent>
-									<ul className="space-y-2">
+									<ul className="space-y-3.5">
 										{plan.features.map((feature, index) => (
 											<li
 												key={index}
-												className="flex items-center gap-2 text-sm"
+												className="flex items-center gap-2 text-[16px] font-normal"
 											>
 												<Check className="size-4 text-blue-500" />
 												<span>{feature.text}</span>
@@ -123,9 +123,9 @@ const PricingSection = ({
 									{plan?.button && (
 										<Button
 											asChild
-											className="w-full rounded-full text-[18px] px-6 bg-linear-to-r from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8]"
+											className="w-full rounded-full px-6 h-[50px]"
 										>
-											<a href={plan.button?.url} target="_blank">
+											<a href={plan.button?.url} className="text-[18px] font-medium" target="_blank">
 												{plan.button?.text}
 											</a>
 										</Button>
