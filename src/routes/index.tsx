@@ -12,13 +12,13 @@ export const Route = createFileRoute("/")({
 function App() {
   return (
     <>
-      <div className="relative min-h-screen bg-white">
+      <div className="min-h-screen bg-white">
         <div
           className={cn(
             "absolute inset-0",
-            "[background-size:40px_40px]",
-            "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
-            "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
+            "bg-size-[32px_32px]",
+            "bg-[linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+            "dark:bg-[linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]",
           )}
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white mask-[linear-gradient(to_bottom,transparent_0%,black)] dark:bg-black" />
@@ -30,7 +30,8 @@ function App() {
                 Practice without fear. Serve without hesitation.
               </h1>
               <p className="text-lg text-[#1C1F22] font-medium tracking-tight max-w-4xl">
-                Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.
+                Realistic virtual patients, immediate feedback, and a safe
+                environment for you to grow as a therapist.
               </p>
               <Button size="lg" className="rounded-full text-lg px-6 w-fit">
                 To start
@@ -49,7 +50,8 @@ function App() {
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-medium">Choose a patient</p>
                 <p className="text-[16px] text-[#757575] font-normal">
-                  Clinical profiles with varying levels of difficulty and behaviors.
+                  Clinical profiles with varying levels of difficulty and
+                  behaviors.
                 </p>
               </div>
             </div>
@@ -64,7 +66,8 @@ function App() {
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-medium">Chat in real time</p>
                 <p className="text-[16px] text-[#757575] font-normal">
-                  Consistent and contextual AI, with emotional cues and natural pacing.
+                  Consistent and contextual AI, with emotional cues and natural
+                  pacing.
                 </p>
               </div>
             </div>
@@ -79,7 +82,8 @@ function App() {
               <div className="flex flex-col gap-1">
                 <p className="text-lg font-medium">Receive a report</p>
                 <p className="text-[16px] text-[#757575] font-normal">
-                  Analyses of empathy, coherence, and key moments, with recommendations.
+                  Analyses of empathy, coherence, and key moments, with
+                  recommendations.
                 </p>
               </div>
             </div>

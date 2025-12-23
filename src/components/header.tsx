@@ -13,7 +13,7 @@ export default function Header() {
 			<nav className="flex justify-between items-center w-full">
 				<div className="flex items-center gap-2.5">
 					<img src="/logo.svg" alt="logo" className="w-8 h-8" />
-					<h1 className="text-[16px] font-semibold text-primary">CogniAI</h1>
+					<h1 className="text-[16px] font-semibold text-primary">ComprehendMe</h1>
 				</div>
 				<div className="flex items-center">
 					<NavigationMenu>
