@@ -20,17 +20,17 @@ export default function Header() {
 						<NavigationMenuList>
 							<NavigationMenuItem>
 								<NavigationMenuLink asChild>
-									<Link to="/">Benefícios</Link>
+									<Link to="/">Benefits</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
 								<NavigationMenuLink asChild>
-									<Link to="/">Preços</Link>
+									<Link to="/">Pricing</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 							<NavigationMenuItem>
 								<NavigationMenuLink asChild>
-									<Link to="/">Nossa missão</Link>
+									<Link to="/">Our mission</Link>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
 						</NavigationMenuList>
