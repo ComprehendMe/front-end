@@ -31,7 +31,7 @@ const information: { name: string; items: NavLink[] }[] = [
 			},
 			{
 				title: "History",
-				url: "/",
+				url: "/dashboard/history",
 				icon: IconChartBar,
 			},
 		],
