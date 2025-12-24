@@ -46,7 +46,7 @@ export default function AuthDialog() {
   return (
     <Dialog modal={true}>
       <DialogTrigger asChild>
-        <Button className="rounded-full px-6 text-white">Começar</Button>
+        <Button className="rounded-full px-6 text-white">To start</Button>
       </DialogTrigger>
       <DialogContent showCloseButton={false} className="sm:max-w-[450px] gap-6">
         <DialogHeader className=" items-center">

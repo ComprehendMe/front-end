@@ -41,7 +41,7 @@ export default function Footer() {
       <div className="grid grid-cols-2 gap-[54px]">
         <ul className="flex flex-col gap-3">
           <li className="text-[#1C1F22] font-normal text-[16px]">
-            <Link to="/">Benefícios</Link>
+            <Link to="/">Benefits</Link>
           </li>
           <li className="text-[#1C1F22] font-normal text-[16px]">
             <Link to="/">Pricing</Link>
