@@ -1,5 +1,6 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { IconDotsVertical } from "@tabler/icons-react";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/history")({
@@ -38,7 +40,7 @@ function HistoryPage() {
             </TableHead>
           </TableHeader>
           <TableBody>
-            <TableRow>
+            <TableRow className="relative">
               <TableCell className="font-medium flex gap-2.5">
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
@@ -53,15 +55,18 @@ function HistoryPage() {
                 </div>
               </TableCell>
               <TableCell>
-                <Badge>Medium</Badge>
+                <Badge variant="medium">Medium</Badge>
               </TableCell>
               <TableCell className="font-medium text-[16px]">
                 about 2 hours ago
               </TableCell>
               <TableCell className="font-medium text-[16px]">45 minutos</TableCell>
               <TableCell className="font-medium text-[16px]">Review</TableCell>
+              <Button size="icon-sm" variant="ghost" className="absolute right-0 top-5">
+                <IconDotsVertical />
+              </Button>
             </TableRow>
-            <TableRow>
+            <TableRow className="relative">
               <TableCell className="font-medium flex gap-2.5">
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
@@ -76,13 +81,16 @@ function HistoryPage() {
                 </div>
               </TableCell>
               <TableCell>
-                <Badge>Medium</Badge>
+                <Badge variant="medium">Medium</Badge>
               </TableCell>
               <TableCell className="font-medium text-[16px]">
                 about 2 hours ago
               </TableCell>
               <TableCell className="font-medium text-[16px]">45 minutos</TableCell>
               <TableCell className="font-medium text-[16px]">Review</TableCell>
+              <Button size="icon-sm" variant="ghost" className="absolute right-0 top-5">
+                <IconDotsVertical />
+              </Button>
             </TableRow>
           </TableBody>
         </Table>

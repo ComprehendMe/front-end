@@ -82,7 +82,7 @@ export function ContinueSection() {
 										<AvatarFallback>CN</AvatarFallback>
 									</Avatar>
 								</div>
-								<Badge>Problems at School/Work</Badge>
+								<Badge variant="problems">Problems at School/Work</Badge>
 								<div className="flex gap-2 flex-col">
 									<p className="font-semibold text-xl text-black">
 										Figma ipsum component variant main layer
