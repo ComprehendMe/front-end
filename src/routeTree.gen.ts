@@ -13,6 +13,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
+import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -34,17 +35,24 @@ const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -52,13 +60,25 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/dashboard/history' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/dashboard/'
+    | '/dashboard/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard/history' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard' | '/dashboard/history' | '/dashboard/'
+  to: '/' | '/dashboard/history' | '/dashboard' | '/dashboard/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/dashboard/'
+    | '/dashboard/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,17 +116,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHistoryRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/settings/': {
+      id: '/dashboard/settings/'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
 interface DashboardRouteChildren {
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(

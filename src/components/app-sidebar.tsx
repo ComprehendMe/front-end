@@ -39,7 +39,7 @@ const information: { name: string; items: NavLink[] }[] = [
 		items: [
 			{
 				title: "Settings",
-				url: "/",
+				url: "/dashboard/settings",
 				icon: IconDashboard,
 			},
 			{
