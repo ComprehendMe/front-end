@@ -1,4 +1,6 @@
-import type { Icon } from "@tabler/icons-react";
+import { Link, useLocation } from "@tanstack/react-router";
+import type { NavLink } from "@/lib/types";
+import { checkIsActive, cn } from "@/lib/utils";
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -7,9 +9,6 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "./ui/sidebar";
-import { Link, useLocation } from "@tanstack/react-router";
-import { checkIsActive, cn } from "@/lib/utils";
-import type { NavLink } from "@/lib/types";
 
 export default function NavMain({
 	information,

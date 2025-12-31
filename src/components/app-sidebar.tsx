@@ -1,10 +1,9 @@
 import {
 	IconChartBar,
 	IconDashboard,
-	IconFolder,
 	IconListDetails,
-	IconUsers,
 } from "@tabler/icons-react";
+import type { NavLink } from "@/lib/types";
 import NavMain from "./nav-main";
 import {
 	Sidebar,
@@ -13,7 +12,6 @@ import {
 	SidebarMenu,
 	SidebarMenuItem,
 } from "./ui/sidebar";
-import type { NavLink } from "@/lib/types";
 
 const information: { name: string; items: NavLink[] }[] = [
 	{

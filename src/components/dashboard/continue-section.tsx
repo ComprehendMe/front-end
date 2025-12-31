@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	type CarouselApi,
-} from "../ui/carousel";
-import {
-	ArrowLeftIcon,
-	ArrowRight,
-	ArrowRightIcon,
-	ChevronLeft,
-	ChevronRight,
-} from "lucide-react";
-import { Button } from "../ui/button";
 import { Link } from "@tanstack/react-router";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import {
+	Carousel,
+	type CarouselApi,
+	CarouselContent,
+	CarouselItem,
+} from "../ui/carousel";
 
 export function ContinueSection() {
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();

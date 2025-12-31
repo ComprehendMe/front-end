@@ -125,7 +125,11 @@ const PricingSection = ({
 											asChild
 											className="w-full rounded-full px-6 h-[50px]"
 										>
-											<a href={plan.button?.url} className="text-[18px] font-medium" target="_blank">
+											<a
+												href={plan.button?.url}
+												className="text-[18px] font-medium"
+												target="_blank"
+											>
 												{plan.button?.text}
 											</a>
 										</Button>
