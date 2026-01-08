@@ -9,10 +9,13 @@ import { useRef } from "react";
 
 interface ListProps {
   tabs: {
-    name: string;
-    icon?: React.ReactElement;
-    value: string;
-  }[];
+    title: string;
+    items: {
+      name: string;
+      icon?: React.ReactElement;
+      value: string;
+    }[];
+  };
   url: string;
   searchParamName?: string;
   disabled?: boolean;
@@ -49,24 +52,32 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
 
   const defaultValue = searchParamName
     ? search[searchParamName]
-    : tabs[0].value;
+    : tabs.items[0].value;
 
   return (
-    <div className="w-full max-w-md">
-      <Tabs
-        className="flex-row"
-        defaultValue={defaultValue ?? tabs[0].value}
-        onValueChange={handleChange}
-      >
-        <TabsList ref={ref} className="bg-background h-full flex-col">
-          {tabs.map((tab) => (
-            <TabsTrigger className="w-full justify-start"  key={tab.value} value={tab.value} disabled={disabled}>
-              {tab.icon}
-              {tab.name}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+    <div className="space-y-4">
+      <p className="text-sm font-semibold text-gray-400">{tabs.title}</p>
+      <div className="w-full max-w-md">
+        <Tabs
+          className="flex-row"
+          defaultValue={defaultValue ?? tabs.items[0].value}
+          onValueChange={handleChange}
+        >
+          <TabsList ref={ref} className="bg-background h-full flex-col w-full">
+            {tabs.items.map((tab) => (
+              <TabsTrigger
+                className="w-full justify-start"
+                key={tab.value}
+                value={tab.value}
+                disabled={disabled}
+              >
+                {tab.icon}
+                {tab.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
     </div>
   );
 }

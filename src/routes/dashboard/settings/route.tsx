@@ -1,7 +1,7 @@
-import { ListTab } from "@/components/dashboard/tabs-list"
+import { ListTab } from "@/components/dashboard/tabs-list";
 import { Separator } from "@/components/ui/separator";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { Bell, Globe } from "lucide-react";
+import { Bell, Globe, User } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: DashboardRoute,
@@ -15,16 +15,14 @@ function DashboardRoute() {
         <Separator />
         <div className="flex justify-between w-full h-full">
           <aside className="py-8 pl-12 pr-9 max-w-[260px] w-full space-y-10">
-            <div className="space-y-4">
-              <p className="text-sm font-semibold text-gray-400">
-                General Settings
-              </p>
-              <ListTab
-                tabs={[
+            <ListTab
+              tabs={{
+                title: "Workspace Settings",
+                items: [
                   {
                     name: "Account",
                     value: "/",
-                    icon: <Bell />,
+                    icon: <User />,
                   },
                   {
                     name: "Notifications",
@@ -34,32 +32,12 @@ function DashboardRoute() {
                   {
                     name: "Language & time",
                     value: "/language",
-                    icon: <Bell />,
+                    icon: <Globe />,
                   },
-                ]}
-                url="/dashboard/settings"
-              />
-            </div>
-            <div className="space-y-4">
-              <p className="text-sm font-semibold text-gray-400">
-                Workspace Settings
-              </p>
-              <ListTab
-                tabs={[
-                  {
-                    name: "Friends",
-                    value: "/friends",
-                    icon: <Bell />,
-                  },
-                  {
-                    name: "Billing",
-                    value: "/billing",
-                    icon: <Bell />,
-                  },
-                ]}
-                url="/dashboard"
-              />
-            </div>
+                ],
+              }}
+              url="/dashboard/settings"
+            />
           </aside>
           <Outlet />
         </div>
