@@ -50,9 +50,8 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
     });
   }
 
-  const defaultValue = searchParamName
-    ? search[searchParamName]
-    : tabs.items[0].value;
+  const [, after] = location.pathname.split("/settings");
+  const defaultValue = searchParamName ? search[searchParamName] : after || "/";
 
   return (
     <div className="space-y-4">
@@ -60,7 +59,7 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
       <div className="w-full max-w-md">
         <Tabs
           className="flex-row"
-          defaultValue={defaultValue ?? tabs.items[0].value}
+          defaultValue={defaultValue}
           onValueChange={handleChange}
         >
           <TabsList ref={ref} className="bg-background h-full flex-col w-full">
