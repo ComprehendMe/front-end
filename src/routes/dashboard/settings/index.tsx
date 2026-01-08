@@ -59,6 +59,65 @@ function SettingsPage() {
           Account security
         </h3>
         <Separator className="mt-3.5" />
+        <div className="flex flex-col gap-3.5 w-full mt-5">
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-[16px]">Email</p>
+            <div className="flex w-full justify-between">
+              <Input
+                disabled
+                placeholder="joanaalmeida@gmail.com"
+                className="max-w-[390px]"
+              />
+              <DashboardButton className="rounded-full" variant="secondary">
+                Change email
+              </DashboardButton>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-[16px]">Password</p>
+            <div className="flex w-full justify-between">
+              <Input disabled placeholder="Almeida" className="max-w-[390px]" />
+              <DashboardButton className="rounded-full" variant="secondary">
+                Change password
+              </DashboardButton>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full border-l h-full py-8 px-8">
+        <h3 className="text-[18px] font-semibold text-[#1C1F22]">
+          Support Access
+        </h3>
+        <Separator className="mt-3.5" />
+        <div className="flex flex-col gap-5 w-full mt-5">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px]">
+                Log out of all devices
+              </p>
+              <span className="font-regular text-sm text-gray-400">
+                Log out of all other active sessions on other devices besides
+                this one.
+              </span>
+            </div>
+            <DashboardButton className="rounded-full" variant="secondary">
+              Log out
+            </DashboardButton>
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px]">
+                  Delete my account
+              </p>
+              <span className="font-regular text-sm text-gray-400 tracking-tight">
+                  Permanently delete the account and remove access from all workspaces.
+              </span>
+            </div>
+            <DashboardButton className="rounded-full" variant="secondary">
+                Delete account
+            </DashboardButton>
+          </div>
+        </div>
       </div>
     </div>
   );
