@@ -2,6 +2,7 @@ import { DashboardButton } from "@/components/dashboard/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/settings/notifications")({
@@ -12,53 +13,98 @@ function RouteComponent() {
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col w-full border-l h-full py-8 px-8">
-        <h3 className="text-[18px] font-semibold text-[#1C1F22]">My Profile</h3>
+        <h3 className="text-[18px] font-semibold text-[#4B4E58]">
+          Notifications
+        </h3>
         <Separator className="mt-3.5" />
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col mt-5 gap-[18px]">
-            <p className="font-semibold text-[16px] text-gray-500">
-              Profile photo
-            </p>
-            <div className="flex gap-4 items-center">
-              <Avatar className="w-[120px] h-[120px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-              </Avatar>
-              <div className="flex flex-col gap-3">
-                <div className="flex gap-2">
-                  <DashboardButton className="rounded-full">
-                    Change Image
-                  </DashboardButton>
-                  <DashboardButton className="rounded-full" variant="secondary">
-                    Remove Image
-                  </DashboardButton>
-                </div>
-                <p className="text-sm text-[#757575] font-medium">
-                  We support PNGs, JPGs and GIFs under 2MB
-                </p>
-              </div>
+        <div className="flex flex-col gap-5 mt-7">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px] text-[#4B4E58]">
+                Enable desktop notification
+              </p>
+              <span className="font-regular text-sm text-gray-400">
+                Receive notifications for all messages, contracts, and
+                documents.
+              </span>
             </div>
+            <Switch defaultChecked />
           </div>
-          <div className="grid grid-cols-2 w-full gap-3.5">
-            <div className="flex flex-col gap-5">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
               <p className="font-semibold text-[16px] text-[#4B4E58]">
-                First name
+                Enable unread notification badge
               </p>
-              <Input className="w-full bg-gray-100" placeholder="Joana" />
+              <span className="font-regular text-sm text-gray-400">
+                Shows a red badge on the app icon when you have unread message.
+              </span>
             </div>
-            <div className="flex flex-col gap-5">
+            <Switch defaultChecked />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="font-semibold text-[16px] text-[#4B4E58]">
+              Push notification Time-out
+            </p>
+            <Input placeholder="10 minutes" />
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
               <p className="font-semibold text-[16px] text-[#4B4E58]">
-                Last name
+                Enable desktop notification
               </p>
-              <Input className="w-full bg-gray-100" placeholder="Almeida" />
+              <span className="font-regular text-sm text-gray-400">
+                Receive notifications for all messages, contracts, and
+                documents.
+              </span>
             </div>
+            <Switch />
           </div>
         </div>
       </div>
       <div className="flex flex-col w-full border-l h-full py-8 px-8">
-        <h3 className="text-[18px] font-semibold text-[#1C1F22]">
-          Account security
+        <h3 className="text-[18px] font-semibold text-[#4B4E58]">
+          Email notifications
         </h3>
         <Separator className="mt-3.5" />
+        <div className="flex flex-col gap-5 mt-7">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px] text-[#4B4E58]">Communication emails</p>
+              <span className="font-regular text-sm text-gray-400">
+                Receive email for messages, contracts and documents.
+              </span>
+            </div>
+            <Switch />
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px] text-[#4B4E58]">
+                Announcements and updates
+              </p>
+              <span className="font-regular text-sm text-gray-400">
+                Receive email about product update, improvements, etc.
+              </span>
+            </div>
+            <Switch defaultChecked />
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col w-full border-l h-full py-8 px-8">
+        <h3 className="text-[18px] font-semibold text-[#4B4E58]">
+            Sounds
+        </h3>
+        <Separator className="mt-3.5" />
+        <div className="flex flex-col gap-5 mt-7">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <p className="font-semibold text-[16px] text-[#4B4E58]">Disable all notification sounds</p>
+              <span className="font-regular text-sm text-gray-400">
+                  Mute all notifications of the messages, contracts and documents.
+              </span>
+            </div>
+            <Switch />
+          </div>
+        </div>
       </div>
     </div>
   );
