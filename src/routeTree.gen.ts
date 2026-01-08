@@ -16,6 +16,7 @@ import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history
 import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardSettingsNotificationsRouteImport } from './routes/dashboard/settings/notifications'
+import { Route as DashboardSettingsLanguageRouteImport } from './routes/dashboard/settings/language'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -53,6 +54,12 @@ const DashboardSettingsNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => DashboardSettingsRouteRoute,
   } as any)
+const DashboardSettingsLanguageRoute =
+  DashboardSettingsLanguageRouteImport.update({
+    id: '/language',
+    path: '/language',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
 }
@@ -77,6 +86,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/history'
     | '/dashboard/'
+    | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
   fileRoutesByTo: FileRoutesByTo
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard/history'
     | '/dashboard'
+    | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings'
   id:
@@ -104,6 +116,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/history'
     | '/dashboard/'
+    | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
   fileRoutesById: FileRoutesById
@@ -164,16 +177,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsNotificationsRouteImport
       parentRoute: typeof DashboardSettingsRouteRoute
     }
+    '/dashboard/settings/language': {
+      id: '/dashboard/settings/language'
+      path: '/language'
+      fullPath: '/dashboard/settings/language'
+      preLoaderRoute: typeof DashboardSettingsLanguageRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
   }
 }
 
 interface DashboardSettingsRouteRouteChildren {
+  DashboardSettingsLanguageRoute: typeof DashboardSettingsLanguageRoute
   DashboardSettingsNotificationsRoute: typeof DashboardSettingsNotificationsRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
 }
 
 const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
   {
+    DashboardSettingsLanguageRoute: DashboardSettingsLanguageRoute,
     DashboardSettingsNotificationsRoute: DashboardSettingsNotificationsRoute,
     DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
   }

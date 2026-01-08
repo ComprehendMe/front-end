@@ -11,10 +11,10 @@ function DashboardRoute() {
   return (
     <main className="py-7">
       <div className="bg-white border border-[#1C1F22]/15 rounded-t-[20px]">
-        <h3 className="ml-12 my-[38px] font-semibold text-2xl">Settings</h3>
+        <h3 className="ml-[30px] my-[38px] font-semibold text-2xl">Settings</h3>
         <Separator />
         <div className="flex justify-between w-full h-full">
-          <aside className="py-8 pl-12 pr-9 max-w-[260px] w-full space-y-10">
+          <aside className="py-8 pl-[30px] pr-9 max-w-[260px] w-full space-y-10">
             <ListTab
               tabs={{
                 title: "Workspace Settings",
