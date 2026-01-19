@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,6 +19,7 @@ import {
   StepperItem,
   StepperTrigger,
 } from "../ui/stepper";
+import { ChevronLeft } from "lucide-react";
 
 const steps = [1, 2, 3, 4];
 
@@ -45,7 +47,7 @@ export default function AuthDialog() {
             </DialogTitle>
           </DialogHeader>
         ) : (
-          <>
+          <div>
             <DialogHeader className="py-3.5 px-10">
               <DialogTitle>You’re almost there!</DialogTitle>
               <DialogDescription>
@@ -70,8 +72,28 @@ export default function AuthDialog() {
               </Stepper>
             </DialogHeader>
             <Separator />
-            <div>test</div>
-          </>
+            <div className="py-3.5 px-10">test</div>
+            <DialogFooter className="justify-between items-center px-10 py-6">
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => setCurrentStep((prev) => prev - 1)}
+                disabled={currentStep === 1}
+                className="text-[#1C1F22] text-[16px] font-normal"
+              >
+                <ChevronLeft className="w-6 h-6" />
+                <span>To go back</span>
+              </Button>
+              <Button
+                size="lg"
+                onClick={() => setCurrentStep((prev) => prev + 1)}
+                disabled={currentStep >= steps.length}
+                className="rounded-full text-[16px] font-normal"
+              >
+                Continue
+              </Button>
+            </DialogFooter>
+          </div>
         )}
         {mode === "login" && <LoginForm toggleMode={toggleMode} />}
         {mode === "register" && (
