@@ -3,15 +3,27 @@ import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 import LoginForm from "./forms/login";
 import SignUpForm from "./forms/register";
+import { cn } from "@/lib/utils";
+import { Separator } from "../ui/separator";
+import {
+  Stepper,
+  StepperIndicator,
+  StepperItem,
+  StepperTrigger,
+} from "../ui/stepper";
+
+const steps = [1, 2, 3, 4];
 
 export default function AuthDialog() {
   const [mode, setMode] = useState<"login" | "register" | "steps">("login");
+  const [currentStep, setCurrentStep] = useState(1);
   const toggleMode = () => setMode(mode === "login" ? "register" : "login");
 
   return (
@@ -19,17 +31,52 @@ export default function AuthDialog() {
       <DialogTrigger asChild>
         <Button className="rounded-full px-6 text-white">To start</Button>
       </DialogTrigger>
-      <DialogContent showCloseButton={false} className="sm:max-w-[450px] gap-6">
-        <DialogHeader className=" items-center">
-          <DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
-            Welcome to CogniAI
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent
+        showCloseButton={false}
+        className={cn(
+          "gap-6",
+          mode !== "steps" ? "sm:max-w-[444px]" : "sm:max-w-[450px] p-0",
+        )}
+      >
+        {mode !== "steps" ? (
+          <DialogHeader className=" items-center">
+            <DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
+              Welcome to CogniAI
+            </DialogTitle>
+          </DialogHeader>
+        ) : (
+          <>
+            <DialogHeader className="py-3.5 px-10">
+              <DialogTitle>You’re almost there!</DialogTitle>
+              <DialogDescription>
+                {currentStep} of {steps.length} completed
+              </DialogDescription>
+              <Stepper value={currentStep} onValueChange={setCurrentStep}>
+                {steps.map((step) => (
+                  <StepperItem key={step} step={step} className="flex-1">
+                    <StepperTrigger
+                      className="w-full flex-col items-start gap-2"
+                      asChild
+                    >
+                      <StepperIndicator
+                        asChild
+                        className="h-2 w-full bg-border rounded-none"
+                      >
+                        <span className="sr-only">{step}</span>
+                      </StepperIndicator>
+                    </StepperTrigger>
+                  </StepperItem>
+                ))}
+              </Stepper>
+            </DialogHeader>
+            <Separator />
+            <div>test</div>
+          </>
+        )}
         {mode === "login" && <LoginForm toggleMode={toggleMode} />}
         {mode === "register" && (
           <SignUpForm setMode={setMode} toggleMode={toggleMode} />
         )}
-        {mode === "steps" && <h1>test</h1>}
       </DialogContent>
     </Dialog>
   );
