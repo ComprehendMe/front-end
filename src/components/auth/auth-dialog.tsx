@@ -98,7 +98,7 @@ export default function AuthDialog() {
                       <Button
                         variant="outline"
                         data-empty={!date}
-                        className="data-[empty=true]:text-[#4B4E58] w-full h-[45px] px-5 bg-[#0978AA]/10 justify-between text-left font-normal"
+                        className="text-[#4B4E58] w-full h-[45px] bg-[#0978AA]/10 justify-between text-left font-normal"
                       >
                         {date ? (
                           format(date, "PPP")
@@ -124,7 +124,7 @@ export default function AuthDialog() {
                   </h3>
                   <Input
                     placeholder="Select you college"
-                    className="bg-[#0978AA]/10"
+                    className="bg-[#0978AA]/10 text-[#4B4E58] font-normal"
                   />
                 </div>
               </div>
