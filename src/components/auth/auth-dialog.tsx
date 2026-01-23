@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -19,12 +18,24 @@ import {
   StepperItem,
   StepperTrigger,
 } from "../ui/stepper";
-import { ChevronLeft } from "lucide-react";
+import { ChevronDownIcon, ChevronLeft } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
 
-const steps = [1, 2, 3, 4];
+const steps = [1, 2];
 
 export default function AuthDialog() {
   const [mode, setMode] = useState<"login" | "register" | "steps">("login");
+  const [date, setDate] = useState<Date>();
   const [currentStep, setCurrentStep] = useState(1);
   const toggleMode = () => setMode(mode === "login" ? "register" : "login");
 
@@ -48,12 +59,16 @@ export default function AuthDialog() {
           </DialogHeader>
         ) : (
           <div>
-            <DialogHeader className="py-3.5 px-10">
+            <DialogHeader className="py-5 px-10">
               <DialogTitle>You’re almost there!</DialogTitle>
               <DialogDescription>
-                {currentStep} of {steps.length} completed
+                {currentStep + 1} of {steps.length + 1} completed
               </DialogDescription>
-              <Stepper value={currentStep} onValueChange={setCurrentStep}>
+              <Stepper
+                value={currentStep}
+                onValueChange={setCurrentStep}
+                className="mt-5"
+              >
                 {steps.map((step) => (
                   <StepperItem key={step} step={step} className="flex-1">
                     <StepperTrigger
@@ -72,7 +87,104 @@ export default function AuthDialog() {
               </Stepper>
             </DialogHeader>
             <Separator />
-            <div className="py-3.5 px-10">test</div>
+            {currentStep === 1 && (
+              <div className="py-3.5 px-10 space-y-5">
+                <div className="space-y-3">
+                  <h3 className="font-medium text-[16px]">
+                    What is your date of birth?
+                  </h3>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        data-empty={!date}
+                        className="data-[empty=true]:text-[#4B4E58] w-full h-[45px] px-5 bg-[#0978AA]/10 justify-between text-left font-normal"
+                      >
+                        {date ? (
+                          format(date, "PPP")
+                        ) : (
+                          <span>June 1st, 1998</span>
+                        )}
+                        <ChevronDownIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        defaultMonth={date}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-medium text-[16px]">
+                    Where do you study?
+                  </h3>
+                  <Input
+                    placeholder="Select you college"
+                    className="bg-[#0978AA]/10"
+                  />
+                </div>
+              </div>
+            )}
+            {currentStep === 2 && (
+              <div className="py-3.5 px-10 space-y-8">
+                <div className="space-y-2">
+                  <h3 className="font-medium text-[16px]">
+                    How did you hear about us?
+                  </h3>
+                  <p className="text-[#4B4E58] font-normal text-sm">
+                    Pick one option - It will help us improve
+                  </p>
+                </div>
+                <RadioGroup defaultValue="friends" className="gap-3.5">
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="friends" id="friends" />
+                    <Label
+                      className="text-[#1C1F22] text-[16px] font-normal"
+                      htmlFor="friends"
+                    >
+                      Friends
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem
+                      value="university-school"
+                      id="university-school"
+                    />
+                    <Label
+                      className="text-[#1C1F22] text-[16px] font-normal"
+                      htmlFor="university-school"
+                    >
+                      University/School
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem
+                      value="recommendation"
+                      id="recommendation"
+                    />
+                    <Label
+                      className="text-[#1C1F22] text-[16px] font-normal"
+                      htmlFor="recommendation"
+                    >
+                      Recommendation
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="others" id="others" />
+                    <Label
+                      className="text-[#1C1F22] text-[16px] font-normal"
+                      htmlFor="others"
+                    >
+                      Others
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            )}
             <DialogFooter className="justify-between items-center px-10 py-6">
               <Button
                 variant="ghost"
