@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as SessionsVerifyRouteImport } from './routes/sessions/verify'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
 
 const DashboardRoute = DashboardRouteImport.update({
@@ -29,6 +30,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const SessionsVerifyRoute = SessionsVerifyRouteImport.update({
+  id: '/sessions/verify',
+  path: '/sessions/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -39,11 +45,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/sessions/verify': typeof SessionsVerifyRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/sessions/verify': typeof SessionsVerifyRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -51,19 +59,32 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/history': typeof DashboardHistoryRoute
+  '/sessions/verify': typeof SessionsVerifyRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/dashboard/history' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/sessions/verify'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard/history' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard' | '/dashboard/history' | '/dashboard/'
+  to: '/' | '/dashboard/history' | '/sessions/verify' | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/dashboard/history'
+    | '/sessions/verify'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  SessionsVerifyRoute: typeof SessionsVerifyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,6 +109,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
+    }
+    '/sessions/verify': {
+      id: '/sessions/verify'
+      path: '/sessions/verify'
+      fullPath: '/sessions/verify'
+      preLoaderRoute: typeof SessionsVerifyRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/dashboard/history': {
       id: '/dashboard/history'
@@ -116,6 +144,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  SessionsVerifyRoute: SessionsVerifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

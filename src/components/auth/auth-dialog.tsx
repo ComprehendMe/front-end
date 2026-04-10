@@ -1,13 +1,18 @@
-import { useId, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
+import { api } from "@/lib/api";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -15,177 +20,122 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-import { Google } from "../ui/svgs/google";
 import { Input } from "../ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, EyeIcon, EyeOffIcon } from "lucide-react";
-import { SignUpFormSchema, LoginFormSchema } from "./auth";
-import type z from "zod";
+
+const EmailSchema = z.object({
+  email: z.email({ message: "Please enter a valid email address." }),
+});
+
+type EmailFormValues = z.infer<typeof EmailSchema>;
+
+type ApiError = {
+  message?: string;
+};
 
 export default function AuthDialog() {
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [showPassword, setShowPassword] = useState(false);
-  const id = useId();
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [sentToEmail, setSentToEmail] = useState("");
 
-  const toggleMode = () => setMode(mode === "login" ? "register" : "login");
-  const togglePassword = () => setShowPassword(!showPassword);
-
-  const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
-    resolver: zodResolver(LoginFormSchema),
+  const form = useForm<EmailFormValues>({
+    resolver: zodResolver(EmailSchema),
     defaultValues: { email: "" },
   });
 
-  const signUpForm = useForm<z.infer<typeof SignUpFormSchema>>({
-    resolver: zodResolver(SignUpFormSchema),
-    defaultValues: { name: "", email: "", password: "" },
-  });
+  const onSubmit = async ({ email }: EmailFormValues) => {
+    setLoading(true);
+    try {
+      try {
+        await api("/sessions/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: { email },
+        });
 
-  function onSubmit(data: z.infer<typeof LoginFormSchema>) {}
+        setSent(true);
+        setSentToEmail(email);
+        return;
+      } catch (signupError) {
+        const parsedError = signupError as ApiError;
+
+        if (parsedError.message !== "Email already taken") {
+          toast.error(parsedError.message ?? "Failed to send magic link.");
+          return;
+        }
+      }
+
+      await api("/sessions/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: { email },
+      });
+
+      setSent(true);
+      setSentToEmail(email);
+    } catch (loginError) {
+      const parsedError = loginError as ApiError;
+      toast.error(parsedError.message ?? "Failed to send magic link.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Dialog modal={true}>
+    <Dialog modal>
       <DialogTrigger asChild>
         <Button className="rounded-full px-6 text-white">To start</Button>
       </DialogTrigger>
       <DialogContent showCloseButton={false} className="sm:max-w-[450px] gap-6">
-        <DialogHeader className=" items-center">
+        <DialogHeader className="items-center">
           <DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
             Welcome to CogniAI
           </DialogTitle>
         </DialogHeader>
-        {mode === "login" ? (
-          <Form {...loginForm}>
-            <form onSubmit={loginForm.handleSubmit(onSubmit)}>
+
+        {sent ? (
+          <div className="text-center space-y-2">
+            <p className="text-[18px] font-semibold text-[#1C1F22]">
+              Verifica o teu email
+            </p>
+            <DialogDescription className="text-[16px] text-[#1C1F22]">
+              Enviamos um magic link para <span className="font-medium">{sentToEmail}</span>.
+            </DialogDescription>
+          </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex w-full flex-col gap-[19px] text-center">
-                <div className="flex flex-col w-full gap-4 items-center" >
-                  <Button variant="outline" size="lg" className="rounded-full w-full">
-                    <Google className="w-6 h-6" />
-                    <p className="font-normal text-[16px] text-[#1C1F22]">
-                      Continue with Google
-                    </p>
-                  </Button>
-                  <p className="text-[16px] font-normal text-[#1C1F22]">or</p>
-                  <FormField
-                    control={loginForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <Input
-                            placeholder="E-mail"
-                            className="py-2.5 px-5 h-[45px] text-[16px] font-normal text-[#1C1F22]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input
+                          placeholder="E-mail"
+                          className="py-2.5 px-5 h-[45px] text-[16px] font-normal text-[#1C1F22]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <Button
                   size="lg"
                   type="submit"
                   className="rounded-full h-[45px]"
+                  disabled={loading}
                 >
-                  Continue with email
+                  {loading ? "A enviar..." : "Continue with email"}
                 </Button>
               </div>
             </form>
           </Form>
-        ) : (
-          <Form {...signUpForm}>
-            <form onSubmit={signUpForm.handleSubmit(onSubmit)}>
-              <div className="flex w-full flex-col gap-4 text-center">
-                <Button variant="outline" size="lg" className="rounded-full w-full">
-                  <Google className="w-6 h-6" />
-                  <p className="font-normal text-[16px] text-[#1C1F22]">
-                    Continue with Google
-                  </p>
-                </Button>
-                <p className="text-[16px] font-normal text-[#1C1F22]">or</p>
-                <FormField
-                  control={signUpForm.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="Nome"
-                          className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={signUpForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          placeholder="E-mail"
-                          className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={signUpForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            placeholder="Password"
-                            className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
-                            type={showPassword ? "text" : "password"}
-                            {...field}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={togglePassword}
-                            className="text-muted-foreground focus-visible:ring-ring/50 absolute inset-y-0 right-0 rounded-l-none hover:bg-transparent"
-                          >
-                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                            <span className="sr-only">
-                              {showPassword ? "Hide password" : "Show password"}
-                            </span>
-                          </Button>
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </form>
-          </Form>
-        )}
-        {mode === "login" ? (
-          <DialogFooter className="justify-center">
-            <Button variant="link" onClick={toggleMode}>
-              <span className="text-blue-500 text-[16px] font-normal">Create account</span>
-            </Button>
-          </DialogFooter>
-        ) : (
-          <DialogFooter className="justify-between items-center">
-            <Button variant="ghost" size="lg" onClick={toggleMode} className="text-[#1C1F22] text-[16px] font-normal">
-              <ChevronLeft className="w-6 h-6" />
-              <span>To go back</span>
-            </Button>
-            <Button size="lg" type="submit" className="rounded-full text-[16px] font-normal">
-              Register
-            </Button>
-          </DialogFooter>
         )}
       </DialogContent>
     </Dialog>
