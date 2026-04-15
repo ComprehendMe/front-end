@@ -2,18 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://overlearnedly-multiseriate-jina.ngrok-free.dev/:path*"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "ngrok-skip-browser-warning",
-          "value": "true"
-        }
-      ]
+      "destination": "/api/:path*"
     }
   ]
 }
