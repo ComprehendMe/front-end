@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/[...path].ts": {
+      "runtime": "@vercel/node@5.7.5"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
