@@ -58,7 +58,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<SidebarMenu>
 					<SidebarMenuItem className="flex items-center">
 						<img src="/logo.svg" alt="logo" className="w-10 h-10" />
-						<h1 className="font-semibold text-[16px] text-blue-600">
+						<h1 className="font-semibold text-[16px] text-primary">
 							ComprehendMe
 						</h1>
 					</SidebarMenuItem>

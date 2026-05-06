@@ -7,7 +7,6 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	useSidebar,
 } from "./ui/sidebar";
 
 export default function NavMain({
@@ -15,7 +14,6 @@ export default function NavMain({
 }: {
 	information: { name: string; items: NavLink[] };
 }) {
-	const { isMobile } = useSidebar();
 	const href = useLocation({ select: (location) => location.href });
 
 	return (

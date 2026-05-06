@@ -43,7 +43,7 @@ function DashboardPage() {
 							Advanced clinical cases for specialized training.
 						</p>
 						<Button
-							className="bg-gray-100 text-blue-500 text-lg font-medium rounded-full"
+							className="bg-white/90 text-primary text-lg font-medium rounded-full hover:bg-white"
 							size="lg"
 						>
 							Go premium!
@@ -144,7 +144,7 @@ function DashboardPage() {
 								<h3 className="text-lg font-semibold">Friends</h3>
 								<Button
 									size="icon-lg"
-									className="rounded-full border-blue-500 text-blue-500"
+									className="rounded-full border-primary text-primary hover:bg-primary/10"
 									variant="outline"
 								>
 									<Plus />
@@ -175,7 +175,7 @@ function DashboardPage() {
 								</div>
 								<Button
 									size="lg"
-									className="bg-blue-200 text-blue-500 font-medium text-lg"
+									className="bg-primary/15 text-primary hover:bg-primary/20 font-medium text-lg"
 								>
 									See All
 								</Button>
