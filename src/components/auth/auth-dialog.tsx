@@ -44,32 +44,32 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 					<>
 						<DialogHeader className="items-center text-center">
 							<DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
-								Verifica o teu email
+								Check your email
 							</DialogTitle>
 							<DialogDescription className="text-base text-[#4B4E58]">
-								Enviámos um link para{' '}
+								We sent a link to{' '}
 								<span className="font-medium text-foreground">
 									{pendingEmail}
 								</span>
-								. Abre o email e clica no link para continuar.
+								. Open the email and click the link to continue.
 							</DialogDescription>
 						</DialogHeader>
 						<p className="text-center text-sm text-muted-foreground">
-							O link abre nesta app e redireciona para a dashboard.
+							The link opens this app and redirects you to the dashboard.
 						</p>
 						<Button
 							variant="outline"
 							className="w-full rounded-full"
 							onClick={() => setMode('login')}
 						>
-							Voltar ao login
+							Back to login
 						</Button>
 					</>
 				) : (
 					<>
 						<DialogHeader className="items-center">
 							<DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
-								Welcome to CogniAI
+								Welcome to ComprehendMe
 							</DialogTitle>
 						</DialogHeader>
 						{mode === 'login' && (

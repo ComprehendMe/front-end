@@ -6,7 +6,7 @@ export const Route = createFileRoute('/auth/oauth-error')({
 		message:
 			typeof search.message === 'string'
 				? search.message
-				: 'Não foi possível entrar com o Google.',
+				: 'Could not sign in with Google.',
 	}),
 	component: OAuthErrorPage,
 });
@@ -18,11 +18,11 @@ function OAuthErrorPage() {
 		<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6">
 			<img src="/logo.svg" alt="ComprehendMe" className="h-12 w-12" />
 			<h1 className="text-xl font-semibold text-foreground">
-				Login com Google falhou
+				Google sign-in failed
 			</h1>
 			<p className="max-w-md text-center text-muted-foreground">{message}</p>
 			<Button asChild className="rounded-full">
-				<Link to="/">Voltar à página inicial</Link>
+				<Link to="/">Back to home</Link>
 			</Button>
 		</div>
 	);

@@ -1,4 +1,4 @@
-/** Converte PNG/JPEG para WebP antes do upload para o bucket. */
+/** Converts PNG/JPEG to WebP before uploading to storage. */
 export function fileToWebpBlob(file: File, quality = 0.9): Promise<Blob> {
 	return new Promise((resolve, reject) => {
 		const url = URL.createObjectURL(file);

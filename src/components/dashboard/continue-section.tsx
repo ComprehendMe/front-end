@@ -94,7 +94,7 @@ export function ContinueSection({ chats, patients }: ContinueSectionProps) {
 													variant="secondary"
 													className="absolute top-2 right-2 z-10 bg-[#F8F8CD] text-[#726B07]"
 												>
-													Pausada
+													Paused
 												</Badge>
 											) : null}
 											<PatientCardContent

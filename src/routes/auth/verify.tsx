@@ -19,12 +19,12 @@ function VerifyPage() {
 	const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
 		'loading',
 	);
-	const [message, setMessage] = useState('A verificar a tua conta…');
+	const [message, setMessage] = useState('Verifying your account…');
 
 	useEffect(() => {
 		if (!token) {
 			setStatus('error');
-			setMessage('Link inválido: token em falta.');
+			setMessage('Invalid link: missing token.');
 			return;
 		}
 
@@ -35,7 +35,7 @@ function VerifyPage() {
 				await verifySession(token);
 				if (cancelled) return;
 				setStatus('success');
-				setMessage('Conta verificada! A redirecionar…');
+				setMessage('Account verified! Redirecting…');
 				setTimeout(() => navigate({ to: '/dashboard' }), 800);
 			} catch (e) {
 				if (cancelled) return;
@@ -43,7 +43,7 @@ function VerifyPage() {
 				setMessage(
 					e instanceof ApiError
 						? e.message
-						: 'Não foi possível verificar o link. Pede um novo email.',
+						: 'Could not verify the link. Request a new email.',
 				);
 			}
 		})();
@@ -57,14 +57,14 @@ function VerifyPage() {
 		<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6">
 			<img src="/logo.svg" alt="ComprehendMe" className="h-12 w-12" />
 			<h1 className="text-xl font-semibold text-foreground">
-				{status === 'loading' && 'A verificar…'}
-				{status === 'success' && 'Tudo pronto!'}
-				{status === 'error' && 'Algo correu mal'}
+				{status === 'loading' && 'Verifying…'}
+				{status === 'success' && 'All set!'}
+				{status === 'error' && 'Something went wrong'}
 			</h1>
 			<p className="max-w-md text-center text-muted-foreground">{message}</p>
 			{status === 'error' && (
 				<Button asChild className="rounded-full">
-					<Link to="/">Voltar à página inicial</Link>
+					<Link to="/">Back to home</Link>
 				</Button>
 			)}
 		</div>

@@ -189,7 +189,7 @@ export async function uploadAvatarBlob(blob: Blob) {
 			'message' in data &&
 			typeof data.message === 'string'
 				? data.message
-				: 'Falha ao enviar imagem.';
+				: 'Failed to upload image.';
 		throw new ApiError(message, res.status, data);
 	}
 

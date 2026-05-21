@@ -39,7 +39,7 @@ const NAV_ITEMS: SearchItem[] = [
 	{
 		id: 'friends',
 		label: 'Find friends',
-		description: 'Em breve',
+		description: 'Coming soon',
 		icon: <IconUsers className="h-5 w-5 text-[#1497D2]" />,
 		to: '/dashboard',
 	},
@@ -135,7 +135,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 				<ul className="flex flex-col">
 					{items.length === 0 ? (
 						<li className="px-3 py-4 text-center text-sm text-muted-foreground">
-							Sem resultados
+							No results
 						</li>
 					) : (
 						items.map((item) => (

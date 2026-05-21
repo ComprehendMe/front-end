@@ -1,8 +1,10 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ApiError, getMe, type MeUser } from "@/lib/api";
+import { loadUserPreferences } from "@/lib/user-preferences";
 
 export const Route = createFileRoute("/dashboard")({
 	beforeLoad: async () => {
@@ -23,6 +25,11 @@ export type DashboardContext = { user: MeUser };
 
 function RouteComponent() {
 	const { user } = Route.useRouteContext();
+
+	useEffect(() => {
+		document.documentElement.lang = "en";
+		loadUserPreferences(user.email);
+	}, [user.email]);
 
 	return (
 		<SidebarProvider>

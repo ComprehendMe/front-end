@@ -61,7 +61,7 @@ export function ChatComposer({
 						{messagesSentToday}/{MAX_MESSAGES_PER_DAY} messages per day*
 					</span>
 					<span>
-						{charCount.toLocaleString('pt-PT')}/{MAX_CHARS.toLocaleString('pt-PT')}
+						{charCount.toLocaleString('en-US')}/{MAX_CHARS.toLocaleString('en-US')}
 					</span>
 				</div>
 			</div>

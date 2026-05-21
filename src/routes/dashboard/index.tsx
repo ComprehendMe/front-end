@@ -18,7 +18,8 @@ import {
 	type DashboardStats,
 	type Patient,
 } from '@/lib/api';
-import { getFirstName } from '@/lib/user-display';
+import { getTimeGreeting } from '@/lib/format-message-time';
+import { getDisplayName } from '@/lib/user-display';
 import { Route as DashboardRoute } from '../dashboard';
 
 export const Route = createFileRoute('/dashboard/')({
@@ -34,7 +35,8 @@ function DashboardPage() {
 	const [loadingPatients, setLoadingPatients] = useState(true);
 	const [startingId, setStartingId] = useState<string | null>(null);
 
-	const firstName = getFirstName(user);
+	const displayName = getDisplayName(user);
+	const greeting = getTimeGreeting();
 
 	useEffect(() => {
 		Promise.all([listPatients(), listChats(), getDashboardStats()])
@@ -50,7 +52,7 @@ function DashboardPage() {
 				toast.error(
 					e instanceof ApiError
 						? e.message
-						: 'Não foi possível carregar dados.',
+						: 'Could not load dashboard data.',
 				);
 			})
 			.finally(() => setLoadingPatients(false));
@@ -76,7 +78,7 @@ function DashboardPage() {
 			toast.error(
 				e instanceof ApiError
 					? e.message
-					: 'Não foi possível iniciar a conversa.',
+					: 'Could not start the conversation.',
 			);
 		} finally {
 			setStartingId(null);
@@ -127,12 +129,12 @@ function DashboardPage() {
 							/>
 							<div className="mt-4 space-y-1">
 								<h3 className="text-lg font-semibold">
-									Good morning {firstName}
+									{greeting} {displayName}
 								</h3>
 								<p className="text-xs font-medium text-gray-500">
 									{stats
-										? `${stats.todayMinutes} min hoje · meta ${stats.dailyGoalMinutes} min`
-										: 'Continue your learning to achieve your target!'}
+										? `${stats.todayMinutes} min today`
+										: 'Start a session to track your practice time.'}
 								</p>
 							</div>
 						</div>
@@ -154,7 +156,7 @@ function DashboardPage() {
 								</Button>
 							</div>
 							<div className="flex flex-col gap-5 rounded-xl bg-[#F0F5FA] px-3.5 py-4">
-								<p className="text-sm text-muted-foreground">Em breve</p>
+								<p className="text-sm text-muted-foreground">Coming soon</p>
 								<Separator />
 							</div>
 						</div>

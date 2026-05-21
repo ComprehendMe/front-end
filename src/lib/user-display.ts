@@ -4,7 +4,7 @@ function hasDisplayName(user: MeUser): boolean {
 	return Boolean(user.name?.trim());
 }
 
-/** Primeiro nome — nunca usa email */
+/** First name — never uses email */
 export function getFirstName(user: MeUser): string {
 	if (!hasDisplayName(user)) return 'there';
 
@@ -12,7 +12,7 @@ export function getFirstName(user: MeUser): string {
 	return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
-/** Nome completo para o header — nunca usa email */
+/** Full name for the header — never uses email */
 export function getDisplayName(user: MeUser): string {
 	if (!hasDisplayName(user)) return 'Add your name';
 	return user.name!.trim();

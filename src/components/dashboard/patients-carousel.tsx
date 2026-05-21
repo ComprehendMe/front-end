@@ -49,7 +49,7 @@ export function PatientsCarousel({
 		<div className="space-y-4">
 			<div className="flex w-full items-center justify-between">
 				<h2 className="text-xl font-semibold text-foreground">
-					Escolhe um paciente
+					Choose a patient
 				</h2>
 				<div className="flex gap-3">
 					<Button
@@ -58,7 +58,7 @@ export function PatientsCarousel({
 						size="icon-lg"
 						disabled={!canScrollPrev || loading}
 						onClick={() => carouselApi?.scrollPrev()}
-						aria-label="Paciente anterior"
+						aria-label="Previous patient"
 					>
 						<ChevronLeft className="h-5 w-5" />
 					</Button>
@@ -67,7 +67,7 @@ export function PatientsCarousel({
 						className="rounded-full"
 						disabled={!canScrollNext || loading}
 						onClick={() => carouselApi?.scrollNext()}
-						aria-label="Próximo paciente"
+						aria-label="Next patient"
 					>
 						<ChevronRight className="h-5 w-5" />
 					</Button>
@@ -81,7 +81,7 @@ export function PatientsCarousel({
 					</div>
 				) : patients.length === 0 ? (
 					<p className="py-12 text-center text-muted-foreground text-sm">
-						Nenhum paciente disponível.
+						No patients available.
 					</p>
 				) : (
 					<Carousel
@@ -117,7 +117,7 @@ export function PatientsCarousel({
 												problem={patient.problem}
 												subtitle={
 													isStarting
-														? `${patient.name} · A iniciar…`
+														? `${patient.name} · Starting…`
 														: patient.name
 												}
 											/>

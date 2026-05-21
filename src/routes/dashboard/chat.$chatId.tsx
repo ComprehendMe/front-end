@@ -14,6 +14,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useConversationGuard } from '@/hooks/use-conversation-guard';
+import { useUserPreferences } from '@/hooks/use-user-preferences';
 import {
 	ApiError,
 	endChat,
@@ -45,6 +46,7 @@ function ChatPage() {
 	const { chatId } = Route.useParams();
 	const navigate = useNavigate();
 	const { user } = DashboardRoute.useRouteContext();
+	const { preferences } = useUserPreferences(user.email);
 	const [patient, setPatient] = useState<Patient | null>(null);
 	const [patientAvatarUrl, setPatientAvatarUrl] = useState('');
 	const [chatEnded, setChatEnded] = useState(false);
@@ -89,7 +91,7 @@ function ChatPage() {
 			toast.error(
 				e instanceof ApiError
 					? e.message
-					: 'Não foi possível carregar a conversa.',
+					: 'Could not load the conversation.',
 			);
 		} finally {
 			setLoading(false);
@@ -124,11 +126,11 @@ function ChatPage() {
 			setMessages(finalMessages);
 
 			if (!reply) {
-				toast.error('Sem resposta do paciente. Tenta outra vez.');
+				toast.error('No reply from the patient. Please try again.');
 			}
 		} catch (err) {
 			toast.error(
-				err instanceof ApiError ? err.message : 'Erro ao enviar mensagem.',
+				err instanceof ApiError ? err.message : 'Could not send message.',
 			);
 			setInput(text);
 		} finally {
@@ -149,12 +151,12 @@ function ChatPage() {
 		try {
 			await pauseChat(chatId);
 			setChatPaused(true);
-			toast.success('Conversa pausada.');
+			toast.success('Conversation paused.');
 			skipBlockRef.current = true;
 			await navigate({ to: '/dashboard' });
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Não foi possível pausar.',
+				e instanceof ApiError ? e.message : 'Could not pause the conversation.',
 			);
 		} finally {
 			skipBlockRef.current = false;
@@ -168,12 +170,12 @@ function ChatPage() {
 			await endChat(chatId);
 			setChatEnded(true);
 			setChatPaused(false);
-			toast.success('Conversa terminada.');
+			toast.success('Conversation ended.');
 			skipBlockRef.current = true;
 			await navigate({ to: '/dashboard/history' });
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Não foi possível terminar.',
+				e instanceof ApiError ? e.message : 'Could not end the conversation.',
 			);
 		} finally {
 			skipBlockRef.current = false;
@@ -226,14 +228,14 @@ function ChatPage() {
 								disabled={chatEnded}
 							>
 								<Pause className="h-4 w-4" />
-								{chatPaused ? 'Voltar ao dashboard' : 'Pausar conversa'}
+								{chatPaused ? 'Back to dashboard' : 'Pause conversation'}
 							</DropdownMenuItem>
 							<DropdownMenuItem
 								onClick={() => void handleEndConversation()}
 								disabled={chatEnded}
 							>
 								<Square className="h-4 w-4" />
-								Acabar conversa
+								End conversation
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
@@ -241,12 +243,12 @@ function ChatPage() {
 
 				{showEndedBanner && (
 					<div className="border-b bg-amber-50 px-4 py-2 text-center text-sm text-amber-900">
-						Conversa terminada — consulta o History para rever.
+						Conversation ended — review it in History.
 					</div>
 				)}
 				{showPausedBanner && (
 					<div className="border-b bg-[#F0F5FA] px-4 py-2 text-center text-sm text-[#0978AA]">
-						Conversa pausada. Envia uma mensagem para retomar ou continua no
+						Conversation paused. Send a message to resume or return to the
 						dashboard.
 					</div>
 				)}
@@ -296,6 +298,7 @@ function ChatPage() {
 										userLabel={userLabel}
 										userAvatarUrl={user.avatar}
 										userInitials={userInitials}
+										timeFormat={preferences.timeFormat}
 									/>
 								))}
 								{waitingReply && (
@@ -308,7 +311,7 @@ function ChatPage() {
 										</Avatar>
 										<div className="flex items-center gap-2 rounded-2xl bg-[#F0F5FA] px-4 py-3 text-sm text-muted-foreground">
 											<Loader2 className="h-4 w-4 animate-spin" />
-											A aguardar resposta…
+											Waiting for a reply…
 										</div>
 									</div>
 								)}

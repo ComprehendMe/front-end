@@ -10,6 +10,7 @@ type ChatMessageRowProps = {
 	userLabel: string;
 	userAvatarUrl?: string | null;
 	userInitials: string;
+	timeFormat?: '12h' | '24h';
 };
 
 export function ChatMessageRow({
@@ -19,10 +20,11 @@ export function ChatMessageRow({
 	userLabel,
 	userAvatarUrl,
 	userInitials,
+	timeFormat = '12h',
 }: ChatMessageRowProps) {
 	const isUser = message.role === 'user';
 	const timestamp = message.createdAt
-		? formatMessageTime(message.createdAt)
+		? formatMessageTime(message.createdAt, timeFormat)
 		: '';
 
 	if (isUser) {

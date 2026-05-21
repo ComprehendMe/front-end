@@ -49,7 +49,7 @@ function HistoryPage() {
 						addSuffix: true,
 						locale: enUS,
 					}),
-					duration: `${item.durationMinutes} minutos`,
+					duration: `${item.durationMinutes} min`,
 					analysis: 'Review',
 					patientImageUrl: getPatientImageUrl(idx),
 				};
@@ -60,7 +60,7 @@ function HistoryPage() {
 			toast.error(
 				e instanceof ApiError
 					? e.message
-					: 'Não foi possível carregar o histórico.',
+						: 'Could not load history.',
 			);
 		} finally {
 			setLoading(false);
@@ -77,13 +77,13 @@ function HistoryPage() {
 				onDelete: async (chatId) => {
 					try {
 						await deleteChat(chatId);
-						toast.success('Conversa eliminada.');
+						toast.success('Conversation deleted.');
 						await loadHistory();
 					} catch (e) {
 						toast.error(
 							e instanceof ApiError
 								? e.message
-								: 'Não foi possível eliminar.',
+								: 'Could not delete.',
 						);
 					}
 				},
@@ -96,7 +96,7 @@ function HistoryPage() {
 			<div className="h-screen space-y-[34px] overflow-hidden rounded-[20px] border border-[#1C1F22]/15 bg-white px-12 py-[38px]">
 				<h2 className="text-2xl font-semibold text-[#1C1F22]">History</h2>
 				{loading ? (
-					<p className="text-sm text-muted-foreground">A carregar…</p>
+					<p className="text-sm text-muted-foreground">Loading…</p>
 				) : (
 					<DataTable columns={columns} data={rows} />
 				)}

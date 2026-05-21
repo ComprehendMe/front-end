@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
+import MissionSection from '@/components/mission-section';
 import AuthDialog from '@/components/auth/auth-dialog';
 import { PricingSection } from '@/components/pricing-card';
 import { Button } from '@/components/ui/button';
@@ -9,11 +10,6 @@ import { cn } from '@/lib/utils';
 export const Route = createFileRoute('/')({
 	component: App,
 });
-
-function scrollToId(id: string) {
-	const el = document.getElementById(id);
-	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
 
 function App() {
 	return (
@@ -56,7 +52,7 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/Group.svg"
-									alt="Grupo"
+									alt="Choose a patient"
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
@@ -72,7 +68,7 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/Vector.svg"
-									alt="Vetor"
+									alt="Chat in real time"
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
@@ -88,7 +84,7 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/carbon_report.svg"
-									alt="Relatório"
+									alt="Receive a report"
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
@@ -104,17 +100,7 @@ function App() {
 					<div id="pricing">
 						<PricingSection />
 					</div>
-					<section
-						id="mission"
-						className="mx-auto mt-24 max-w-3xl rounded-2xl border bg-white/80 px-8 py-10 text-center shadow-sm"
-					>
-						<h2 className="text-2xl font-semibold text-foreground">Our mission</h2>
-						<p className="mt-3 text-muted-foreground">
-							Formar terapeutas com confiança através de simulações realistas,
-							feedback imediato e um ambiente seguro para praticar antes de
-							encontrar pacientes reais.
-						</p>
-					</section>
+					<MissionSection />
 				</div>
 			</div>
 			<Footer />

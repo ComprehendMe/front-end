@@ -41,7 +41,7 @@ function SettingsPage() {
 	async function handleSaveProfile() {
 		const name = joinFullName(firstName, lastName);
 		if (!name.trim()) {
-			toast.error('Indica pelo menos o primeiro nome.');
+			toast.error('Please enter at least a first name.');
 			return;
 		}
 
@@ -54,10 +54,10 @@ function SettingsPage() {
 			setFirstName(parts.firstName);
 			setLastName(parts.lastName);
 			setAvatar(fresh.avatar);
-			toast.success('Perfil atualizado.');
+			toast.success('Profile updated.');
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Não foi possível guardar.',
+				e instanceof ApiError ? e.message : 'Could not save.',
 			);
 		} finally {
 			setSaving(false);
@@ -68,7 +68,7 @@ function SettingsPage() {
 		const file = e.target.files?.[0];
 		if (!file) return;
 		if (file.size > 2 * 1024 * 1024) {
-			toast.error('Imagem demasiado grande (máx. 2MB).');
+			toast.error('Image is too large (max 2MB).');
 			return;
 		}
 
@@ -78,10 +78,10 @@ function SettingsPage() {
 			const fresh = await uploadAvatarBlob(webp);
 			setAvatar(fresh.avatar);
 			await router.invalidate();
-			toast.success('Foto de perfil atualizada.');
+			toast.success('Profile photo updated.');
 		} catch (err) {
 			toast.error(
-				err instanceof ApiError ? err.message : 'Não foi possível alterar a foto.',
+				err instanceof ApiError ? err.message : 'Could not update photo.',
 			);
 		} finally {
 			setAvatarLoading(false);
@@ -95,10 +95,10 @@ function SettingsPage() {
 			await removeAvatar();
 			setAvatar(null);
 			await router.invalidate();
-			toast.success('Foto removida.');
+			toast.success('Photo removed.');
 		} catch (err) {
 			toast.error(
-				err instanceof ApiError ? err.message : 'Não foi possível remover a foto.',
+				err instanceof ApiError ? err.message : 'Could not remove photo.',
 			);
 		} finally {
 			setAvatarLoading(false);
@@ -110,7 +110,7 @@ function SettingsPage() {
 			await logout();
 			await router.navigate({ to: '/' });
 		} catch {
-			toast.error('Não foi possível terminar sessão.');
+			toast.error('Could not sign out.');
 		}
 	}
 
@@ -144,7 +144,7 @@ function SettingsPage() {
 										asChild
 									>
 										<label className="cursor-pointer">
-											{avatarLoading ? 'A carregar…' : 'Change Image'}
+											{avatarLoading ? 'Uploading…' : 'Change Image'}
 											<input
 												type="file"
 												accept="image/png,image/jpeg,image/webp"
@@ -163,7 +163,7 @@ function SettingsPage() {
 									</DashboardButton>
 								</div>
 								<p className="font-medium text-[#757575] text-sm">
-									PNG, JPG ou WebP até 2MB
+									PNG, JPG or WebP up to 2MB
 								</p>
 							</div>
 						</div>
@@ -175,7 +175,7 @@ function SettingsPage() {
 							</p>
 							<Input
 								className="w-full bg-gray-100"
-								placeholder="Joana"
+								placeholder="Jane"
 								value={firstName}
 								onChange={(e) => setFirstName(e.target.value)}
 							/>
@@ -186,7 +186,7 @@ function SettingsPage() {
 							</p>
 							<Input
 								className="w-full bg-gray-100"
-								placeholder="Almeida"
+								placeholder="Doe"
 								value={lastName}
 								onChange={(e) => setLastName(e.target.value)}
 							/>
@@ -197,7 +197,7 @@ function SettingsPage() {
 						disabled={saving}
 						onClick={() => void handleSaveProfile()}
 					>
-						{saving ? 'A guardar…' : 'Save changes'}
+						{saving ? 'Saving…' : 'Save changes'}
 					</DashboardButton>
 				</div>
 			</div>
@@ -216,7 +216,7 @@ function SettingsPage() {
 							className="max-w-[390px] bg-gray-50"
 						/>
 						<p className="text-[#757575] text-sm">
-							Login por magic link ou Google — alteração de email em breve.
+							Sign in with magic link or Google — email changes coming soon.
 						</p>
 					</div>
 				</div>
@@ -234,7 +234,7 @@ function SettingsPage() {
 								Log out of all devices
 							</p>
 							<span className="font-normal text-[#757575] text-sm tracking-tight">
-								Termina a sessão neste dispositivo.
+								Sign out on this device.
 							</span>
 						</div>
 						<DashboardButton

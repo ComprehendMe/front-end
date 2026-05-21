@@ -18,7 +18,7 @@ export default function Footer() {
 					</span>
 				</div>
 				<p className="text-foreground font-normal text-[16px]">
-					© 2025 CogniAI. Todos os direitos reservados
+					© 2025 ComprehendMe. All rights reserved.
 				</p>
 				<div className="flex gap-3 items-center">
 					<a href="https://github.com" target="_blank" rel="noopener">

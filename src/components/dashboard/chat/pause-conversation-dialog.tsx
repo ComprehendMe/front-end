@@ -25,18 +25,18 @@ export function PauseConversationDialog({
 		<Dialog open={open} onOpenChange={(v) => !v && onCancel()}>
 			<DialogContent className="max-w-md">
 				<DialogHeader>
-					<DialogTitle>Pausar conversa?</DialogTitle>
+					<DialogTitle>Pause conversation?</DialogTitle>
 					<DialogDescription>
-						Tens uma conversa ativa. Queres pausar para sair? Se cancelares,
-						ficas nesta conversa.
+						You have an active conversation. Do you want to pause it before
+						leaving? If you cancel, you will stay in this chat.
 					</DialogDescription>
 				</DialogHeader>
 				<DialogFooter className="gap-2 sm:gap-0">
 					<Button variant="outline" onClick={onCancel} disabled={loading}>
-						Não, continuar
+						No, stay here
 					</Button>
 					<Button onClick={onConfirm} disabled={loading}>
-						{loading ? 'A pausar…' : 'Sim, pausar'}
+						{loading ? 'Pausing…' : 'Yes, pause'}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

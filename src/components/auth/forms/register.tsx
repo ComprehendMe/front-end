@@ -38,7 +38,7 @@ export default function SignUpForm({
 			onEmailSent(data.email);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Não foi possível criar conta.",
+				e instanceof ApiError ? e.message : "Could not create account.",
 			);
 		} finally {
 			setLoading(false);
@@ -59,7 +59,7 @@ export default function SignUpForm({
 								<FormItem>
 									<FormControl>
 										<Input
-											placeholder="Nome"
+											placeholder="Name"
 											className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
 											{...field}
 										/>
@@ -90,7 +90,7 @@ export default function SignUpForm({
 							className="rounded-full text-[16px] font-normal w-full"
 							disabled={loading}
 						>
-							{loading ? "A enviar…" : "Criar conta"}
+							{loading ? "Sending…" : "Create account"}
 						</Button>
 					</div>
 				</form>

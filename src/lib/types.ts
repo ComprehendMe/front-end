@@ -10,7 +10,7 @@ type NavLink = BaseNavItem & {
 	url: LinkProps["to"];
 	/** Só ativo quando o path é exatamente este URL */
 	exact?: boolean;
-	/** Termina sessão em vez de navegar */
+	/** Signs out instead of navigating */
 	isLogout?: boolean;
 	items?: never;
 };

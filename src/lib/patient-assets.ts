@@ -1,6 +1,6 @@
 import type { Patient } from '@/lib/api';
 
-/** Fotos em /public/patients (copiadas de front-end/dist) */
+/** Patient photos in /public/patients */
 export const PATIENT_IMAGES = [
 	'/patients/patient-1.png',
 	'/patients/patient-2.png',
@@ -41,7 +41,7 @@ export function difficultyToLevel(
 	return difficulty.toLowerCase() as 'easy' | 'medium' | 'hard';
 }
 
-/** Barra decorativa estável por paciente (0–100) */
+/** Stable decorative progress bar per patient (0–100) */
 export function getPatientProgressPercent(patientId: string): number {
 	let hash = 0;
 	for (let i = 0; i < patientId.length; i++) {

@@ -37,7 +37,7 @@ export default function LoginForm({
 			onEmailSent(data.email);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Não foi possível iniciar sessão.",
+				e instanceof ApiError ? e.message : "Could not sign in.",
 			);
 		} finally {
 			setLoading(false);
@@ -75,7 +75,7 @@ export default function LoginForm({
 							className="rounded-full h-[45px]"
 							disabled={loading}
 						>
-							{loading ? "A enviar…" : "Continue with email"}
+							{loading ? "Sending…" : "Continue with email"}
 						</Button>
 					</div>
 				</form>

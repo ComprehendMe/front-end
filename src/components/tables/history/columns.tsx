@@ -101,7 +101,7 @@ export function createHistoryColumns({
 							onClick={() => onDelete(row.original.chatId)}
 						>
 							<Trash />
-							<span className="text-sm font-medium">Excluir</span>
+							<span className="text-sm font-medium">Delete</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>

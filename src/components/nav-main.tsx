@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { logout } from "@/lib/api";
 import type { NavLink } from "@/lib/types";
-import { checkIsActive, cn } from "@/lib/utils";
+import { checkIsActive } from "@/lib/utils";
 import {
 	SidebarGroup,
 	SidebarGroupLabel,
@@ -24,7 +24,7 @@ export default function NavMain({
 			await logout();
 			await navigate({ to: "/" });
 		} catch {
-			toast.error("Não foi possível terminar sessão.");
+			toast.error("Could not sign out.");
 		}
 	}
 
