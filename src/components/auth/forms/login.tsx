@@ -1,6 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type z from "zod";
+import { ApiError, login } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -11,16 +14,35 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Google } from "@/components/ui/svgs/google";
+import { GoogleSignInButton } from "../google-sign-in-button";
 import { LoginFormSchema } from "../auth";
 
-export default function LoginForm({ toggleMode }: { toggleMode: () => void }) {
+export default function LoginForm({
+	toggleMode,
+	onEmailSent,
+}: {
+	toggleMode: () => void;
+	onEmailSent: (email: string) => void;
+}) {
+	const [loading, setLoading] = useState(false);
 	const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
 		resolver: zodResolver(LoginFormSchema),
 		defaultValues: { email: "" },
 	});
 
-	function onLoginSubmit(_data: z.infer<typeof LoginFormSchema>) {}
+	async function onLoginSubmit(data: z.infer<typeof LoginFormSchema>) {
+		setLoading(true);
+		try {
+			await login(data.email);
+			onEmailSent(data.email);
+		} catch (e) {
+			toast.error(
+				e instanceof ApiError ? e.message : "Não foi possível iniciar sessão.",
+			);
+		} finally {
+			setLoading(false);
+		}
+	}
 
 	return (
 		<>
@@ -28,16 +50,7 @@ export default function LoginForm({ toggleMode }: { toggleMode: () => void }) {
 				<form onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
 					<div className="flex w-full flex-col gap-[19px] text-center">
 						<div className="flex flex-col w-full gap-4 items-center">
-							<Button
-								variant="outline"
-								size="lg"
-								className="rounded-full w-full"
-							>
-								<Google className="w-6 h-6" />
-								<p className="font-normal text-[16px] text-[#1C1F22]">
-									Continue with Google
-								</p>
-							</Button>
+							<GoogleSignInButton disabled={loading} />
 							<p className="text-[16px] font-normal text-[#1C1F22]">or</p>
 							<FormField
 								control={loginForm.control}
@@ -56,14 +69,19 @@ export default function LoginForm({ toggleMode }: { toggleMode: () => void }) {
 								)}
 							/>
 						</div>
-						<Button size="lg" type="submit" className="rounded-full h-[45px]">
-							Continue with email
+						<Button
+							size="lg"
+							type="submit"
+							className="rounded-full h-[45px]"
+							disabled={loading}
+						>
+							{loading ? "A enviar…" : "Continue with email"}
 						</Button>
 					</div>
 				</form>
 			</Form>
 			<DialogFooter className="justify-center">
-				<Button variant="link" onClick={toggleMode}>
+				<Button variant="link" onClick={toggleMode} type="button">
 					<span className="text-blue-500 text-[16px] font-normal">
 						Create account
 					</span>

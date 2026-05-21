@@ -1,43 +1,55 @@
-import { Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
+import { Link } from '@tanstack/react-router';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Button } from '../ui/button';
 import {
 	Carousel,
 	type CarouselApi,
 	CarouselContent,
 	CarouselItem,
-} from "../ui/carousel";
+} from '../ui/carousel';
+import { Badge } from '@/components/ui/badge';
+import type { Chat, Patient } from '@/lib/api';
+import { getPatientIndex } from '@/lib/patient-assets';
+import { PatientCardContent } from './patient-card';
 
-export function ContinueSection() {
+const cardLinkClass =
+	'group flex cursor-pointer flex-col rounded-xl outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary/40';
+
+type ContinueSectionProps = {
+	chats: Chat[];
+	patients: Patient[];
+};
+
+export function ContinueSection({ chats, patients }: ContinueSectionProps) {
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 	const [canScrollPrev, setCanScrollPrev] = useState(false);
 	const [canScrollNext, setCanScrollNext] = useState(false);
 
 	useEffect(() => {
-		if (!carouselApi) {
-			return;
-		}
+		if (!carouselApi) return;
 
 		const updateSelection = () => {
 			setCanScrollPrev(carouselApi.canScrollPrev());
 			setCanScrollNext(carouselApi.canScrollNext());
 		};
 		updateSelection();
-		carouselApi.on("select", updateSelection);
+		carouselApi.on('select', updateSelection);
+		carouselApi.on('reInit', updateSelection);
 
 		return () => {
-			carouselApi.off("select", updateSelection);
+			carouselApi.off('select', updateSelection);
+			carouselApi.off('reInit', updateSelection);
 		};
 	}, [carouselApi]);
 
+	if (chats.length === 0) return null;
+
 	return (
 		<div className="space-y-4">
-			<div className="flex justify-between w-full items-center">
-				<h2 className="text-foreground text-xl font-semibold">
-					Continue Continue conversation
+			<div className="flex w-full items-center justify-between">
+				<h2 className="text-xl font-semibold text-foreground">
+					Continue conversation
 				</h2>
 				<div className="flex gap-3">
 					<Button
@@ -59,79 +71,43 @@ export function ContinueSection() {
 					</Button>
 				</div>
 			</div>
-			<div className="w-full bg-white rounded-xl p-5">
+			<div className="w-full rounded-xl bg-white p-5">
 				<Carousel
 					setApi={setCarouselApi}
-					opts={{ breakpoints: { "(max-width: 768px)": { dragFree: true } } }}
+					opts={{ breakpoints: { '(max-width: 768px)': { dragFree: true } } }}
 					className="relative"
 				>
 					<CarouselContent>
-						<CarouselItem className="md:max-w-[266px]">
-							<Link
-								to="/"
-								className="group flex flex-col justify-between gap-4"
-							>
-								<div className="bg-primary/10 py-4 flex justify-center rounded-xl">
-									<Avatar className="size-24">
-										<AvatarImage src="https://github.com/shadcn.png" />
-										<AvatarFallback>CN</AvatarFallback>
-									</Avatar>
-								</div>
-								<Badge variant="problems">Problems at School/Work</Badge>
-								<div className="flex gap-2 flex-col">
-									<p className="font-semibold text-xl text-foreground">
-										Figma ipsum component variant main layer
-									</p>
-									<span className="text-muted-foreground font-semibold text-sm">
-										Rafaela Silva
-									</span>
-								</div>
-							</Link>
-						</CarouselItem>
-						<CarouselItem className="md:max-w-[266px]">
-							<Link
-								to="/"
-								className="group flex flex-col justify-between gap-4"
-							>
-								<div className="bg-primary/10 py-4 flex justify-center rounded-xl">
-									<Avatar className="size-24">
-										<AvatarImage src="https://github.com/shadcn.png" />
-										<AvatarFallback>CN</AvatarFallback>
-									</Avatar>
-								</div>
-								<Badge>Problems at School/Work</Badge>
-								<div className="flex gap-2 flex-col">
-									<p className="font-semibold text-xl text-foreground">
-										Figma ipsum component variant main layer
-									</p>
-									<span className="text-muted-foreground font-semibold text-sm">
-										Rafaela Silva
-									</span>
-								</div>
-							</Link>
-						</CarouselItem>
-						<CarouselItem className="md:max-w-[266px]">
-							<Link
-								to="/"
-								className="group flex flex-col justify-between gap-4"
-							>
-								<div className="bg-primary/10 py-4 flex justify-center rounded-xl">
-									<Avatar className="size-24">
-										<AvatarImage src="https://github.com/shadcn.png" />
-										<AvatarFallback>CN</AvatarFallback>
-									</Avatar>
-								</div>
-								<Badge>Problems at School/Work</Badge>
-								<div className="flex flex-col gap-2">
-									<p className="font-semibold text-xl text-foreground">
-										Figma ipsum component variant main layer
-									</p>
-									<span className="text-muted-foreground font-semibold text-sm">
-										Rafaela Silva
-									</span>
-								</div>
-							</Link>
-						</CarouselItem>
+						{chats.map((chat) => {
+							const patientIndex = getPatientIndex(patients, chat.patientId);
+
+							return (
+								<CarouselItem key={chat.id} className="md:max-w-[266px]">
+									<Link
+										to="/dashboard/chat/$chatId"
+										params={{ chatId: chat.id }}
+										className={cardLinkClass}
+									>
+										<div className="relative">
+											{chat.pausedAt ? (
+												<Badge
+													variant="secondary"
+													className="absolute top-2 right-2 z-10 bg-[#F8F8CD] text-[#726B07]"
+												>
+													Pausada
+												</Badge>
+											) : null}
+											<PatientCardContent
+												patientIndex={patientIndex}
+												patientId={chat.patientId}
+												patientName={chat.patient.name}
+												problem={chat.patient.problem}
+											/>
+										</div>
+									</Link>
+								</CarouselItem>
+							);
+						})}
 					</CarouselContent>
 				</Carousel>
 			</div>

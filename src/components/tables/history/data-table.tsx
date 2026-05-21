@@ -4,6 +4,7 @@ import {
 	type ColumnDef,
 	flexRender,
 	getCoreRowModel,
+	getPaginationRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -30,6 +31,8 @@ export function DataTable<TData, TValue>({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		initialState: { pagination: { pageSize: 6 } },
 	});
 
 	return (
@@ -85,7 +88,9 @@ export function DataTable<TData, TValue>({
 				>
 					<ChevronLeft />
 				</Button>
-				{table.getState().pagination.pageIndex + 1}
+				<span className="text-sm font-medium">
+					{table.getState().pagination.pageIndex + 1}
+				</span>
 				<Button
 					variant="outline"
 					size="icon-sm"

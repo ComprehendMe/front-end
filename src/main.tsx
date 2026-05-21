@@ -1,6 +1,7 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
+import { Toaster } from "sonner";
 
 import { routeTree } from "./routeTree.gen.ts";
 
@@ -28,6 +29,7 @@ if (rootElement && !rootElement.innerHTML) {
 	root.render(
 		<StrictMode>
 			<RouterProvider router={router} />
+			<Toaster position="top-center" richColors />
 		</StrictMode>,
 	);
 }

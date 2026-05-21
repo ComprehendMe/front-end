@@ -32,8 +32,12 @@ export function ListTab({ tabs, url, searchParamName, disabled }: ListProps) {
 
 	function handleChange(value: string) {
 		if (!searchParamName) {
+			const target =
+				value === "/" || value === ""
+					? url
+					: `${url.replace(/\/$/, "")}${value.startsWith("/") ? value : `/${value}`}`;
 			navigate({
-				to: `${url}/${value}`,
+				to: target,
 				search: location.search,
 			});
 			return;

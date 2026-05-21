@@ -8,6 +8,10 @@ interface BaseNavItem {
 
 type NavLink = BaseNavItem & {
 	url: LinkProps["to"];
+	/** Só ativo quando o path é exatamente este URL */
+	exact?: boolean;
+	/** Termina sessão em vez de navegar */
+	isLogout?: boolean;
 	items?: never;
 };
 

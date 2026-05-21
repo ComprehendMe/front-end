@@ -2,7 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useState } from "react";
-
+import AuthDialog from "@/components/auth/auth-dialog";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -120,19 +120,25 @@ const PricingSection = ({
 									</ul>
 								</CardContent>
 								<CardFooter className="mt-auto">
-									{plan?.button && (
-										<Button
-											asChild
-											className="w-full rounded-full px-6 h-[50px]"
-										>
-											<a
-												href={plan.button?.url}
-												className="text-[18px] font-medium"
-												target="_blank"
-											>
-												{plan.button?.text}
-											</a>
-										</Button>
+									{plan?.button ? (
+										<AuthDialog
+											trigger={
+												<Button className="h-[50px] w-full rounded-full px-6 text-[18px] font-medium">
+													{plan.button.text}
+												</Button>
+											}
+										/>
+									) : (
+										<AuthDialog
+											trigger={
+												<Button
+													variant="outline"
+													className="h-[50px] w-full rounded-full px-6 text-[18px] font-medium"
+												>
+													Get started free
+												</Button>
+											}
+										/>
 									)}
 								</CardFooter>
 							</Card>

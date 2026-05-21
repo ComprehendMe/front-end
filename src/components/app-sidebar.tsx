@@ -1,7 +1,8 @@
 import {
 	IconChartBar,
 	IconDashboard,
-	IconListDetails,
+	IconLogout,
+	IconSettings,
 } from "@tabler/icons-react";
 import type { NavLink } from "@/lib/types";
 import NavMain from "./nav-main";
@@ -21,11 +22,7 @@ const information: { name: string; items: NavLink[] }[] = [
 				title: "Dashboard",
 				url: "/dashboard",
 				icon: IconDashboard,
-			},
-			{
-				title: "Conversations",
-				url: "/",
-				icon: IconListDetails,
+				exact: true,
 			},
 			{
 				title: "History",
@@ -40,12 +37,13 @@ const information: { name: string; items: NavLink[] }[] = [
 			{
 				title: "Settings",
 				url: "/dashboard/settings",
-				icon: IconDashboard,
+				icon: IconSettings,
 			},
 			{
 				title: "To go out",
 				url: "/",
-				icon: IconListDetails,
+				icon: IconLogout,
+				isLogout: true,
 			},
 		],
 	},

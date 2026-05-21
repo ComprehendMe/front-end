@@ -13,10 +13,13 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
+import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
+import { Route as AuthOauthErrorRouteImport } from './routes/auth/oauth-error'
 import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardSettingsNotificationsRouteImport } from './routes/dashboard/settings/notifications'
 import { Route as DashboardSettingsLanguageRouteImport } from './routes/dashboard/settings/language'
+import { Route as DashboardChatChatIdRouteImport } from './routes/dashboard/chat.$chatId'
 
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
@@ -37,6 +40,16 @@ const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
   id: '/history',
   path: '/history',
   getParentRoute: () => DashboardRoute,
+} as any)
+const AuthVerifyRoute = AuthVerifyRouteImport.update({
+  id: '/auth/verify',
+  path: '/auth/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthOauthErrorRoute = AuthOauthErrorRouteImport.update({
+  id: '/auth/oauth-error',
+  path: '/auth/oauth-error',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
   id: '/settings',
@@ -60,21 +73,32 @@ const DashboardSettingsLanguageRoute =
     path: '/language',
     getParentRoute: () => DashboardSettingsRouteRoute,
   } as any)
+const DashboardChatChatIdRoute = DashboardChatChatIdRouteImport.update({
+  id: '/chat/$chatId',
+  path: '/chat/$chatId',
+  getParentRoute: () => DashboardRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
+  '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -84,8 +108,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
+  '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -96,16 +123,22 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/dashboard/settings'
+    | '/auth/oauth-error'
+    | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard/'
+    | '/dashboard/chat/$chatId'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth/oauth-error'
+    | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard'
+    | '/dashboard/chat/$chatId'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings'
@@ -114,8 +147,11 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/dashboard/settings'
+    | '/auth/oauth-error'
+    | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard/'
+    | '/dashboard/chat/$chatId'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
@@ -124,6 +160,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  AuthOauthErrorRoute: typeof AuthOauthErrorRoute
+  AuthVerifyRoute: typeof AuthVerifyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -156,6 +194,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHistoryRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/auth/verify': {
+      id: '/auth/verify'
+      path: '/auth/verify'
+      fullPath: '/auth/verify'
+      preLoaderRoute: typeof AuthVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/oauth-error': {
+      id: '/auth/oauth-error'
+      path: '/auth/oauth-error'
+      fullPath: '/auth/oauth-error'
+      preLoaderRoute: typeof AuthOauthErrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard/settings': {
       id: '/dashboard/settings'
       path: '/settings'
@@ -184,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsLanguageRouteImport
       parentRoute: typeof DashboardSettingsRouteRoute
     }
+    '/dashboard/chat/$chatId': {
+      id: '/dashboard/chat/$chatId'
+      path: '/chat/$chatId'
+      fullPath: '/dashboard/chat/$chatId'
+      preLoaderRoute: typeof DashboardChatChatIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
@@ -209,12 +268,14 @@ interface DashboardRouteChildren {
   DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
   DashboardHistoryRoute: typeof DashboardHistoryRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardChatChatIdRoute: typeof DashboardChatChatIdRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
   DashboardHistoryRoute: DashboardHistoryRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardChatChatIdRoute: DashboardChatChatIdRoute,
 }
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
@@ -224,6 +285,8 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  AuthOauthErrorRoute: AuthOauthErrorRoute,
+  AuthVerifyRoute: AuthVerifyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

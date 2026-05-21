@@ -1,121 +1,248 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DashboardButton } from "@/components/dashboard/ui/button";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { createFileRoute, useRouter } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { DashboardButton } from '@/components/dashboard/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { ApiError, getMe, logout, removeAvatar, updateMe, uploadAvatarBlob } from '@/lib/api';
+import { fileToWebpBlob } from '@/lib/image';
+import {
+	getInitials,
+	joinFullName,
+	splitFullName,
+} from '@/lib/user-display';
+import { Route as DashboardRoute } from '../../dashboard';
 
-export const Route = createFileRoute("/dashboard/settings/")({
+export const Route = createFileRoute('/dashboard/settings/')({
 	component: SettingsPage,
 });
 
 function SettingsPage() {
+	const router = useRouter();
+	const { user: contextUser } = DashboardRoute.useRouteContext();
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState(contextUser.email);
+	const [avatar, setAvatar] = useState<string | null | undefined>(
+		contextUser.avatar,
+	);
+	const [saving, setSaving] = useState(false);
+	const [avatarLoading, setAvatarLoading] = useState(false);
+
+	useEffect(() => {
+		const { firstName: f, lastName: l } = splitFullName(contextUser.name);
+		setFirstName(f);
+		setLastName(l);
+		setEmail(contextUser.email);
+		setAvatar(contextUser.avatar);
+	}, [contextUser]);
+
+	async function handleSaveProfile() {
+		const name = joinFullName(firstName, lastName);
+		if (!name.trim()) {
+			toast.error('Indica pelo menos o primeiro nome.');
+			return;
+		}
+
+		setSaving(true);
+		try {
+			await updateMe({ name: name.trim() });
+			await router.invalidate();
+			const fresh = await getMe();
+			const parts = splitFullName(fresh.name);
+			setFirstName(parts.firstName);
+			setLastName(parts.lastName);
+			setAvatar(fresh.avatar);
+			toast.success('Perfil atualizado.');
+		} catch (e) {
+			toast.error(
+				e instanceof ApiError ? e.message : 'Não foi possível guardar.',
+			);
+		} finally {
+			setSaving(false);
+		}
+	}
+
+	async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		if (file.size > 2 * 1024 * 1024) {
+			toast.error('Imagem demasiado grande (máx. 2MB).');
+			return;
+		}
+
+		setAvatarLoading(true);
+		try {
+			const webp = await fileToWebpBlob(file);
+			const fresh = await uploadAvatarBlob(webp);
+			setAvatar(fresh.avatar);
+			await router.invalidate();
+			toast.success('Foto de perfil atualizada.');
+		} catch (err) {
+			toast.error(
+				err instanceof ApiError ? err.message : 'Não foi possível alterar a foto.',
+			);
+		} finally {
+			setAvatarLoading(false);
+			e.target.value = '';
+		}
+	}
+
+	async function handleRemoveAvatar() {
+		setAvatarLoading(true);
+		try {
+			await removeAvatar();
+			setAvatar(null);
+			await router.invalidate();
+			toast.success('Foto removida.');
+		} catch (err) {
+			toast.error(
+				err instanceof ApiError ? err.message : 'Não foi possível remover a foto.',
+			);
+		} finally {
+			setAvatarLoading(false);
+		}
+	}
+
+	async function handleLogoutAll() {
+		try {
+			await logout();
+			await router.navigate({ to: '/' });
+		} catch {
+			toast.error('Não foi possível terminar sessão.');
+		}
+	}
+
+	const initials = getInitials({
+		...contextUser,
+		name: joinFullName(firstName, lastName) || contextUser.name,
+	});
+
 	return (
-		<div className="flex flex-col w-full">
-			<div className="flex flex-col w-full border-l h-full py-8 px-8">
+		<div className="flex w-full flex-col">
+			<div className="flex h-full w-full flex-col border-l px-8 py-8">
 				<h3 className="text-lg font-semibold text-[#4B4E58]">My Profile</h3>
 				<Separator className="mt-3.5" />
 				<div className="flex flex-col gap-5">
-					<div className="flex flex-col mt-5 gap-[18px]">
-						<p className="font-semibold text-[16px] text-[#4B4E58]">
+					<div className="mt-5 flex flex-col gap-[18px]">
+						<p className="font-semibold text-[#4B4E58] text-[16px]">
 							Profile photo
 						</p>
-						<div className="flex gap-4 items-center">
-							<Avatar className="w-[120px] h-[120px]">
-								<AvatarImage src="https://github.com/shadcn.png" />
+						<div className="flex items-center gap-4">
+							<Avatar className="h-[120px] w-[120px]">
+								{avatar ? <AvatarImage src={avatar} alt="" /> : null}
+								<AvatarFallback className="bg-primary/10 text-2xl text-primary">
+									{initials}
+								</AvatarFallback>
 							</Avatar>
 							<div className="flex flex-col gap-3">
-								<div className="flex gap-2">
-									<DashboardButton className="rounded-full">
-										Change Image
+								<div className="flex flex-wrap gap-2">
+									<DashboardButton
+										className="rounded-full"
+										disabled={avatarLoading}
+										asChild
+									>
+										<label className="cursor-pointer">
+											{avatarLoading ? 'A carregar…' : 'Change Image'}
+											<input
+												type="file"
+												accept="image/png,image/jpeg,image/webp"
+												className="sr-only"
+												onChange={(e) => void handleAvatarChange(e)}
+											/>
+										</label>
 									</DashboardButton>
-									<DashboardButton className="rounded-full" variant="secondary">
+									<DashboardButton
+										className="rounded-full"
+										variant="secondary"
+										disabled={avatarLoading || !avatar}
+										onClick={() => void handleRemoveAvatar()}
+									>
 										Remove Image
 									</DashboardButton>
 								</div>
-								<p className="text-sm text-[#757575] font-medium">
-									We support PNGs, JPGs and GIFs under 2MB
+								<p className="font-medium text-[#757575] text-sm">
+									PNG, JPG ou WebP até 2MB
 								</p>
 							</div>
 						</div>
 					</div>
-					<div className="grid grid-cols-2 w-full gap-3.5">
-						<div className="flex flex-col gap-5">
-							<p className="font-semibold text-[16px] text-[#4B4E58]">
+					<div className="grid w-full grid-cols-2 gap-3.5">
+						<div className="flex flex-col gap-2">
+							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								First name
 							</p>
-							<Input className="w-full bg-gray-100" placeholder="Joana" />
+							<Input
+								className="w-full bg-gray-100"
+								placeholder="Joana"
+								value={firstName}
+								onChange={(e) => setFirstName(e.target.value)}
+							/>
 						</div>
-						<div className="flex flex-col gap-5">
-							<p className="font-semibold text-[16px] text-[#4B4E58]">
+						<div className="flex flex-col gap-2">
+							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Last name
 							</p>
-							<Input className="w-full bg-gray-100" placeholder="Almeida" />
+							<Input
+								className="w-full bg-gray-100"
+								placeholder="Almeida"
+								value={lastName}
+								onChange={(e) => setLastName(e.target.value)}
+							/>
 						</div>
 					</div>
+					<DashboardButton
+						className="w-fit rounded-full"
+						disabled={saving}
+						onClick={() => void handleSaveProfile()}
+					>
+						{saving ? 'A guardar…' : 'Save changes'}
+					</DashboardButton>
 				</div>
 			</div>
-			<div className="flex flex-col w-full border-l h-full py-8 px-8">
-				<h3 className="text-[18px] font-semibold text-[#4B4E58]">
+
+			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Account security
 				</h3>
 				<Separator className="mt-3.5" />
-				<div className="flex flex-col gap-3.5 w-full mt-5">
+				<div className="mt-5 flex w-full flex-col gap-3.5">
 					<div className="flex flex-col gap-2">
-						<p className="font-semibold text-[16px] text-[#4B4E58]">Email</p>
-						<div className="flex w-full justify-between">
-							<Input
-								disabled
-								placeholder="joanaalmeida@gmail.com"
-								className="max-w-[390px]"
-							/>
-							<DashboardButton className="rounded-full" variant="secondary">
-								Change email
-							</DashboardButton>
-						</div>
-					</div>
-					<div className="flex flex-col gap-2">
-						<p className="font-semibold text-[16px] text-[#4B4E58]">Password</p>
-						<div className="flex w-full justify-between">
-							<Input disabled placeholder="Almeida" className="max-w-[390px]" />
-							<DashboardButton className="rounded-full" variant="secondary">
-								Change password
-							</DashboardButton>
-						</div>
+						<p className="font-semibold text-[#4B4E58] text-[16px]">Email</p>
+						<Input
+							disabled
+							value={email}
+							className="max-w-[390px] bg-gray-50"
+						/>
+						<p className="text-[#757575] text-sm">
+							Login por magic link ou Google — alteração de email em breve.
+						</p>
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-col w-full border-l h-full py-8 px-8">
-				<h3 className="text-[18px] font-semibold text-[#4B4E58]">
+
+			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Support Access
 				</h3>
 				<Separator className="mt-3.5" />
-				<div className="flex flex-col gap-5 w-full mt-5">
-					<div className="flex justify-between items-center">
+				<div className="mt-5 flex w-full flex-col gap-5">
+					<div className="flex items-center justify-between">
 						<div className="flex flex-col">
-							<p className="font-semibold text-[16px] text-[#4B4E58]">
+							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Log out of all devices
 							</p>
-							<span className="font-normal text-sm text-[#757575] tracking-tight">
-								Log out of all other active sessions on other devices besides
-								this one.
+							<span className="font-normal text-[#757575] text-sm tracking-tight">
+								Termina a sessão neste dispositivo.
 							</span>
 						</div>
-						<DashboardButton className="rounded-full" variant="secondary">
+						<DashboardButton
+							className="rounded-full"
+							variant="secondary"
+							onClick={() => void handleLogoutAll()}
+						>
 							Log out
-						</DashboardButton>
-					</div>
-					<div className="flex justify-between items-center">
-						<div className="flex flex-col">
-							<p className="font-semibold text-[16px] text-[#EF4444]">
-								Delete my account
-							</p>
-							<span className="font-normal text-sm text-[#757575] tracking-tight">
-								Permanently delete the account and remove access from all
-								workspaces.
-							</span>
-						</div>
-						<DashboardButton className="rounded-full" variant="secondary">
-							Delete account
 						</DashboardButton>
 					</div>
 				</div>

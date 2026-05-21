@@ -1,4 +1,6 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
+import { logout } from "@/lib/api";
 import type { NavLink } from "@/lib/types";
 import { checkIsActive, cn } from "@/lib/utils";
 import {
@@ -15,28 +17,54 @@ export default function NavMain({
 	information: { name: string; items: NavLink[] };
 }) {
 	const href = useLocation({ select: (location) => location.href });
+	const navigate = useNavigate();
+
+	async function handleLogout() {
+		try {
+			await logout();
+			await navigate({ to: "/" });
+		} catch {
+			toast.error("Não foi possível terminar sessão.");
+		}
+	}
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
 			<SidebarGroupLabel>{information.name}</SidebarGroupLabel>
 			<SidebarMenu>
-				{information.items.map((item) => (
-					<SidebarMenuItem key={item.title}>
-						<SidebarMenuButton
-							asChild
-							isActive={checkIsActive(href, item)}
-							tooltip={item.title}
-						>
-							<Link
-								to={item.url}
-								className={cn(item.title === "To go out" && "text-red-500")}
+				{information.items.map((item) => {
+					const isActive = checkIsActive(href, item);
+
+					if (item.isLogout) {
+						return (
+							<SidebarMenuItem key={item.title}>
+								<SidebarMenuButton
+									tooltip={item.title}
+									className="text-red-500 hover:text-red-600"
+									onClick={() => void handleLogout()}
+								>
+									{item.icon && <item.icon />}
+									<span>{item.title}</span>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						);
+					}
+
+					return (
+						<SidebarMenuItem key={item.title}>
+							<SidebarMenuButton
+								asChild
+								isActive={isActive}
+								tooltip={item.title}
 							>
-								{item.icon && <item.icon />}
-								<span>{item.title}</span>
-							</Link>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				))}
+								<Link to={item.url}>
+									{item.icon && <item.icon />}
+									<span>{item.title}</span>
+								</Link>
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+					);
+				})}
 			</SidebarMenu>
 		</SidebarGroup>
 	);
