@@ -31,7 +31,7 @@ import {
 	getPatientFirstName,
 	getTimeGreeting,
 } from '@/lib/format-message-time';
-import { getPatientImageUrl } from '@/lib/patient-assets';
+import { getPatientAvatar } from '@/lib/patient-avatar';
 import { getInitials } from '@/lib/user-display';
 import { Route as DashboardRoute } from '../dashboard';
 
@@ -79,7 +79,7 @@ function ChatPage() {
 				listPatients(),
 			]);
 			setPatient(chat.patient);
-			setPatientAvatarUrl(getPatientImageUrl(chat.patient.name));
+			setPatientAvatarUrl(getPatientAvatar(chat.patient.name));
 			setChatEnded(Boolean(chat.endedAt));
 			setChatPaused(Boolean(chat.pausedAt));
 			setMessages(msgs);

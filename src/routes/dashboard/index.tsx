@@ -6,6 +6,7 @@ import { PatientsCarousel } from '@/components/dashboard/patients-carousel';
 import { StatsAvatar } from '@/components/dashboard/stats-avatar';
 import { WeeklyMinutesChart } from '@/components/dashboard/weekly-minutes-chart';
 import { FriendsPanel } from '@/components/dashboard/friends-panel';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
 	ApiError,
@@ -17,6 +18,7 @@ import {
 	type DashboardStats,
 	type Patient,
 } from '@/lib/api';
+import { getPatientAvatar } from '@/lib/patient-avatar';
 import { getTimeGreeting } from '@/lib/format-message-time';
 import { getDisplayName } from '@/lib/user-display';
 import { Route as DashboardRoute } from '../dashboard';
@@ -29,13 +31,15 @@ function DashboardPage() {
 	const { user } = DashboardRoute.useRouteContext();
 	const navigate = useNavigate();
 	const [patients, setPatients] = useState<Patient[]>([]);
-	const [recentChats, setRecentChats] = useState<Chat[]>([]);
+	const [allChats, setAllChats] = useState<Chat[]>([]);
 	const [stats, setStats] = useState<DashboardStats | null>(null);
 	const [loadingPatients, setLoadingPatients] = useState(true);
 	const [startingId, setStartingId] = useState<string | null>(null);
 
 	const displayName = getDisplayName(user);
 	const greeting = getTimeGreeting();
+
+	const activeChats = allChats.filter((c) => !c.endedAt);
 
 	useEffect(() => {
 		Promise.all([listPatients(), listChats(), getDashboardStats()])
@@ -44,7 +48,7 @@ function DashboardPage() {
 					a.name.localeCompare(b.name),
 				);
 				setPatients(sorted);
-				setRecentChats(chatList.slice(0, 6));
+				setAllChats(chatList);
 				setStats(dashboardStats);
 			})
 			.catch((e) => {
@@ -57,14 +61,24 @@ function DashboardPage() {
 			.finally(() => setLoadingPatients(false));
 	}, []);
 
-	async function startSession(patient: Patient) {
+	async function handlePatientClick(patient: Patient) {
 		setStartingId(patient.id);
 		try {
-			const chat = await createChat(patient.id);
-			await navigate({
-				to: '/dashboard/chat/$chatId',
-				params: { chatId: chat.id },
-			});
+			const existing = allChats.find(
+				(c) => c.patientId === patient.id && !c.endedAt,
+			);
+			if (existing) {
+				await navigate({
+					to: '/dashboard/chat/$chatId',
+					params: { chatId: existing.id },
+				});
+			} else {
+				const chat = await createChat(patient.id);
+				await navigate({
+					to: '/dashboard/chat/$chatId',
+					params: { chatId: chat.id },
+				});
+			}
 		} catch (e) {
 			toast.error(
 				e instanceof ApiError
@@ -77,8 +91,8 @@ function DashboardPage() {
 	}
 
 	return (
-		<main className="mt-8 grid grid-cols-3 gap-5">
-			<div className="col-span-2 flex w-full flex-col gap-7">
+		<main className="mt-8 grid grid-cols-[1fr_340px] gap-5">
+			<div className="flex w-full flex-col gap-7">
 				<div className="w-full rounded-3xl bg-linear-to-bl from-[#0978AA] to-[#1497D2] px-8 py-10 text-white">
 					<div className="space-y-3">
 						<h2 className="text-2xl font-semibold">Access Premium Patients</h2>
@@ -94,18 +108,54 @@ function DashboardPage() {
 					</div>
 				</div>
 
-				<div id="patients">
-					<PatientsCarousel
-						patients={patients}
-						loading={loadingPatients}
-						startingId={startingId}
-						onSelectPatient={startSession}
-					/>
-				</div>
+				{patients.length >= 3 && (
+					<div className="grid grid-cols-3 gap-4">
+						{patients.slice(0, 3).map((patient) => (
+							<button
+								key={patient.id}
+								type="button"
+								disabled={startingId !== null}
+								onClick={() => handlePatientClick(patient)}
+								className="flex items-center gap-3 rounded-xl border bg-white p-2.5 text-left shadow-sm transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+							>
+								<Avatar className="size-14 shrink-0">
+									<AvatarImage
+										src={getPatientAvatar(patient.name)}
+										alt={patient.name}
+										className="object-cover"
+									/>
+								</Avatar>
+								<div className="min-w-0">
+									<p className="truncate text-sm font-semibold text-foreground">
+										{patient.name}
+									</p>
+									<p className="truncate text-xs text-muted-foreground">
+										{patient.problem}
+									</p>
+								</div>
+							</button>
+						))}
+					</div>
+				)}
 
-				<div className="py-2">
-					<ContinueSection chats={recentChats} patients={patients} />
-				</div>
+				{activeChats.length > 0 ? (
+					<div className="py-2">
+						<ContinueSection
+							chats={activeChats}
+							patients={patients}
+							title="Continue conversation"
+						/>
+					</div>
+				) : (
+					<div id="patients">
+						<PatientsCarousel
+							patients={patients}
+							loading={loadingPatients}
+							startingId={startingId}
+							onSelectPatient={handlePatientClick}
+						/>
+					</div>
+				)}
 			</div>
 
 			<div className="w-full">

@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { getPatientAvatar } from '@/lib/patient-avatar';
 import {
 	getPatientBadgeVariant,
-	getPatientImageUrl,
 	getPatientProgressPercent,
 } from '@/lib/patient-assets';
 
@@ -38,7 +38,7 @@ export function PatientCardContent({
 			<div className="flex justify-center rounded-xl bg-primary/10 py-4">
 				<Avatar className="size-24">
 					<AvatarImage
-						src={getPatientImageUrl(patientName)}
+						src={getPatientAvatar(patientName)}
 						alt={patientName}
 						className="object-cover"
 					/>

@@ -19,9 +19,10 @@ const cardLinkClass =
 type ContinueSectionProps = {
 	chats: Chat[];
 	patients: Patient[];
+	title?: string;
 };
 
-export function ContinueSection({ chats, patients }: ContinueSectionProps) {
+export function ContinueSection({ chats, patients, title }: ContinueSectionProps) {
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 	const [canScrollPrev, setCanScrollPrev] = useState(false);
 	const [canScrollNext, setCanScrollNext] = useState(false);
@@ -48,9 +49,13 @@ export function ContinueSection({ chats, patients }: ContinueSectionProps) {
 	return (
 		<div className="space-y-4">
 			<div className="flex w-full items-center justify-between">
-				<h2 className="text-xl font-semibold text-foreground">
-					Continue conversation
-				</h2>
+				{title ? (
+					<h2 className="text-xl font-semibold text-foreground">
+						{title}
+					</h2>
+				) : (
+					<div />
+				)}
 				<div className="flex gap-3">
 					<Button
 						variant="outline"
@@ -71,10 +76,13 @@ export function ContinueSection({ chats, patients }: ContinueSectionProps) {
 					</Button>
 				</div>
 			</div>
-			<div className="w-full rounded-xl bg-white p-5">
+			<div className="w-full rounded-xl bg-white p-5 select-none">
 				<Carousel
 					setApi={setCarouselApi}
-					opts={{ breakpoints: { '(max-width: 768px)': { dragFree: true } } }}
+					opts={{
+						dragFree: true,
+						containScroll: 'trimSnaps',
+					}}
 					className="relative"
 				>
 					<CarouselContent>
@@ -82,7 +90,7 @@ export function ContinueSection({ chats, patients }: ContinueSectionProps) {
 							const patientIndex = getPatientIndex(patients, chat.patientId);
 
 							return (
-								<CarouselItem key={chat.id} className="md:max-w-[266px]">
+								<CarouselItem key={chat.id} className="basis-full md:basis-1/2 lg:basis-1/3 md:max-w-[266px]">
 									<Link
 										to="/dashboard/chat/$chatId"
 										params={{ chatId: chat.id }}

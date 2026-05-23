@@ -14,9 +14,9 @@ import {
 	listPatients,
 	deleteChat,
 } from '@/lib/api';
+import { getPatientAvatar } from '@/lib/patient-avatar';
 import {
 	difficultyToLevel,
-	getPatientImageUrl,
 	getPatientIndex,
 	getPatientProblemLabel,
 } from '@/lib/patient-assets';
@@ -52,7 +52,7 @@ function HistoryPage() {
 					}),
 					duration: `${item.durationMinutes} min`,
 					analysis: 'Review',
-					patientImageUrl: getPatientImageUrl(item.name),
+					patientImageUrl: getPatientAvatar(item.name),
 				};
 			});
 

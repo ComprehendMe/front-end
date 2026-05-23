@@ -75,7 +75,7 @@ export function createHistoryColumns({
 			cell: ({ row }) => (
 				<div className="flex items-center gap-3">
 					<Link
-						to="/dashboard/chat/$chatId"
+						to="/dashboard/review/$chatId"
 						params={{ chatId: row.original.chatId }}
 						className="text-sm font-medium text-[#1497D2] hover:underline"
 					>

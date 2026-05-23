@@ -1,6 +1,8 @@
+import { useLocation } from '@tanstack/react-router';
 import {
 	IconChartBar,
 	IconDashboard,
+	IconListDetails,
 	IconLogout,
 	IconSettings,
 } from "@tabler/icons-react";
@@ -17,19 +19,7 @@ import {
 const information: { name: string; items: NavLink[] }[] = [
 	{
 		name: "Overview",
-		items: [
-			{
-				title: "Dashboard",
-				url: "/dashboard",
-				icon: IconDashboard,
-				exact: true,
-			},
-			{
-				title: "History",
-				url: "/dashboard/history",
-				icon: IconChartBar,
-			},
-		],
+		items: [],
 	},
 	{
 		name: "Settings",
@@ -50,6 +40,37 @@ const information: { name: string; items: NavLink[] }[] = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const href = useLocation({ select: (l) => l.href });
+
+	const isInConversation =
+		href.startsWith('/dashboard/conversations') ||
+		href.startsWith('/dashboard/chat/');
+
+	const overviewItems: NavLink[] = [
+		{
+			title: "Dashboard",
+			url: "/dashboard",
+			icon: IconDashboard,
+			exact: true,
+		},
+		...(isInConversation
+			? [
+				{
+					title: "Conversations",
+					url: "/dashboard",
+					icon: IconListDetails,
+				},
+			]
+			: []),
+		{
+			title: "History",
+			url: "/dashboard/history",
+			icon: IconChartBar,
+		},
+	];
+
+	const overviewSection = { ...information[0], items: overviewItems };
+
 	return (
 		<Sidebar collapsible="offcanvas" {...props}>
 			<SidebarHeader>
@@ -63,7 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain information={information[0]} />
+				<NavMain information={overviewSection} />
 				<NavMain information={information[1]} />
 			</SidebarContent>
 		</Sidebar>

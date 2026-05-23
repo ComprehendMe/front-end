@@ -47,10 +47,7 @@ export function PatientsCarousel({
 
 	return (
 		<div className="space-y-4">
-			<div className="flex w-full items-center justify-between">
-				<h2 className="text-xl font-semibold text-foreground">
-					Choose a patient
-				</h2>
+			<div className="flex w-full items-center justify-end">
 				<div className="flex gap-3">
 					<Button
 						variant="outline"
@@ -74,7 +71,7 @@ export function PatientsCarousel({
 				</div>
 			</div>
 
-			<div className="w-full rounded-xl bg-white p-5">
+			<div className="w-full rounded-xl bg-white p-5 select-none">
 				{loading ? (
 					<div className="flex justify-center py-16">
 						<Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -89,13 +86,12 @@ export function PatientsCarousel({
 						opts={{
 							align: 'start',
 							loop: false,
-							breakpoints: {
-								'(max-width: 768px)': { dragFree: true },
-							},
+							dragFree: true,
+							containScroll: 'trimSnaps',
 						}}
 						className="relative"
 					>
-						<CarouselContent className="-ml-4">
+						<CarouselContent>
 							{patients.map((patient, index) => {
 								const isStarting = startingId === patient.id;
 

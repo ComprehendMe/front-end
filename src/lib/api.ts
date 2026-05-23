@@ -420,6 +420,32 @@ export async function confirmPremiumCheckout(sessionId: string) {
 	);
 }
 
+// --- Review ---
+
+export type MoveAnalysis = {
+	moveIndex: number;
+	content: string;
+	score: number;
+	quality: 'strong' | 'adequate' | 'needs_attention' | 'needs_adjustment';
+	category: string;
+	feedback: string;
+	highlights: string[];
+	improvements: string[];
+};
+
+export type ReviewResult = {
+	chatId: string;
+	patient: { name: string; age: number; problem: string };
+	moves: MoveAnalysis[];
+	totalScore: number;
+	totalMessages: number;
+	analyzedAt: string;
+};
+
+export async function getChatReview(chatId: string) {
+	return apiRequest<ReviewResult>(`/chats/${chatId}/review`);
+}
+
 export async function waitForModelReply(
 	chatId: string,
 	previousModelCount: number,

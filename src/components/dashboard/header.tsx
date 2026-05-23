@@ -34,6 +34,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 							{initials}
 						</AvatarFallback>
 					</Avatar>
+					<span className="text-gray-300 text-lg">|</span>
 					<span className="whitespace-nowrap text-[16px] font-medium text-[#1C1F22]">
 						{displayName}
 					</span>
