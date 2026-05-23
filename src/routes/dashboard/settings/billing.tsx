@@ -126,7 +126,7 @@ function BillingPage() {
 				}
 				await navigate({
 					to: '/dashboard/settings/billing',
-					search: {},
+					search: { session_id: undefined },
 					replace: true,
 				});
 			} catch (e) {

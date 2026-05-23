@@ -13,7 +13,6 @@ import {
 	getDashboardStats,
 	listChats,
 	listPatients,
-	recordActivity,
 	type Chat,
 	type DashboardStats,
 	type Patient,
@@ -56,14 +55,6 @@ function DashboardPage() {
 				);
 			})
 			.finally(() => setLoadingPatients(false));
-	}, []);
-
-	useEffect(() => {
-		void recordActivity().catch(() => undefined);
-		const interval = setInterval(() => {
-			void recordActivity().catch(() => undefined);
-		}, 60_000);
-		return () => clearInterval(interval);
 	}, []);
 
 	async function startSession(patient: Patient) {

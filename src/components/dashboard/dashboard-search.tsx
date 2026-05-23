@@ -1,5 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
 import {
+	IconCoin,
 	IconHistory,
 	IconMessage,
 	IconSettings,
@@ -7,14 +8,21 @@ import {
 	IconUsers,
 } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
-import type { Patient } from '@/lib/api';
+import {
+	ApiError,
+	createChat,
+	listChats,
+	type Chat,
+	type Patient,
+} from '@/lib/api';
 
 type SearchItem = {
 	id: string;
@@ -63,10 +71,22 @@ const NAV_ITEMS: SearchItem[] = [
 	},
 ];
 
+const BILLING_KEYWORDS = [
+	'plan', 'premium', 'billing', 'upgrade', 'payment', 'subscription',
+	'invoice', 'checkout', 'free', 'stripe', 'pagamento', 'assinatura',
+];
+
 export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState('');
+	const [chats, setChats] = useState<Chat[]>([]);
+
+	useEffect(() => {
+		listChats()
+			.then(setChats)
+			.catch(() => setChats([]));
+	}, []);
 
 	const patientItems = useMemo<SearchItem[]>(() => {
 		const q = query.trim().toLowerCase();
@@ -76,17 +96,57 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 			.filter(
 				(p) =>
 					p.name.toLowerCase().includes(q) ||
-					p.problem.toLowerCase().includes(q),
+					p.problem.toLowerCase().includes(q) ||
+					p.nationality.toLowerCase().includes(q) ||
+					String(p.age).includes(q) ||
+					p.difficulty.toLowerCase().includes(q) ||
+					p.gender.toLowerCase().includes(q),
 			)
 			.slice(0, 5)
 			.map((p) => ({
 				id: `patient-${p.id}`,
 				label: p.name,
-				description: p.problem.slice(0, 60),
+				description: `${p.problem} · ${p.age} · ${p.nationality} · ${p.difficulty}`,
 				icon: <IconUser className="h-5 w-5 text-[#1497D2]" />,
 				to: '/dashboard',
 			}));
 	}, [patients, query]);
+
+	const chatItems = useMemo<SearchItem[]>(() => {
+		const q = query.trim().toLowerCase();
+		if (!q) return [];
+
+		return chats
+			.filter(
+				(c) =>
+					c.title.toLowerCase().includes(q) ||
+					c.patient.name.toLowerCase().includes(q),
+			)
+			.slice(0, 5)
+			.map((c) => ({
+				id: `chat-${c.id}`,
+				label: c.title,
+				description: `${c.patient.name}`,
+				icon: <IconMessage className="h-5 w-5 text-[#1497D2]" />,
+				to: '/dashboard/chat/$chatId',
+				params: { chatId: c.id },
+			}));
+	}, [chats, query]);
+
+	const billingItem = useMemo<SearchItem | null>(() => {
+		const q = query.trim().toLowerCase();
+		if (!q) return null;
+		if (BILLING_KEYWORDS.some((kw) => kw.includes(q) || q.includes(kw))) {
+			return {
+				id: 'billing',
+				label: 'Billing & Plan',
+				description: 'View your subscription, plan details and invoices',
+				icon: <IconCoin className="h-5 w-5 text-[#1497D2]" />,
+				to: '/dashboard/settings/billing',
+			};
+		}
+		return null;
+	}, [query]);
 
 	const filteredNav = useMemo(() => {
 		const q = query.trim().toLowerCase();
@@ -94,17 +154,44 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 		return NAV_ITEMS.filter((item) => item.label.toLowerCase().includes(q));
 	}, [query]);
 
-	const items = query.trim() ? [...patientItems, ...filteredNav] : NAV_ITEMS;
+	const items = useMemo(() => {
+		if (!query.trim()) return NAV_ITEMS;
+		const result = [...patientItems, ...chatItems];
+		if (billingItem) result.push(billingItem);
+		result.push(...filteredNav);
+		return result;
+	}, [patientItems, chatItems, billingItem, filteredNav, query]);
+
+	async function goToPatientChat(patientId: string) {
+		setOpen(false);
+		setQuery('');
+		try {
+			const existing = chats.find((c: Chat) => c.patientId === patientId && !c.endedAt);
+			if (existing) {
+				await navigate({
+					to: '/dashboard/chat/$chatId',
+					params: { chatId: existing.id },
+				});
+				return;
+			}
+			const chat = await createChat(patientId);
+			await navigate({
+				to: '/dashboard/chat/$chatId',
+				params: { chatId: chat.id },
+			});
+		} catch (e) {
+			toast.error(
+				e instanceof ApiError ? e.message : 'Could not open conversation.',
+			);
+		}
+	}
 
 	function go(item: SearchItem) {
 		setOpen(false);
 		setQuery('');
 		if (item.id.startsWith('patient-')) {
 			const patientId = item.id.replace('patient-', '');
-			const patient = patients.find((p) => p.id === patientId);
-			if (patient) {
-				void navigate({ to: '/dashboard', hash: 'patients' });
-			}
+			void goToPatientChat(patientId);
 			return;
 		}
 		void navigate({ to: item.to, params: item.params });
@@ -113,12 +200,11 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
-				<div className="relative w-full">
+				<div className="relative w-full" onClick={(e) => e.stopPropagation()}>
 					<Input
 						value={query}
 						onChange={(e) => {
 							setQuery(e.target.value);
-							setOpen(true);
 						}}
 						onFocus={() => setOpen(true)}
 						className="h-12 w-full rounded-full border-[#1C1F22]/15 bg-white px-8 py-4 pr-12"

@@ -34,7 +34,7 @@ export default function SignUpForm({
 	async function onRegisterSubmit(data: z.infer<typeof SignUpFormSchema>) {
 		setLoading(true);
 		try {
-			await signup(data.email, data.name);
+			await signup({ email: data.email, name: data.name });
 			onEmailSent(data.email);
 		} catch (e) {
 			toast.error(

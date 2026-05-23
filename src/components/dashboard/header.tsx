@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { DashboardSearch } from '@/components/dashboard/dashboard-search';
 import { NotificationBell } from '@/components/dashboard/notification-bell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { listPatients, type MeUser, type Patient } from '@/lib/api';
 import { getDisplayName, getInitials } from '@/lib/user-display';
 

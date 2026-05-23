@@ -73,7 +73,7 @@ function ChatPage() {
 
 	const loadChat = useCallback(async () => {
 		try {
-			const [chat, msgs, patients] = await Promise.all([
+			const [chat, msgs] = await Promise.all([
 				getChat(chatId),
 				listMessages(chatId),
 				listPatients(),
