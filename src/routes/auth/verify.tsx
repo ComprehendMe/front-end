@@ -32,11 +32,14 @@ function VerifyPage() {
 
 		(async () => {
 			try {
-				await verifySession(token);
+				const result = await verifySession(token);
 				if (cancelled) return;
 				setStatus('success');
 				setMessage('Account verified! Redirecting…');
-				setTimeout(() => navigate({ to: '/dashboard' }), 800);
+				const target = result.onboardingCompleted
+					? '/dashboard'
+					: '/auth/onboarding';
+				setTimeout(() => navigate({ to: target }), 800);
 			} catch (e) {
 				if (cancelled) return;
 				setStatus('error');

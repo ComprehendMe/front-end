@@ -10,6 +10,9 @@ export const Route = createFileRoute("/dashboard")({
 	beforeLoad: async () => {
 		try {
 			const user = await getMe();
+			if (!user.onboardingCompleted) {
+				throw redirect({ to: "/auth/onboarding" });
+			}
 			return { user };
 		} catch (e) {
 			if (e instanceof ApiError && e.status === 401) {

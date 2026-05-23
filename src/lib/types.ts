@@ -8,7 +8,7 @@ interface BaseNavItem {
 
 type NavLink = BaseNavItem & {
 	url: LinkProps["to"];
-	/** Só ativo quando o path é exatamente este URL */
+	/** Active only when the path matches this URL exactly */
 	exact?: boolean;
 	/** Signs out instead of navigating */
 	isLogout?: boolean;

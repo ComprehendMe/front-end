@@ -10,7 +10,7 @@ import {
 	DialogTrigger,
 } from '../ui/dialog';
 import LoginForm from './forms/login';
-import SignUpForm from './forms/register';
+import SignupWizard from './forms/signup-wizard';
 
 type AuthMode = 'login' | 'register' | 'pending';
 
@@ -22,7 +22,11 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 	const [open, setOpen] = useState(false);
 	const [mode, setMode] = useState<AuthMode>('login');
 	const [pendingEmail, setPendingEmail] = useState('');
-	const toggleMode = () => setMode(mode === 'login' ? 'register' : 'login');
+	const [registerStep, setRegisterStep] = useState<1 | 2 | 3>(1);
+	const toggleMode = () => {
+		setMode(mode === 'login' ? 'register' : 'login');
+		setRegisterStep(1);
+	};
 
 	const handleEmailSent = (email: string) => {
 		setPendingEmail(email);
@@ -33,7 +37,7 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 		<Dialog open={open} onOpenChange={setOpen} modal>
 			<DialogTrigger asChild>
 				{trigger ?? (
-					<Button className="rounded-full px-6 text-white">To start</Button>
+					<Button className="rounded-full px-6 text-white">Get started</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent
@@ -67,11 +71,14 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 					</>
 				) : (
 					<>
-						<DialogHeader className="items-center">
-							<DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
-								Welcome to ComprehendMe
-							</DialogTitle>
-						</DialogHeader>
+						{(mode === 'login' ||
+							(mode === 'register' && registerStep === 1)) && (
+							<DialogHeader className="items-center">
+								<DialogTitle className="text-[24px] font-medium text-[#1C1F22]">
+									Welcome to ComprehendMe
+								</DialogTitle>
+							</DialogHeader>
+						)}
 						{mode === 'login' && (
 							<LoginForm
 								toggleMode={toggleMode}
@@ -79,9 +86,10 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 							/>
 						)}
 						{mode === 'register' && (
-							<SignUpForm
-								toggleMode={toggleMode}
+							<SignupWizard
+								onBackToLogin={toggleMode}
 								onEmailSent={handleEmailSent}
+								onStepChange={setRegisterStep}
 							/>
 						)}
 					</>

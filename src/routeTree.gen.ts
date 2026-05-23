@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardHistoryRouteImport } from './routes/dashboard/history'
 import { Route as AuthVerifyRouteImport } from './routes/auth/verify'
+import { Route as AuthOnboardingRouteImport } from './routes/auth/onboarding'
 import { Route as AuthOauthErrorRouteImport } from './routes/auth/oauth-error'
 import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
@@ -45,6 +46,11 @@ const DashboardHistoryRoute = DashboardHistoryRouteImport.update({
 const AuthVerifyRoute = AuthVerifyRouteImport.update({
   id: '/auth/verify',
   path: '/auth/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthOnboardingRoute = AuthOnboardingRouteImport.update({
+  id: '/auth/onboarding',
+  path: '/auth/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthOauthErrorRoute = AuthOauthErrorRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/auth/oauth-error': typeof AuthOauthErrorRoute
+  '/auth/onboarding': typeof AuthOnboardingRoute
   '/auth/verify': typeof AuthVerifyRoute
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/settings'
     | '/auth/oauth-error'
+    | '/auth/onboarding'
     | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard/'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth/oauth-error'
+    | '/auth/onboarding'
     | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard'
@@ -160,6 +171,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/settings'
     | '/auth/oauth-error'
+    | '/auth/onboarding'
     | '/auth/verify'
     | '/dashboard/history'
     | '/dashboard/'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   AuthOauthErrorRoute: typeof AuthOauthErrorRoute
+  AuthOnboardingRoute: typeof AuthOnboardingRoute
   AuthVerifyRoute: typeof AuthVerifyRoute
 }
 
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/verify'
       fullPath: '/auth/verify'
       preLoaderRoute: typeof AuthVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/onboarding': {
+      id: '/auth/onboarding'
+      path: '/auth/onboarding'
+      fullPath: '/auth/onboarding'
+      preLoaderRoute: typeof AuthOnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/oauth-error': {
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRouteWithChildren,
   AuthOauthErrorRoute: AuthOauthErrorRoute,
+  AuthOnboardingRoute: AuthOnboardingRoute,
   AuthVerifyRoute: AuthVerifyRoute,
 }
 export const routeTree = rootRouteImport

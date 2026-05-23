@@ -39,11 +39,12 @@ function HistoryPage() {
 
 			const mapped: HistoryRow[] = history.map((item) => {
 				const idx = getPatientIndex(patients, item.patientId);
+				const patient = patients[idx];
 				return {
 					id: item.id,
 					chatId: item.chatId,
 					name: item.name,
-					problem: getPatientProblemLabel(idx),
+					problem: patient?.problem ?? getPatientProblemLabel(idx),
 					difficult: difficultyToLevel(item.difficulty),
 					ended: formatDistanceToNow(new Date(item.endedAt), {
 						addSuffix: true,
@@ -51,7 +52,7 @@ function HistoryPage() {
 					}),
 					duration: `${item.durationMinutes} min`,
 					analysis: 'Review',
-					patientImageUrl: getPatientImageUrl(idx),
+					patientImageUrl: getPatientImageUrl(item.name),
 				};
 			});
 

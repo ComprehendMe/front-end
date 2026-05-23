@@ -71,10 +71,36 @@ export function startGoogleOAuth() {
 	window.location.assign(`${base}/sessions/oauth/google`);
 }
 
-export async function signup(email: string, name?: string) {
+export type SignupPayload = {
+	email: string;
+	name?: string;
+	dateOfBirth?: string;
+	college?: string;
+	referralSource?: string;
+};
+
+export async function signup(payload: SignupPayload) {
+	const { email, name, dateOfBirth, college, referralSource } = payload;
 	return apiRequest<{ ok: boolean; message: string }>('/sessions/signup', {
 		method: 'POST',
-		body: { email, ...(name?.trim() ? { name: name.trim() } : {}) },
+		body: {
+			email,
+			...(name?.trim() ? { name: name.trim() } : {}),
+			...(dateOfBirth ? { dateOfBirth } : {}),
+			...(college ? { college } : {}),
+			...(referralSource ? { referralSource } : {}),
+		},
+	});
+}
+
+export async function completeOnboarding(payload: {
+	dateOfBirth: string;
+	college: string;
+	referralSource: string;
+}) {
+	return apiRequest<{ ok: boolean }>('/users/@me/onboarding', {
+		method: 'POST',
+		body: payload,
 	});
 }
 
@@ -88,6 +114,7 @@ export async function login(email: string) {
 export type VerifySessionResult = {
 	ok: boolean;
 	intent: string;
+	onboardingCompleted?: boolean;
 	user: { id: string; email: string };
 };
 
@@ -123,6 +150,7 @@ export type MeUser = {
 	avatar?: string;
 	email: string;
 	name?: string | null;
+	onboardingCompleted?: boolean;
 };
 
 export async function getMe() {
@@ -201,6 +229,7 @@ export async function uploadAvatarBlob(blob: Blob) {
 export type Patient = {
 	id: string;
 	name: string;
+	gender: string;
 	problem: string;
 	age: number;
 	nationality: string;

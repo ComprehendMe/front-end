@@ -38,7 +38,7 @@ function App() {
 							<AuthDialog
 								trigger={
 									<Button size="lg" className="w-fit rounded-full px-6 text-lg">
-										To start
+										Get started
 									</Button>
 								}
 							/>

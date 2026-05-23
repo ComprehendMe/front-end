@@ -1,12 +1,20 @@
 import type { Patient } from '@/lib/api';
 
-/** Patient photos in /public/patients */
-export const PATIENT_IMAGES = [
-	'/patients/patient-1.png',
-	'/patients/patient-2.png',
-	'/patients/patient-3.png',
-	'/patients/patient-4.png',
-] as const;
+/** Slug used for avatar files in /public/dist (e.g. emma-richardson.webp). */
+export function patientAvatarSlug(name: string): string {
+	return name
+		.trim()
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '');
+}
+
+/** Patient avatars in /public/dist, filename matches patient name slug. */
+export function getPatientImageUrl(patientName: string): string {
+	return `/dist/${patientAvatarSlug(patientName)}.webp`;
+}
 
 export const PATIENT_BADGE_VARIANTS = [
 	'problems',
@@ -16,10 +24,6 @@ export const PATIENT_BADGE_VARIANTS = [
 ] as const;
 
 export type PatientBadgeVariant = (typeof PATIENT_BADGE_VARIANTS)[number];
-
-export function getPatientImageUrl(index: number): string {
-	return PATIENT_IMAGES[index % PATIENT_IMAGES.length];
-}
 
 export function getPatientBadgeVariant(index: number): PatientBadgeVariant {
 	return PATIENT_BADGE_VARIANTS[index % PATIENT_BADGE_VARIANTS.length];

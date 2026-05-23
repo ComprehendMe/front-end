@@ -38,7 +38,7 @@ export function PatientCardContent({
 			<div className="flex justify-center rounded-xl bg-primary/10 py-4">
 				<Avatar className="size-24">
 					<AvatarImage
-						src={getPatientImageUrl(patientIndex)}
+						src={getPatientImageUrl(patientName)}
 						alt={patientName}
 						className="object-cover"
 					/>

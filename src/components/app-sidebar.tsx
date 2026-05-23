@@ -40,7 +40,7 @@ const information: { name: string; items: NavLink[] }[] = [
 				icon: IconSettings,
 			},
 			{
-				title: "To go out",
+				title: "Log out",
 				url: "/",
 				icon: IconLogout,
 				isLogout: true,
