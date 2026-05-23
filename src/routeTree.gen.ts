@@ -19,6 +19,7 @@ import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/s
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardSettingsNotificationsRouteImport } from './routes/dashboard/settings/notifications'
 import { Route as DashboardSettingsLanguageRouteImport } from './routes/dashboard/settings/language'
+import { Route as DashboardSettingsBillingRouteImport } from './routes/dashboard/settings/billing'
 import { Route as DashboardChatChatIdRouteImport } from './routes/dashboard/chat.$chatId'
 
 const DashboardRoute = DashboardRouteImport.update({
@@ -73,6 +74,12 @@ const DashboardSettingsLanguageRoute =
     path: '/language',
     getParentRoute: () => DashboardSettingsRouteRoute,
   } as any)
+const DashboardSettingsBillingRoute =
+  DashboardSettingsBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
 const DashboardChatChatIdRoute = DashboardChatChatIdRouteImport.update({
   id: '/chat/$chatId',
   path: '/chat/$chatId',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
+  '/dashboard/settings/billing': typeof DashboardSettingsBillingRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -99,6 +107,7 @@ export interface FileRoutesByTo {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
+  '/dashboard/settings/billing': typeof DashboardSettingsBillingRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -113,6 +122,7 @@ export interface FileRoutesById {
   '/dashboard/history': typeof DashboardHistoryRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/chat/$chatId': typeof DashboardChatChatIdRoute
+  '/dashboard/settings/billing': typeof DashboardSettingsBillingRoute
   '/dashboard/settings/language': typeof DashboardSettingsLanguageRoute
   '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/'
     | '/dashboard/chat/$chatId'
+    | '/dashboard/settings/billing'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard'
     | '/dashboard/chat/$chatId'
+    | '/dashboard/settings/billing'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings'
@@ -152,6 +164,7 @@ export interface FileRouteTypes {
     | '/dashboard/history'
     | '/dashboard/'
     | '/dashboard/chat/$chatId'
+    | '/dashboard/settings/billing'
     | '/dashboard/settings/language'
     | '/dashboard/settings/notifications'
     | '/dashboard/settings/'
@@ -236,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsLanguageRouteImport
       parentRoute: typeof DashboardSettingsRouteRoute
     }
+    '/dashboard/settings/billing': {
+      id: '/dashboard/settings/billing'
+      path: '/billing'
+      fullPath: '/dashboard/settings/billing'
+      preLoaderRoute: typeof DashboardSettingsBillingRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
     '/dashboard/chat/$chatId': {
       id: '/dashboard/chat/$chatId'
       path: '/chat/$chatId'
@@ -247,6 +267,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface DashboardSettingsRouteRouteChildren {
+  DashboardSettingsBillingRoute: typeof DashboardSettingsBillingRoute
   DashboardSettingsLanguageRoute: typeof DashboardSettingsLanguageRoute
   DashboardSettingsNotificationsRoute: typeof DashboardSettingsNotificationsRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
@@ -254,6 +275,7 @@ interface DashboardSettingsRouteRouteChildren {
 
 const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
   {
+    DashboardSettingsBillingRoute: DashboardSettingsBillingRoute,
     DashboardSettingsLanguageRoute: DashboardSettingsLanguageRoute,
     DashboardSettingsNotificationsRoute: DashboardSettingsNotificationsRoute,
     DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,

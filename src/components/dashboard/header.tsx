@@ -1,6 +1,6 @@
-import { Bell } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DashboardSearch } from '@/components/dashboard/dashboard-search';
+import { NotificationBell } from '@/components/dashboard/notification-bell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { listPatients, type MeUser, type Patient } from '@/lib/api';
@@ -25,13 +25,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 		<header className="flex w-full items-center gap-8">
 			<DashboardSearch patients={patients} />
 			<div className="flex w-full max-w-3xs shrink-0 items-center gap-5">
-				<Button
-					size="icon-lg"
-					className="rounded-full border-[#1C1F22]/15 text-gray-500"
-					variant="outline"
-				>
-					<Bell size={22} />
-				</Button>
+				<NotificationBell />
 				<div className="flex items-center gap-2.5">
 					<Avatar className="size-10">
 						{user.avatar ? (

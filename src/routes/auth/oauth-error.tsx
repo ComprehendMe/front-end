@@ -21,6 +21,18 @@ function OAuthErrorPage() {
 				Google sign-in failed
 			</h1>
 			<p className="max-w-md text-center text-muted-foreground">{message}</p>
+			{message.toLowerCase().includes('callback') ? (
+				<div className="max-w-lg rounded-xl border bg-muted/40 px-4 py-3 text-left text-sm text-muted-foreground">
+					<p className="font-medium text-foreground">Auth0 setup</p>
+					<p className="mt-2">
+						In Auth0 → Application → Settings → Allowed Callback URLs, add:
+					</p>
+					<ul className="mt-2 list-inside list-disc space-y-1 font-mono text-xs">
+						<li>http://localhost:3000/api/sessions/oauth/cb</li>
+						<li>http://127.0.0.1:3000/api/sessions/oauth/cb</li>
+					</ul>
+				</div>
+			) : null}
 			<Button asChild className="rounded-full">
 				<Link to="/">Back to home</Link>
 			</Button>

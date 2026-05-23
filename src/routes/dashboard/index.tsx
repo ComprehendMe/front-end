@@ -5,8 +5,8 @@ import { ContinueSection } from '@/components/dashboard/continue-section';
 import { PatientsCarousel } from '@/components/dashboard/patients-carousel';
 import { StatsAvatar } from '@/components/dashboard/stats-avatar';
 import { WeeklyMinutesChart } from '@/components/dashboard/weekly-minutes-chart';
+import { FriendsPanel } from '@/components/dashboard/friends-panel';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import {
 	ApiError,
 	createChat,
@@ -143,23 +143,7 @@ function DashboardPage() {
 						) : (
 							<div className="h-[180px] rounded-xl bg-[#F0F5FA]" />
 						)}
-						<div className="space-y-3.5">
-							<div className="flex items-center justify-between px-1">
-								<h3 className="text-lg font-semibold">Friends</h3>
-								<Button
-									size="icon-lg"
-									className="rounded-full border-primary text-primary hover:bg-primary/10"
-									variant="outline"
-									disabled
-								>
-									+
-								</Button>
-							</div>
-							<div className="flex flex-col gap-5 rounded-xl bg-[#F0F5FA] px-3.5 py-4">
-								<p className="text-sm text-muted-foreground">Coming soon</p>
-								<Separator />
-							</div>
-						</div>
+						<FriendsPanel />
 					</div>
 				</div>
 			</div>

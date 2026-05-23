@@ -34,6 +34,17 @@ function DashboardRoute() {
 										value: "/language",
 										icon: <Globe />,
 									},
+									{
+										name: "Billing",
+										value: "/billing",
+										icon: (
+											<img
+												src="/billing.png"
+												alt=""
+												className="h-4 w-4 opacity-80"
+											/>
+										),
+									},
 								],
 							}}
 							url="/dashboard/settings"

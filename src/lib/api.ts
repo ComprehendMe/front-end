@@ -298,6 +298,99 @@ export async function sendMessage(chatId: string, content: string) {
 	);
 }
 
+// --- Friends ---
+
+export type FriendUser = {
+	id: string;
+	name: string | null;
+	avatar: string | null;
+	email?: string;
+};
+
+export type FriendSearchResult = FriendUser & {
+	relation: 'none' | 'pending' | 'accepted' | 'incoming';
+	requestId?: string;
+};
+
+export async function listFriends() {
+	return apiRequest<FriendUser[]>('/friends');
+}
+
+export async function searchFriends(name: string) {
+	return apiRequest<FriendSearchResult[]>(
+		`/friends/search?name=${encodeURIComponent(name)}`,
+	);
+}
+
+export async function requestFriend(userId: string) {
+	return apiRequest<{ ok: boolean }>('/friends/requests', {
+		method: 'POST',
+		body: { userId },
+	});
+}
+
+export async function removeFriend(friendId: string) {
+	return apiRequest<{ ok: boolean }>(`/friends/${friendId}`, {
+		method: 'DELETE',
+	});
+}
+
+export type FriendRequest = {
+	id: string;
+	requester: FriendUser & { email?: string };
+	createdAt: string;
+};
+
+export async function listFriendRequests() {
+	return apiRequest<FriendRequest[]>('/friends/requests');
+}
+
+export async function respondToFriendRequest(
+	requestId: string,
+	status: 'ACCEPTED' | 'DECLINED',
+) {
+	return apiRequest<{ ok: boolean }>(`/friends/requests/${requestId}`, {
+		method: 'PUT',
+		body: { status },
+	});
+}
+
+// --- Billing ---
+
+export type BillingInvoice = {
+	id: string;
+	name: string;
+	date: string;
+	plan: string;
+	amount: string;
+	status: 'active' | 'archived';
+	downloadUrl: string | null;
+};
+
+export type BillingSummary = {
+	plan: 'FREE' | 'PREMIUM';
+	invoices: BillingInvoice[];
+	checkoutAvailable: boolean;
+};
+
+export async function getBillingSummary() {
+	return apiRequest<BillingSummary>('/payments/billing');
+}
+
+export async function startPremiumCheckout() {
+	return apiRequest<{ url: string }>('/payments/checkout', { method: 'POST' });
+}
+
+export async function confirmPremiumCheckout(sessionId: string) {
+	return apiRequest<{ ok: boolean; plan: 'FREE' | 'PREMIUM' }>(
+		'/payments/confirm',
+		{
+			method: 'POST',
+			body: { sessionId },
+		},
+	);
+}
+
 export async function waitForModelReply(
 	chatId: string,
 	previousModelCount: number,

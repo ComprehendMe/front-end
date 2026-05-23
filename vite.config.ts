@@ -14,6 +14,15 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq, req) => {
+            const host = req.headers.host;
+            if (host) {
+              proxyReq.setHeader('x-forwarded-host', host);
+              proxyReq.setHeader('x-forwarded-proto', 'http');
+            }
+          });
+        },
       },
     },
   },
