@@ -8,14 +8,9 @@ import {
 	IconUsers,
 } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
 import {
 	ApiError,
 	createChat,
@@ -78,6 +73,8 @@ const BILLING_KEYWORDS = [
 
 export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	const navigate = useNavigate();
+	const searchRef = useRef<HTMLDivElement>(null);
+	const blurTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState('');
 	const [chats, setChats] = useState<Chat[]>([]);
@@ -198,57 +195,60 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	}
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger asChild>
-				<div className="relative w-full" onClick={(e) => e.stopPropagation()}>
-					<Input
-						value={query}
-						onChange={(e) => {
-							setQuery(e.target.value);
-						}}
-						onFocus={() => setOpen(true)}
-						className="h-12 w-full rounded-full border-[#1C1F22]/15 bg-white px-8 py-4 pr-12"
-						placeholder="What's up?"
-					/>
-					<Search className="pointer-events-none absolute top-1/2 right-5 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-				</div>
-			</PopoverTrigger>
-			<PopoverContent
-				align="start"
-				className="w-[var(--radix-popover-trigger-width)] rounded-2xl border-[#1C1F22]/10 p-2 shadow-lg"
-				onOpenAutoFocus={(e) => e.preventDefault()}
-			>
-				<ul className="flex flex-col">
-					{items.length === 0 ? (
-						<li className="px-3 py-4 text-center text-sm text-muted-foreground">
-							No results
-						</li>
-					) : (
-						items.map((item) => (
-							<li key={item.id}>
-								<button
-									type="button"
-									onClick={() => go(item)}
-									className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-[#F0F5FA]"
-								>
-									{item.icon}
-									<div className="min-w-0 flex-1">
-										<p className="text-sm font-medium text-[#1C1F22]">
-											{item.label}
-										</p>
-										{item.description ? (
-											<p className="truncate text-xs text-muted-foreground">
-												{item.description}
-											</p>
-										) : null}
-									</div>
-									<span className="text-sm font-medium text-[#1497D2]">Go</span>
-								</button>
+		<div ref={searchRef} className="relative w-full">
+			<div className="relative w-full">
+				<Input
+					value={query}
+					onChange={(e) => {
+						setQuery(e.target.value);
+					}}
+					onFocus={() => {
+						if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+						setOpen(true);
+					}}
+					onBlur={() => {
+						blurTimeoutRef.current = setTimeout(() => setOpen(false), 150);
+					}}
+					className="h-12 w-full rounded-full border-[#1C1F22]/15 bg-white px-8 py-4 pr-12"
+					placeholder="What's up?"
+				/>
+				<Search className="pointer-events-none absolute top-1/2 right-5 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+			</div>
+
+			{open && (
+				<div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-[#1C1F22]/10 bg-white p-2 shadow-lg">
+					<ul className="flex flex-col">
+						{items.length === 0 ? (
+							<li className="px-3 py-4 text-center text-sm text-muted-foreground">
+								No results
 							</li>
-						))
-					)}
-				</ul>
-			</PopoverContent>
-		</Popover>
+						) : (
+							items.map((item) => (
+								<li key={item.id}>
+									<button
+										type="button"
+										onClick={() => go(item)}
+										className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-[#F0F5FA]"
+									>
+										{item.icon}
+										<div className="min-w-0 flex-1">
+											<p className="text-sm font-medium text-[#1C1F22]">
+												{item.label}
+											</p>
+											{item.description ? (
+												<p className="truncate text-xs text-muted-foreground">
+													{item.description}
+												</p>
+											) : null}
+										</div>
+										<span className="text-sm font-medium text-[#1497D2]">Go</span>
+									</button>
+								</li>
+							))
+						)}
+					</ul>
+				</div>
+			)}
+		</div>
 	);
 }
