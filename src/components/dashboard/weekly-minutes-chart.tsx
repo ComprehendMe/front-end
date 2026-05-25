@@ -1,4 +1,4 @@
-import { Bar, BarChart, Cell, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -19,18 +19,26 @@ type WeeklyMinutesChartProps = {
 };
 
 export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
-  const max = Math.max(25, ...data.map((d) => d.minutes));
+  // Calculate dynamic max value (next multiple of 5)
+  const maxMinutes = Math.max(...data.map((d) => d.minutes), 25);
+  const dynamicMax = Math.ceil(maxMinutes / 5) * 5;
+
+  // Generate ticks dynamically (0, 5, 10, 15, ... up to dynamicMax)
+  const dynamicTicks = Array.from(
+    { length: dynamicMax / 5 + 1 },
+    (_, i) => i * 5
+  );
 
   return (
-    <div className="rounded-xl bg-[#F0F5FA] p-4">
+    <div className="rounded-xl bg-white p-4">
       <ChartContainer config={chartConfig} className="h-[180px] w-full">
         <BarChart
           accessibilityLayer
           data={data}
-          barCategoryGap={12}
-          margin={{ top: 8, right: 4, left: 4, bottom: 0 }}
+          barCategoryGap="30%"
+          margin={{ top: 8, right: 4, left: -10, bottom: 0 }}
         >
-          {/* Grid removed for cleaner Figma look */}
+          <CartesianGrid vertical={false} stroke="#E8EEF4" strokeWidth={1} />
           <XAxis
             dataKey="day"
             axisLine={false}
@@ -38,7 +46,14 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
             tickMargin={8}
             tick={{ fill: "#64748B", fontSize: 12 }}
           />
-          {/* Y axis intentionally removed for cleaner appearance */}
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            domain={[0, dynamicMax]}
+            ticks={dynamicTicks}
+            tick={{ fill: "#64748B", fontSize: 11 }}
+            width={30}
+          />
           <ChartTooltip
             cursor={{ fill: "rgba(20, 151, 210, 0.08)" }}
             content={
@@ -48,7 +63,7 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
               />
             }
           />
-          <Bar dataKey="minutes" radius={[8, 8, 8, 8]} maxBarSize={36}>
+          <Bar dataKey="minutes" radius={[6, 6, 6, 6]} maxBarSize={22}>
             {data.map((entry) => (
               <Cell
                 key={entry.day}

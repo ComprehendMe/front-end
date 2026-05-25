@@ -22,7 +22,6 @@ import {
   getChatReview,
   listMessages,
   type Message,
-  type MoveAnalysis,
   type ReviewResult,
 } from "@/lib/api";
 import { getPatientAvatar } from "@/lib/patient-avatar";
@@ -65,7 +64,6 @@ function ReviewPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentMove]);
 
-  const patientMsgs = messages.filter((m) => m.role === "model");
   const visibleMessages = messages.slice(
     0,
     currentMove === 0

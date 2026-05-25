@@ -20,7 +20,7 @@ import {
 } from "@/lib/api";
 import { getPatientAvatar } from "@/lib/patient-avatar";
 import { getTimeGreeting } from "@/lib/format-message-time";
-import { getDisplayName } from "@/lib/user-display";
+import { getFirstName } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../dashboard";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -35,8 +35,7 @@ function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loadingPatients, setLoadingPatients] = useState(true);
   const [startingId, setStartingId] = useState<string | null>(null);
-
-  const displayName = getDisplayName(user);
+  const firstName = getFirstName(user);
   const greeting = getTimeGreeting();
 
   const activeChats = allChats.filter((c) => !c.endedAt);
@@ -216,10 +215,10 @@ function DashboardPage() {
                 user={user}
                 streak={stats?.streak ?? 0}
                 ringProgress={stats?.ringProgress ?? 0}
-              />
+              />{" "}
               <div className="mt-4 space-y-1">
                 <h3 className="text-lg font-semibold text-foreground">
-                  {greeting} {displayName}
+                  {greeting} {firstName}
                 </h3>
                 <p className="text-sm font-medium text-gray-500">
                   Continue your learning to achieve your target!
