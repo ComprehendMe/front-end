@@ -2,12 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ContinueSection } from "@/components/dashboard/continue-section";
-import { PatientsCarousel } from "@/components/dashboard/patients-carousel";
 import { StatsAvatar } from "@/components/dashboard/stats-avatar";
 import { WeeklyMinutesChart } from "@/components/dashboard/weekly-minutes-chart";
 import { FriendsPanel } from "@/components/dashboard/friends-panel";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Bell } from "lucide-react";
 import {
   ApiError,
   createChat,
@@ -20,7 +20,7 @@ import {
 } from "@/lib/api";
 import { getPatientAvatar } from "@/lib/patient-avatar";
 import { getTimeGreeting } from "@/lib/format-message-time";
-import { getFirstName } from "@/lib/user-display";
+import { getFirstName, getInitials } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../dashboard";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -33,7 +33,6 @@ function DashboardPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [allChats, setAllChats] = useState<Chat[]>([]);
   const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loadingPatients, setLoadingPatients] = useState(true);
   const [startingId, setStartingId] = useState<string | null>(null);
   const firstName = getFirstName(user);
   const greeting = getTimeGreeting();
@@ -54,8 +53,7 @@ function DashboardPage() {
         toast.error(
           e instanceof ApiError ? e.message : "Could not load dashboard data."
         );
-      })
-      .finally(() => setLoadingPatients(false));
+      });
   }, []);
 
   async function handlePatientClick(patient: Patient) {
@@ -86,16 +84,16 @@ function DashboardPage() {
   }
 
   return (
-    <main className="mt-8 grid grid-cols-[1fr_340px] gap-5">
-      <div className="flex w-full flex-col gap-7">
-        <div className="w-full rounded-3xl bg-linear-to-bl from-[#0978AA] to-[#1497D2] px-8 py-10 text-white">
+    <main className="mt-8 grid grid-cols-[1fr_340px] gap-5 min-h-0">
+      <div className="flex w-full flex-col gap-7 min-w-0">
+        <div className="w-full rounded-3xl bg-linear-to-bl from-[#0978AA] to-[#1497D2] px-8 py-10 text-white shadow-sm">
           <div className="space-y-3">
             <h2 className="text-2xl font-semibold">Access Premium Patients</h2>
-            <p className="text-lg font-normal">
+            <p className="text-lg font-normal opacity-90">
               Advanced clinical cases for specialized training.
             </p>
             <Button
-              className="rounded-full bg-white/90 text-lg font-medium text-primary hover:bg-white"
+              className="rounded-full bg-white text-lg font-medium text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
               size="lg"
             >
               Go premium!
@@ -103,12 +101,9 @@ function DashboardPage() {
           </div>
         </div>{" "}
         {patients.length >= 3 && (
-          <div
-            className="relative overflow-hidden"
-            style={{ maxWidth: "720px" }}
-          >
+          <div className="relative overflow-hidden w-full">
             <div
-              className="flex gap-3 animate-scroll-left"
+              className="flex gap-4 animate-scroll-left"
               style={{
                 width: "fit-content",
               }}
@@ -128,24 +123,26 @@ function DashboardPage() {
                   type="button"
                   disabled={startingId !== null}
                   onClick={() => handlePatientClick(patient)}
-                  className="flex-shrink-0 flex items-center gap-2 rounded-lg border border-gray-200 bg-white p-2 text-left shadow-xs transition hover:shadow-sm hover:opacity-95 focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex-shrink-0 flex items-center gap-3 rounded-2xl border border-[#DDD DDE]/50 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                   style={{
-                    width: "240px",
-                    minWidth: "240px",
+                    width: "250px",
+                    minWidth: "250px",
                   }}
                 >
-                  <Avatar className="h-10 w-10 shrink-0">
-                    <AvatarImage
-                      src={getPatientAvatar(patient.name)}
-                      alt={patient.name}
-                      className="object-cover"
-                    />
-                  </Avatar>
+                  <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
+                    <Avatar className="h-full w-full rounded-lg">
+                      <AvatarImage
+                        src={getPatientAvatar(patient.name)}
+                        alt={patient.name}
+                        className="object-cover"
+                      />
+                    </Avatar>
+                  </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-semibold text-foreground leading-tight">
+                    <p className="truncate text-[14px] font-bold text-[#1C1F22] leading-tight">
                       {patient.name}
                     </p>
-                    <p className="truncate text-xs text-muted-foreground leading-tight">
+                    <p className="truncate text-[12px] text-muted-foreground font-medium mt-0.5">
                       {patient.problem}
                     </p>
                   </div>
@@ -159,24 +156,26 @@ function DashboardPage() {
                   type="button"
                   disabled={startingId !== null}
                   onClick={() => handlePatientClick(patient)}
-                  className="flex-shrink-0 flex items-center gap-2 rounded-lg border border-gray-200 bg-white p-2 text-left shadow-xs transition hover:shadow-sm hover:opacity-95 focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex-shrink-0 flex items-center gap-3 rounded-2xl border border-[#DDD DDE]/50 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                   style={{
-                    width: "240px",
-                    minWidth: "240px",
+                    width: "250px",
+                    minWidth: "250px",
                   }}
                 >
-                  <Avatar className="h-10 w-10 shrink-0">
-                    <AvatarImage
-                      src={getPatientAvatar(patient.name)}
-                      alt={patient.name}
-                      className="object-cover"
-                    />
-                  </Avatar>
+                  <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
+                    <Avatar className="h-full w-full rounded-lg">
+                      <AvatarImage
+                        src={getPatientAvatar(patient.name)}
+                        alt={patient.name}
+                        className="object-cover"
+                      />
+                    </Avatar>
+                  </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-semibold text-foreground leading-tight">
+                    <p className="truncate text-[14px] font-bold text-[#1C1F22] leading-tight">
                       {patient.name}
                     </p>
-                    <p className="truncate text-xs text-muted-foreground leading-tight">
+                    <p className="truncate text-[12px] text-muted-foreground font-medium mt-0.5">
                       {patient.problem}
                     </p>
                   </div>
@@ -185,21 +184,12 @@ function DashboardPage() {
             </div>
           </div>
         )}
-        {activeChats.length > 0 ? (
+        {activeChats.length > 0 && (
           <div className="py-2">
             <ContinueSection
               chats={activeChats}
               patients={patients}
               title="Continue conversation"
-            />
-          </div>
-        ) : (
-          <div id="patients">
-            <PatientsCarousel
-              patients={patients}
-              loading={loadingPatients}
-              startingId={startingId}
-              onSelectPatient={handlePatientClick}
             />
           </div>
         )}

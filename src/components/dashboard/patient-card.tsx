@@ -33,34 +33,45 @@ export function PatientCardContent({
 		.slice(0, 2)
 		.toUpperCase();
 
+	const bgColors = [
+		'bg-[#E6F4FA]', // Blue
+		'bg-[#F0E6FA]', // Purple
+		'bg-[#F4FAE6]', // Green
+	];
+	const bgColor = bgColors[patientIndex % bgColors.length];
+
 	return (
-		<div className={cn('flex flex-col justify-between gap-4', className)}>
-			<div className="flex justify-center rounded-xl bg-primary/10 py-4">
-				<Avatar className="size-24">
+		<div className={cn('flex flex-col gap-4', className)}>
+			<div className={cn('flex justify-center rounded-[20px] py-5', bgColor)}>
+				<Avatar className="size-24 shadow-xs border-2 border-white/20">
 					<AvatarImage
 						src={getPatientAvatar(patientName)}
 						alt={patientName}
 						className="object-cover"
 					/>
-					<AvatarFallback className="bg-primary/20 text-2xl font-semibold text-primary">
+					<AvatarFallback className="bg-white/50 text-xl font-bold text-[#1497D2]">
 						{initials}
 					</AvatarFallback>
 				</Avatar>
 			</div>
-			<Badge variant={badgeVariant} />
-			<div className="h-1 w-full overflow-hidden rounded-full bg-[#E8EEF2]">
-				<div
-					className="h-full rounded-full bg-primary transition-all"
-					style={{ width: `${progress}%` }}
-				/>
-			</div>
-			<div className="flex flex-col gap-2">
-				<p className="line-clamp-3 font-semibold text-xl text-foreground">
-					{problem}
-				</p>
-				<span className="font-semibold text-muted-foreground text-sm">
-					{subtitle ?? patientName}
-				</span>
+			<div className="flex flex-col gap-3">
+				<div className="flex items-center gap-2">
+					<Badge variant={badgeVariant} className="font-semibold px-2.5 py-0.5 rounded-full text-[11px] uppercase tracking-wide" />
+				</div>
+				<div className="h-1.5 w-full overflow-hidden rounded-full bg-[#E8EEF2]">
+					<div
+						className="h-full rounded-full bg-[#1497D2] transition-all"
+						style={{ width: `${progress}%` }}
+					/>
+				</div>
+				<div className="flex flex-col gap-1 mt-0.5">
+					<p className="line-clamp-2 font-bold text-[17px] text-[#1C1F22] leading-[1.3]">
+						{problem}
+					</p>
+					<span className="font-semibold text-muted-foreground text-[13px]">
+						{subtitle ?? patientName}
+					</span>
+				</div>
 			</div>
 		</div>
 	);

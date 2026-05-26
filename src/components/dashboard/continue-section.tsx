@@ -48,9 +48,9 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 
 	return (
 		<div className="space-y-4">
-			<div className="flex w-full items-center justify-between">
+			<div className="flex w-full items-center justify-between px-0.5">
 				{title ? (
-					<h2 className="text-xl font-semibold text-foreground">
+					<h2 className="text-xl font-bold text-[#1C1F22]">
 						{title}
 					</h2>
 				) : (
@@ -59,48 +59,49 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 				<div className="flex gap-3">
 					<Button
 						variant="outline"
-						className="rounded-full"
+						className="rounded-full border-[#DDD DDE]/50 bg-white shadow-xs hover:bg-gray-50"
 						size="icon-lg"
 						disabled={!canScrollPrev}
 						onClick={() => carouselApi?.scrollPrev()}
 					>
-						<ChevronLeft className="h-5 w-5" />
+						<ChevronLeft className="h-5 w-5 text-[#1497D2]" />
 					</Button>
 					<Button
 						size="icon-lg"
-						className="rounded-full"
+						className="rounded-full shadow-xs bg-[#1497D2] hover:bg-[#2285B3]"
 						disabled={!canScrollNext}
 						onClick={() => carouselApi?.scrollNext()}
 					>
-						<ChevronRight className="h-5 w-5" />
+						<ChevronRight className="h-5 w-5 text-white" />
 					</Button>
 				</div>
 			</div>
-			<div className="w-full rounded-xl bg-white p-5 select-none">
+			<div className="w-full select-none">
 				<Carousel
 					setApi={setCarouselApi}
 					opts={{
 						dragFree: true,
 						containScroll: 'trimSnaps',
+						align: 'start',
 					}}
 					className="relative"
 				>
-					<CarouselContent>
+					<CarouselContent className="-ml-4">
 						{chats.map((chat) => {
 							const patientIndex = getPatientIndex(patients, chat.patientId);
 
 							return (
-								<CarouselItem key={chat.id} className="basis-full md:basis-1/2 lg:basis-1/3 md:max-w-[266px]">
+								<CarouselItem key={chat.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 max-w-[350px]">
 									<Link
 										to="/dashboard/chat/$chatId"
 										params={{ chatId: chat.id }}
 										className={cardLinkClass}
 									>
-										<div className="relative">
+										<div className="relative h-full">
 											{chat.pausedAt ? (
 												<Badge
 													variant="secondary"
-													className="absolute top-2 right-2 z-10 bg-[#F8F8CD] text-[#726B07]"
+													className="absolute top-4 right-4 z-10 bg-[#F8F8CD] text-[#726B07] border-none"
 												>
 													Paused
 												</Badge>
@@ -110,6 +111,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 												patientId={chat.patientId}
 												patientName={chat.patient.name}
 												problem={chat.patient.problem}
+												className="h-full bg-white rounded-[24px] p-5 shadow-xs border border-[#DDD DDE]/30"
 											/>
 										</div>
 									</Link>
