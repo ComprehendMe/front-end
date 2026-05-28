@@ -36,6 +36,12 @@ code {
   --dashboard-border: #e8edf2;
   --dashboard-text: #1c1f22;
   --dashboard-subtle-text: #4b4e58;
+  --dashboard-primary: #0978aa;
+  --dashboard-primary-hover: #2285b3;
+  --dashboard-input: #e6f1f6;
+  --dashboard-border-strong: #ddddde;
+  --dashboard-danger: #ef4444;
+  --dashboard-success: #29b12c;
   --background: #fefefe;
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -76,6 +82,12 @@ code {
   --dashboard-border: oklch(0.35 0.01 270);
   --dashboard-text: oklch(0.95 0 0);
   --dashboard-subtle-text: oklch(0.78 0.01 270);
+  --dashboard-primary: oklch(0.62 0.14 236);
+  --dashboard-primary-hover: oklch(0.56 0.13 236);
+  --dashboard-input: oklch(0.3 0.01 270);
+  --dashboard-border-strong: oklch(0.4 0.01 270);
+  --dashboard-danger: oklch(0.63 0.21 25);
+  --dashboard-success: oklch(0.72 0.2 145);
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);

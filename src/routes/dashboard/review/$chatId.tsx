@@ -5,6 +5,7 @@ import {
   ChevronRight,
   Loader2,
   Play,
+  Sparkles,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -35,6 +36,20 @@ import { Route as DashboardRoute } from "../../dashboard";
 export const Route = createFileRoute("/dashboard/review/$chatId")({
   component: ReviewPage,
 });
+
+function formatReviewText(text: string) {
+  const trimmed = text.trim();
+  if (!trimmed) {
+    return "No written feedback was generated for this move.";
+  }
+  const looksLikeJson =
+    (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+    trimmed.startsWith("```");
+  if (looksLikeJson) {
+    return "Feedback format is being normalized. Recompute this move to see a clean explanation.";
+  }
+  return trimmed;
+}
 
 function ReviewPage() {
   const { chatId } = Route.useParams();
@@ -91,7 +106,7 @@ function ReviewPage() {
     currentMove > 0 ? userMessageIdsInOrder[currentMove - 1] : null;
   const visibleMessages =
     currentMove === 0 || !lastVisibleUserMessageId
-      ? messages.slice(0, 1)
+      ? []
       : messages.slice(
           0,
           messages.findIndex((m) => m.id === lastVisibleUserMessageId) + 1
@@ -206,7 +221,7 @@ function ReviewPage() {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-4rem)] flex-col gap-5 px-3 py-4 sm:px-4 lg:h-[calc(100vh-4rem)] lg:flex-row lg:px-6 lg:py-5">
+    <main className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-[1700px] flex-col gap-5 px-3 py-4 sm:px-4 lg:h-[calc(100vh-4rem)] lg:flex-row lg:px-6 lg:py-5">
       <div className="flex min-w-0 flex-1 flex-col gap-4 overflow-hidden">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -221,9 +236,9 @@ function ReviewPage() {
             <span className="text-sm font-medium text-muted-foreground">
               Move {currentMove}/{totalMoves}
             </span>
-            <div className="h-2 w-28 overflow-hidden rounded-full bg-[#D6E6F5] sm:w-36">
+            <div className="h-2 w-28 overflow-hidden rounded-full bg-[var(--dashboard-input)] sm:w-36">
               <div
-                className="h-full rounded-full bg-[#1497D2] transition-all duration-300"
+                className="h-full rounded-full bg-[var(--dashboard-primary)] transition-all duration-300"
                 style={{
                   width: `${totalMoves > 0 ? (currentMove / totalMoves) * 100 : 0}%`,
                 }}
@@ -233,7 +248,38 @@ function ReviewPage() {
         </div>
 
         <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-4 sm:p-6">
-          {visibleMessages.map((msg, i) => {
+          {currentMove === 0 ? (
+            <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl" />
+                <Avatar className="relative h-24 w-24 border-4 border-white shadow-lg">
+                  <AvatarImage
+                    src={getPatientAvatar(review.patient.name)}
+                    alt={review.patient.name}
+                  />
+                  <AvatarFallback className="bg-[#F0F5FA] text-2xl font-semibold text-primary">
+                    {review.patient.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-[34px] font-semibold leading-[1.1] text-[#1C1F22]">
+                  {`Good morning, my name is ${review.patient.name.split(" ")[0]}`}
+                </h2>
+                <p className="mx-auto max-w-xl text-lg text-[#4B4E58]">
+                  {review.patient.problem}
+                </p>
+              </div>
+              <Button
+                onClick={handleNext}
+                className="rounded-full bg-[#1497D2] px-6 text-white hover:bg-[#2285B3]"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Start review
+              </Button>
+            </div>
+          ) : (
+            visibleMessages.map((msg, i) => {
             const isUser = msg.role === "user";
             const isFirstPatientMsg = i === 0 && !isUser;
             const patient = review.patient;
@@ -261,7 +307,7 @@ function ReviewPage() {
                       </AvatarFallback>
                     </Avatar>
                   </div>
-                  <div className="max-w-[70%] rounded-2xl bg-[#D6EBF7] px-4 py-3 text-sm text-foreground">
+                  <div className="max-w-[70%] rounded-2xl bg-[var(--dashboard-input)] px-4 py-3 text-sm text-foreground">
                     {msg.content}
                   </div>
                 </div>
@@ -292,22 +338,23 @@ function ReviewPage() {
                     ) : null}
                   </div>
                 </div>
-                <div className="ml-10 max-w-[70%] rounded-2xl bg-[#F0F5FA] px-4 py-3 text-sm text-foreground">
+                <div className="ml-10 max-w-[70%] rounded-2xl bg-[var(--dashboard-soft)] px-4 py-3 text-sm text-foreground">
                   {msg.content}
                 </div>
                 {move ? (
-                  <span className="ml-10 text-[11px] font-medium text-[#1497D2]">
+                  <span className="ml-10 text-[11px] font-medium text-[var(--dashboard-primary)]">
                     Related to move {move.moveNumber}/{totalMoves}
                   </span>
                 ) : null}
               </div>
             );
-          })}
+          })
+          )}
           <div ref={bottomRef} />
         </div>
       </div>
 
-      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-5 lg:w-[340px]">
+      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-5 lg:w-[360px] xl:w-[390px]">
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-foreground">
             Performance Panel
@@ -317,7 +364,7 @@ function ReviewPage() {
 
         {currentMove === 0 ? (
           <div className="flex flex-1 flex-col gap-3 text-sm text-foreground">
-            <p className="font-semibold text-[#1497D2]">Game not started!</p>
+            <p className="font-semibold text-[var(--dashboard-primary)]">Game not started!</p>
             <p className="text-muted-foreground">No moves on the chat.</p>
             <p className="text-muted-foreground">
               Press <Play className="mx-1 inline h-3.5 w-3.5" /> to reveal the
@@ -353,7 +400,7 @@ function ReviewPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto text-sm leading-relaxed text-foreground">
-              {currentAnalysis.feedback
+              {formatReviewText(currentAnalysis.feedback)
                 .split(/(\*\*.*?\*\*)/)
                 .map((part, i) =>
                   part.startsWith("**") && part.endsWith("**") ? (
@@ -429,7 +476,7 @@ function ReviewPage() {
           </p>
           {currentMove >= totalMoves && totalMoves > 0 && (
             <Button
-              className="w-full bg-[#D6EBFA] text-[#0978AA] hover:bg-[#c5e2f7]"
+              className="w-full bg-[var(--dashboard-input)] text-[var(--dashboard-primary)] hover:bg-[#cfe5f4]"
               onClick={() => setSummaryOpen(true)}
             >
               View full summary
