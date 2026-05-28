@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useId } from 'react';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 import MissionSection from '@/components/mission-section';
@@ -9,13 +8,40 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export const Route = createFileRoute('/')({
+	head: () => ({
+		meta: [
+			{
+				title: 'ComprehendMe — Practice without fear. Serve without hesitation.',
+			},
+			{
+				name: 'description',
+				content:
+					'Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.',
+			},
+			{ property: 'og:title', content: 'ComprehendMe' },
+			{
+				property: 'og:description',
+				content:
+					'Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.',
+			},
+			{ property: 'og:type', content: 'website' },
+			{ property: 'og:url', content: 'https://comprehendme.com' },
+			{ property: 'og:image', content: '/og-image.png' },
+			{ property: 'og:locale', content: 'en_US' },
+			{ name: 'twitter:card', content: 'summary_large_image' },
+			{ name: 'twitter:title', content: 'ComprehendMe' },
+			{
+				name: 'twitter:description',
+				content:
+					'Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.',
+			},
+			{ name: 'twitter:image', content: '/og-image.png' },
+		],
+	}),
 	component: App,
 });
 
 function App() {
-	const benefitsSectionId = useId();
-	const pricingSectionId = useId();
-
 	return (
 		<>
 			<div className="min-h-screen bg-background">
@@ -49,11 +75,11 @@ function App() {
 						</div>
 					</main>
 					<section
-						id={benefitsSectionId}
+						id="benefits"
 						className="m-auto mt-[clamp(3rem,8vw,9rem)] grid grid-cols-1 gap-fluid-lg sm:grid-cols-2 lg:grid-cols-3"
 					>
 						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
+							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/Group.svg"
 									alt="Choose a patient"
@@ -69,7 +95,7 @@ function App() {
 							</div>
 						</div>
 						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
+							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/Vector.svg"
 									alt="Chat in real time"
@@ -85,7 +111,7 @@ function App() {
 							</div>
 						</div>
 						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
-							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
+							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/carbon_report.svg"
 									alt="Receive a report"
@@ -101,7 +127,7 @@ function App() {
 							</div>
 						</div>
 					</section>
-					<div id={pricingSectionId}>
+					<div id="pricing">
 						<PricingSection />
 					</div>
 					<MissionSection />

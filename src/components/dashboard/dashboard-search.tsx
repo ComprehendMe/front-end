@@ -188,6 +188,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	}
 
 	function go(item: SearchItem) {
+		if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
 		close();
 		if (item.id.startsWith('patient-')) {
 			const patientId = item.id.replace('patient-', '');
@@ -236,7 +237,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 								<li key={item.id}>
 									<button
 										type="button"
-										onClick={() => go(item)}
+										onPointerDown={() => go(item)}
 										className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-[#F0F5FA]"
 									>
 										{item.icon}

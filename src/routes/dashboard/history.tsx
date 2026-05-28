@@ -8,6 +8,7 @@ import {
 	type HistoryRow,
 } from '@/components/tables/history/columns';
 import { DataTable } from '@/components/tables/history/data-table';
+import { Button } from '@/components/ui/button';
 import {
 	ApiError,
 	listChatHistory,
@@ -28,9 +29,11 @@ export const Route = createFileRoute('/dashboard/history')({
 function HistoryPage() {
 	const [rows, setRows] = useState<HistoryRow[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	const loadHistory = useCallback(async () => {
 		setLoading(true);
+		setError(null);
 		try {
 			const [history, patients] = await Promise.all([
 				listChatHistory(),
@@ -58,11 +61,10 @@ function HistoryPage() {
 
 			setRows(mapped);
 		} catch (e) {
-			toast.error(
-				e instanceof ApiError
-					? e.message
-						: 'Could not load history.',
-			);
+			setRows([]);
+			const msg = e instanceof ApiError ? e.message : 'Could not load history.';
+			setError(msg);
+			toast.error(msg);
 		} finally {
 			setLoading(false);
 		}
@@ -93,11 +95,30 @@ function HistoryPage() {
 	);
 
 	return (
-		<main className="py-fluid-section">
+		<main className="bg-[var(--dashboard-canvas-alt)] py-fluid-section">
 			<div className="min-h-[70vh] space-y-fluid-lg overflow-hidden rounded-[20px] border border-[#1C1F22]/15 bg-white px-fluid-container py-fluid-section">
 				<h2 className="text-fluid-2xl font-semibold text-[#1C1F22]">History</h2>
 				{loading ? (
-					<p className="text-sm text-muted-foreground">Loading…</p>
+					<div className="space-y-4 animate-pulse">
+						<div className="h-10 w-full rounded bg-muted" />
+						<div className="h-10 w-full rounded bg-muted" />
+						<div className="h-10 w-full rounded bg-muted" />
+						<div className="h-10 w-3/4 rounded bg-muted" />
+					</div>
+				) : error ? (
+					<div className="flex flex-col items-center gap-3 py-12">
+						<p className="text-sm text-muted-foreground">{error}</p>
+						<Button variant="outline" size="sm" onClick={() => void loadHistory()}>
+							Try again
+						</Button>
+					</div>
+				) : rows.length === 0 ? (
+					<div className="flex flex-col items-center gap-2 py-12">
+						<p className="text-sm font-medium text-muted-foreground">No history yet</p>
+						<p className="text-xs text-muted-foreground">
+							Complete your first conversation to see it here.
+						</p>
+					</div>
 				) : (
 					<DataTable columns={columns} data={rows} />
 				)}

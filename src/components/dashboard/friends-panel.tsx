@@ -69,7 +69,7 @@ function FriendRow({
 						onClick={() => onRemove(user.id)}
 					>
 						<Trash2 className="h-4 w-4" />
-						Excluir
+						Remove
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

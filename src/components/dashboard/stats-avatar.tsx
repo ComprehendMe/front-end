@@ -29,7 +29,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 					cy="84"
 					r={radius}
 					fill="transparent"
-					stroke="#E2E8F0"
+					className="stroke-dashboard-border"
 					strokeWidth={stroke}
 				/>
 				<circle

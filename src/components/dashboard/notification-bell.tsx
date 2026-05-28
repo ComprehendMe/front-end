@@ -1,5 +1,5 @@
 import { Bell, Check, X } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -25,32 +25,38 @@ export function NotificationBell() {
 	const seenIdsRef = useRef<Set<string>>(new Set());
 	const [respondingId, setRespondingId] = useState<string | null>(null);
 
-	const loadRequests = useCallback(async () => {
-		try {
-			const data = await listFriendRequests();
-			setRequests(data);
-
-			for (const req of data) {
-				if (seenIdsRef.current.has(req.id)) continue;
-				const name = req.requester.name?.trim() || 'Someone';
-				showDesktopNotification(
-					'Friend request',
-					`${name} sent you a friend request.`,
-				);
-				seenIdsRef.current.add(req.id);
-			}
-		} catch {
-			// silent — user may be offline
-		} finally {
-			setLoading(false);
-		}
-	}, []);
-
 	useEffect(() => {
-		void loadRequests();
-		const interval = setInterval(() => void loadRequests(), 30_000);
-		return () => clearInterval(interval);
-	}, [loadRequests]);
+		let mounted = true;
+
+		async function poll() {
+			try {
+				const data = await listFriendRequests();
+				if (!mounted) return;
+				setRequests(data);
+
+				for (const req of data) {
+					if (seenIdsRef.current.has(req.id)) continue;
+					const name = req.requester.name?.trim() || 'Someone';
+					showDesktopNotification(
+						'Friend request',
+						`${name} sent you a friend request.`,
+					);
+					seenIdsRef.current.add(req.id);
+				}
+			} catch {
+				// silent — user may be offline
+			} finally {
+				if (mounted) setLoading(false);
+			}
+		}
+
+		void poll();
+		const interval = setInterval(() => void poll(), 30_000);
+		return () => {
+			mounted = false;
+			clearInterval(interval);
+		};
+	}, []);
 
 	async function handleRespond(
 		requestId: string,

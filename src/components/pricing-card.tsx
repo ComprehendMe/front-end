@@ -43,26 +43,26 @@ const PricingSection = ({
 			monthlyPrice: "€0",
 			yearlyPrice: "€0",
 			features: [
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
+				{ text: "Chat with 4 AI patient profiles" },
+				{ text: "25 messages per day" },
+				{ text: "Basic AI conversation review" },
+				{ text: "Full session history" },
+				{ text: "Progress and streak tracking" },
+				{ text: "Connect with friends" },
 			],
 		},
 		{
 			id: "premium",
 			name: "Premium",
-			monthlyPrice: "€40",
-			yearlyPrice: "€40",
+			monthlyPrice: "€15",
+			yearlyPrice: "€12",
 			features: [
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
-				{ text: "Figma ipsum component" },
+				{ text: "Unlimited messages per day" },
+				{ text: "Advanced AI performance reviews" },
+				{ text: "Downloadable session reports" },
+				{ text: "All difficulty levels from Easy to Hard" },
+				{ text: "Priority support" },
+				{ text: "Premium profile badge" },
 			],
 			button: {
 				text: "Get Premium",
@@ -81,7 +81,7 @@ const PricingSection = ({
 						<Tabs
 							value={isYearly ? "annual" : "monthly"}
 							onValueChange={(value) => setIsYearly(value === "annual")}
-							defaultValue="annual"
+							defaultValue="monthly"
 						>
 							<TabsList>
 								<TabsTrigger value="monthly">Monthly</TabsTrigger>
@@ -101,9 +101,9 @@ const PricingSection = ({
 										<span className="text-3xl font-bold">
 											{isYearly ? plan.yearlyPrice : plan.monthlyPrice}
 										</span>
-										<span className="text-muted-foreground text-fluid-base font-normal">
-											{isYearly ? "euros/year" : "euros/month"}
-										</span>
+									<span className="text-muted-foreground text-fluid-base font-normal">
+										{isYearly ? "/month, billed annually" : "/month"}
+									</span>
 									</div>
 								</CardHeader>
 								<CardContent>

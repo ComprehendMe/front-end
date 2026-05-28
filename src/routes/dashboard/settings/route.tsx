@@ -9,7 +9,7 @@ export const Route = createFileRoute("/dashboard/settings")({
 
 function DashboardRoute() {
 	return (
-		<main className="py-fluid-section">
+		<main className="bg-[var(--dashboard-canvas-alt)] py-fluid-section">
 			<div className="bg-white border border-[#1C1F22]/15 rounded-t-[20px]">
 				<h3 className="mx-fluid-container my-fluid-lg font-semibold text-fluid-2xl">
 					Settings

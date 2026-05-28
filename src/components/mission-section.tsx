@@ -1,10 +1,7 @@
-import { useId } from "react";
-
 export default function MissionSection() {
-	const sectionId = useId();
 	return (
 		<section
-			id={sectionId}
+			id="mission"
 			className="mx-auto flex w-full flex-col items-center px-fluid-container py-fluid-section text-center"
 		>
 			<div className="flex flex-col items-center">
@@ -24,9 +21,7 @@ export default function MissionSection() {
 			<img
 				src="/lp.png"
 				alt="Students collaborating around a virtual patient session"
-				width={488}
-				height={287}
-				className="mt-[clamp(2rem,6vw,6rem)] h-auto w-[488px] max-w-full object-contain"
+				className="mt-[clamp(2rem,6vw,6rem)] h-auto w-full max-w-[clamp(280px,60vw,1000px)] object-contain"
 				loading="lazy"
 			/>
 		</section>

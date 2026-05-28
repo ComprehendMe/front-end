@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import {
 	BsDiscord,
 	BsInstagram,
@@ -6,6 +5,11 @@ import {
 	BsTwitterX,
 	BsYoutube,
 } from "react-icons/bs";
+
+function scrollToId(id: string) {
+	const el = document.getElementById(id);
+	if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 export default function Footer() {
 	return (
@@ -38,30 +42,32 @@ export default function Footer() {
 					</a>
 				</div>
 			</div>
-			<div className="grid grid-cols-1 gap-fluid-lg sm:grid-cols-2">
-				<ul className="flex flex-col gap-3">
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Benefits</Link>
-					</li>
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Pricing</Link>
-					</li>
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Our mission</Link>
-					</li>
-				</ul>
-				<ul className="flex flex-col gap-3">
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Privacy Policy</Link>
-					</li>
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Terms of use</Link>
-					</li>
-					<li className="text-foreground font-normal text-fluid-sm">
-						<Link to="/">Cookies policy</Link>
-					</li>
-				</ul>
-			</div>
+			<ul className="flex flex-col gap-3">
+				<li>
+					<button
+						onClick={() => scrollToId('benefits')}
+						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
+					>
+						Benefits
+					</button>
+				</li>
+				<li>
+					<button
+						onClick={() => scrollToId('pricing')}
+						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
+					>
+						Pricing
+					</button>
+				</li>
+				<li>
+					<button
+						onClick={() => scrollToId('mission')}
+						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
+					>
+						Our mission
+					</button>
+				</li>
+			</ul>
 		</footer>
 	);
 }

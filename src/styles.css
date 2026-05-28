@@ -185,7 +185,8 @@ code {
 
 :root {
   --radius: 0.65rem;
-  --dashboard-canvas: #f7fafb;
+  --dashboard-canvas: #f7f9fb;
+  --dashboard-canvas-alt: #f3f7f8;
   --dashboard-panel: #fcfdfe;
   --dashboard-card: #ffffff;
   --dashboard-soft: #f0f5fa;
@@ -232,6 +233,7 @@ code {
 }
 .dark {
   --dashboard-canvas: oklch(0.19 0.01 270);
+  --dashboard-canvas-alt: oklch(0.21 0.01 270);
   --dashboard-panel: oklch(0.23 0.01 270);
   --dashboard-card: oklch(0.25 0.01 270);
   --dashboard-soft: oklch(0.28 0.01 270);
@@ -314,6 +316,20 @@ code {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-dashboard-canvas: var(--dashboard-canvas);
+  --color-dashboard-canvas-alt: var(--dashboard-canvas-alt);
+  --color-dashboard-panel: var(--dashboard-panel);
+  --color-dashboard-card: var(--dashboard-card);
+  --color-dashboard-soft: var(--dashboard-soft);
+  --color-dashboard-border: var(--dashboard-border);
+  --color-dashboard-text: var(--dashboard-text);
+  --color-dashboard-subtle-text: var(--dashboard-subtle-text);
+  --color-dashboard-primary: var(--dashboard-primary);
+  --color-dashboard-primary-hover: var(--dashboard-primary-hover);
+  --color-dashboard-input: var(--dashboard-input);
+  --color-dashboard-border-strong: var(--dashboard-border-strong);
+  --color-dashboard-danger: var(--dashboard-danger);
+  --color-dashboard-success: var(--dashboard-success);
 }
 
 @layer base {

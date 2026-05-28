@@ -34,9 +34,14 @@ export function PatientCardContent({
 		.toUpperCase();
 
 	const bgColors = [
-		'bg-[#E6F4FA]', // Blue
-		'bg-[#F0E6FA]', // Purple
-		'bg-[#F4FAE6]', // Green
+		'bg-[#E6F4FA]', // Soft blue
+		'bg-[#F0E6FA]', // Soft purple
+		'bg-[#F4FAE6]', // Soft green
+		'bg-[#FAE6E8]', // Soft rose
+		'bg-[#E6FAF4]', // Soft mint
+		'bg-[#FAF0E6]', // Soft peach
+		'bg-[#E8E6FA]', // Soft indigo
+		'bg-[#FAE6F0]', // Soft pink
 	];
 	const bgColor = bgColors[patientIndex % bgColors.length];
 
