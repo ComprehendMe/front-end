@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  AlertCircle,
   ChevronLeft,
   ChevronRight,
   Loader2,
-  TriangleAlert,
+  Play,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -18,9 +19,11 @@ import {
 } from "@/components/ui/dialog";
 import {
   ApiError,
-  getChat,
+  downloadChatReviewReport,
   getChatReview,
   listMessages,
+  recomputeChatReview,
+  waitForReviewReady,
   type Message,
   type ReviewResult,
 } from "@/lib/api";
@@ -41,13 +44,14 @@ function ReviewPage() {
   const [loading, setLoading] = useState(true);
   const [currentMove, setCurrentMove] = useState(0);
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const [recomputing, setRecomputing] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const totalMoves = review?.moves.length ?? 0;
   const currentAnalysis = review?.moves[currentMove - 1] ?? null;
 
   useEffect(() => {
-    Promise.all([getChatReview(chatId), listMessages(chatId), getChat(chatId)])
+    Promise.all([getChatReview(chatId), listMessages(chatId)])
       .then(([r, msgs]) => {
         setReview(r);
         setMessages(msgs);
@@ -61,21 +65,37 @@ function ReviewPage() {
   }, [chatId]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [currentMove]);
+    if (review?.reviewStatus !== "PENDING") return;
+    let cancelled = false;
+    void waitForReviewReady(chatId, 20, 1500)
+      .then((next) => {
+        if (!cancelled) setReview(next);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [chatId, review?.reviewStatus]);
 
-  const visibleMessages = messages.slice(
-    0,
-    currentMove === 0
-      ? 1
-      : currentMove >= totalMoves
-        ? messages.length
-        : messages.findIndex(
-            (m) =>
-              m.role === "user" &&
-              m.content === review?.moves[currentMove]?.content
-          ) + 1
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  const moveByMessageId = new Map(
+    (review?.moves ?? []).map((move) => [move.messageId, move])
   );
+  const userMessageIdsInOrder = messages
+    .filter((m) => m.role === "user")
+    .map((m) => m.id);
+  const lastVisibleUserMessageId =
+    currentMove > 0 ? userMessageIdsInOrder[currentMove - 1] : null;
+  const visibleMessages =
+    currentMove === 0 || !lastVisibleUserMessageId
+      ? messages.slice(0, 1)
+      : messages.slice(
+          0,
+          messages.findIndex((m) => m.id === lastVisibleUserMessageId) + 1
+        );
 
   function handlePrev() {
     setCurrentMove((p) => Math.max(0, p - 1));
@@ -87,11 +107,7 @@ function ReviewPage() {
 
   async function handleDownload() {
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL ?? "/api"}/chats/${chatId}/review/report`,
-        { credentials: "include" }
-      );
-      const blob = await res.blob();
+      const blob = await downloadChatReviewReport(chatId);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -100,6 +116,27 @@ function ReviewPage() {
       URL.revokeObjectURL(url);
     } catch {
       toast.error("Failed to download report.");
+    }
+  }
+
+  async function handleRecompute() {
+    setRecomputing(true);
+    try {
+      await recomputeChatReview(chatId);
+      const refreshed = await waitForReviewReady(chatId);
+      setReview(refreshed);
+      setCurrentMove(0);
+      if (refreshed.reviewStatus === "FAILED") {
+        toast.error(refreshed.errorMessage ?? "Review generation failed.");
+      } else {
+        toast.success("Review recomputed.");
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof ApiError ? error.message : "Failed to recompute review."
+      );
+    } finally {
+      setRecomputing(false);
     }
   }
 
@@ -124,6 +161,50 @@ function ReviewPage() {
     );
   }
 
+  if (review.reviewStatus === "PENDING") {
+    return (
+      <main className="flex flex-1 items-center justify-center py-20">
+        <div className="flex max-w-md flex-col items-center gap-4 text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm font-medium text-foreground">
+            Your move-by-move review is being generated.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            This may take a few seconds. We analyze only your interventions.
+          </p>
+          <Button
+            variant="outline"
+            onClick={async () => {
+              const refreshed = await getChatReview(chatId);
+              setReview(refreshed);
+            }}
+          >
+            Refresh
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (review.reviewStatus === "FAILED") {
+    return (
+      <main className="flex flex-1 items-center justify-center py-20">
+        <div className="flex max-w-md flex-col items-center gap-4 text-center">
+          <AlertCircle className="h-8 w-8 text-red-500" />
+          <p className="text-sm font-medium text-foreground">
+            We could not generate this review.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {review.errorMessage ?? "Please try again."}
+          </p>
+          <Button onClick={() => void handleRecompute()} disabled={recomputing}>
+            {recomputing ? "Retrying..." : "Retry review"}
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex h-[calc(100vh-4rem)] gap-5 px-6 py-5">
       <div className="flex flex-1 flex-col gap-4 overflow-hidden">
@@ -140,9 +221,9 @@ function ReviewPage() {
             <span className="text-sm font-medium text-muted-foreground">
               Move {currentMove}/{totalMoves}
             </span>
-            <div className="h-2 w-32 overflow-hidden rounded-full bg-gray-200">
+            <div className="h-2 w-36 overflow-hidden rounded-full bg-[#D6E6F5]">
               <div
-                className="h-full rounded-full bg-blue-500 transition-all duration-300"
+                className="h-full rounded-full bg-[#1497D2] transition-all duration-300"
                 style={{
                   width: `${totalMoves > 0 ? (currentMove / totalMoves) * 100 : 0}%`,
                 }}
@@ -159,7 +240,7 @@ function ReviewPage() {
 
             if (isUser) {
               return (
-                <div key={i} className="flex flex-col items-end gap-1">
+                <div key={msg.id} className="flex flex-col items-end gap-1">
                   <div className="flex items-center gap-2">
                     <div className="text-right">
                       <p className="text-sm font-semibold text-foreground">
@@ -187,8 +268,9 @@ function ReviewPage() {
               );
             }
 
+            const move = moveByMessageId.get(msg.id);
             return (
-              <div key={i} className="flex flex-col gap-1">
+              <div key={msg.id} className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <Avatar className="size-8">
                     <AvatarImage
@@ -213,6 +295,11 @@ function ReviewPage() {
                 <div className="ml-10 max-w-[70%] rounded-2xl bg-[#F0F5FA] px-4 py-3 text-sm text-foreground">
                   {msg.content}
                 </div>
+                {move ? (
+                  <span className="ml-10 text-[11px] font-medium text-[#1497D2]">
+                    Related to move {move.moveNumber}/{totalMoves}
+                  </span>
+                ) : null}
               </div>
             );
           })}
@@ -229,16 +316,12 @@ function ReviewPage() {
         </div>
 
         {currentMove === 0 ? (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-            <TriangleAlert className="h-10 w-10 text-yellow-500" />
-            <p className="text-sm font-semibold text-foreground">
-              Game not started!
-            </p>
-            <p className="text-xs text-muted-foreground">
-              No moves on the chat.
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Press ▶ to reveal the first intervention.
+          <div className="flex flex-1 flex-col gap-3 text-sm text-foreground">
+            <p className="font-semibold text-[#1497D2]">Game not started!</p>
+            <p className="text-muted-foreground">No moves on the chat.</p>
+            <p className="text-muted-foreground">
+              Press <Play className="mx-1 inline h-3.5 w-3.5" /> to reveal the
+              first intervention.
             </p>
           </div>
         ) : currentAnalysis ? (
@@ -257,11 +340,11 @@ function ReviewPage() {
                 }
               >
                 {currentAnalysis.quality === "strong"
-                  ? "Strong Intervention"
+                    ? "Strong intervention"
                   : currentAnalysis.quality === "adequate"
-                    ? "Adequate"
+                      ? "Adequate"
                     : currentAnalysis.quality === "needs_attention"
-                      ? "Needs Attention"
+                        ? "Needs Attention"
                       : "Needs Adjustment"}
               </span>
               <span className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
@@ -325,7 +408,11 @@ function ReviewPage() {
               disabled={currentMove >= totalMoves}
               onClick={handleNext}
             >
-              <ChevronRight className="h-4 w-4" />
+              {currentMove === 0 ? (
+                <Play className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
             </Button>
           </div>
           {currentAnalysis && (
@@ -342,7 +429,7 @@ function ReviewPage() {
           </p>
           {currentMove >= totalMoves && totalMoves > 0 && (
             <Button
-              className="w-full bg-blue-600 text-white hover:bg-blue-700"
+              className="w-full bg-[#D6EBFA] text-[#0978AA] hover:bg-[#c5e2f7]"
               onClick={() => setSummaryOpen(true)}
             >
               View full summary
@@ -366,12 +453,7 @@ function ReviewPage() {
               <p className="text-xs text-muted-foreground">Total score</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold">
-                {review.moves.length > 0
-                  ? (review.totalScore / 10).toFixed(1)
-                  : "0"}
-                /10
-              </p>
+              <p className="text-2xl font-bold">{review.averageMove}/10</p>
               <p className="text-xs text-muted-foreground">Average Move</p>
             </div>
           </div>
@@ -391,13 +473,18 @@ function ReviewPage() {
 
           <div className="max-h-60 space-y-2 overflow-y-auto">
             {review.moves.map((move) => (
-              <div
+              <button
                 key={move.moveIndex}
-                className="flex items-center justify-between rounded-lg border p-3"
+                type="button"
+                className="flex w-full items-center justify-between rounded-lg border p-3 text-left hover:bg-gray-50"
+                onClick={() => {
+                  setCurrentMove(move.moveNumber);
+                  setSummaryOpen(false);
+                }}
               >
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">
-                    Move {move.moveIndex + 1}/{review.moves.length}
+                    Move {move.moveNumber}/{review.moves.length}
                   </span>
                   <span
                     className={
@@ -423,16 +510,23 @@ function ReviewPage() {
                 <span className="text-sm font-bold">
                   {String(move.score).padStart(2, "0")}/10
                 </span>
-              </div>
+              </button>
             ))}
           </div>
 
-          <Button
-            className="w-full bg-blue-600 text-white hover:bg-blue-700"
-            onClick={handleDownload}
-          >
-            Download report
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => void handleRecompute()}
+              disabled={recomputing}
+            >
+              {recomputing ? "Recomputing..." : "Recompute review"}
+            </Button>
+            <Button className="flex-1" onClick={handleDownload}>
+              Download report
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </main>

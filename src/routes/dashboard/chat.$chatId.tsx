@@ -8,6 +8,14 @@ import { PauseConversationDialog } from "@/components/dashboard/chat/pause-conve
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -54,6 +62,7 @@ function ChatPage() {
   const [sending, setSending] = useState(false);
   const [waitingReply, setWaitingReply] = useState(false);
   const [menuLoading, setMenuLoading] = useState(false);
+  const [reviewPromptOpen, setReviewPromptOpen] = useState(false);
   const skipBlockRef = useRef(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -97,7 +106,7 @@ function ChatPage() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, waitingReply]);
+  }, []);
 
   async function handleSend() {
     const text = input.trim();
@@ -166,8 +175,7 @@ function ChatPage() {
       setChatEnded(true);
       setChatPaused(false);
       toast.success("Conversation ended.");
-      skipBlockRef.current = true;
-      await navigate({ to: "/dashboard/history" });
+      setReviewPromptOpen(true);
     } catch (e) {
       toast.error(
         e instanceof ApiError ? e.message : "Could not end the conversation."
@@ -197,6 +205,39 @@ function ChatPage() {
 
   return (
     <>
+      <Dialog open={reviewPromptOpen} onOpenChange={setReviewPromptOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Conversation ended</DialogTitle>
+            <DialogDescription>
+              Do you want to review this conversation now?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setReviewPromptOpen(false);
+                void navigate({ to: "/dashboard/history" });
+              }}
+            >
+              Maybe later
+            </Button>
+            <Button
+              onClick={() => {
+                setReviewPromptOpen(false);
+                void navigate({
+                  to: "/dashboard/review/$chatId",
+                  params: { chatId },
+                });
+              }}
+            >
+              Review now
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <PauseConversationDialog
         open={dialogOpen}
         onConfirm={() => void confirmPause()}

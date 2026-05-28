@@ -423,7 +423,9 @@ export async function confirmPremiumCheckout(sessionId: string) {
 // --- Review ---
 
 export type MoveAnalysis = {
+	messageId: string;
 	moveIndex: number;
+	moveNumber: number;
 	content: string;
 	score: number;
 	quality: 'strong' | 'adequate' | 'needs_attention' | 'needs_adjustment';
@@ -435,15 +437,49 @@ export type MoveAnalysis = {
 
 export type ReviewResult = {
 	chatId: string;
+	reviewStatus: 'PENDING' | 'READY' | 'FAILED';
+	errorMessage: string | null;
 	patient: { name: string; age: number; problem: string };
 	moves: MoveAnalysis[];
 	totalScore: number;
+	averageMove: number;
 	totalMessages: number;
-	analyzedAt: string;
+	analyzedAt: string | null;
 };
 
 export async function getChatReview(chatId: string) {
 	return apiRequest<ReviewResult>(`/chats/${chatId}/review`);
+}
+
+export async function recomputeChatReview(chatId: string) {
+	return apiRequest<{ ok: boolean }>(`/chats/${chatId}/review/recompute`, {
+		method: 'POST',
+	});
+}
+
+export async function downloadChatReviewReport(chatId: string) {
+	const res = await fetch(`${API_BASE}/chats/${chatId}/review/report`, {
+		credentials: 'include',
+	});
+	if (!res.ok) {
+		throw new ApiError('Failed to download report.', res.status);
+	}
+	return await res.blob();
+}
+
+export async function waitForReviewReady(
+	chatId: string,
+	maxAttempts = 20,
+	intervalMs = 1500,
+) {
+	for (let i = 0; i < maxAttempts; i++) {
+		const review = await getChatReview(chatId);
+		if (review.reviewStatus === 'READY' || review.reviewStatus === 'FAILED') {
+			return review;
+		}
+		await new Promise((r) => setTimeout(r, intervalMs));
+	}
+	return getChatReview(chatId);
 }
 
 export async function waitForModelReply(
