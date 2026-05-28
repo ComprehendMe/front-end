@@ -10,30 +10,30 @@ type StatsAvatarProps = {
 
 export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 	const initials = getInitials(user);
-	const radius = 68;
-	const stroke = 5;
+	const radius = 70;
+	const stroke = 5.5;
 	const circumference = 2 * Math.PI * radius;
 	const offset = circumference - (ringProgress / 100) * circumference;
 
 	return (
-		<div className="relative mx-auto h-[160px] w-[160px]">
+		<div className="relative mx-auto h-[168px] w-[168px]">
 			<svg
 				className="absolute inset-0 -rotate-90"
-				width="160"
-				height="160"
-				aria-hidden
+				width="168"
+				height="168"
+				aria-hidden="true"
 			>
 				<circle
-					cx="80"
-					cy="80"
+					cx="84"
+					cy="84"
 					r={radius}
 					fill="transparent"
 					stroke="#E2E8F0"
 					strokeWidth={stroke}
 				/>
 				<circle
-					cx="80"
-					cy="80"
+					cx="84"
+					cy="84"
 					r={radius}
 					fill="transparent"
 					stroke="#1497D2"
@@ -45,7 +45,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 				/>
 			</svg>
 
-			<div className="absolute inset-[18px] overflow-hidden rounded-full border-4 border-white shadow-md">
+			<div className="absolute inset-[21px] overflow-hidden rounded-full border-4 border-white shadow-md">
 				<Avatar className="h-full w-full">
 					{user.avatar ? (
 						<AvatarImage src={user.avatar} alt="" className="object-cover" />
@@ -56,7 +56,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 				</Avatar>
 			</div>
 
-			<div className="absolute -top-1 right-2 flex items-center gap-1 rounded-full bg-[#D6EBF7] px-2.5 py-1 shadow-sm">
+			<div className="absolute top-2 right-1 flex items-center gap-1 rounded-full bg-[#D6EBF7] px-2.5 py-1 shadow-sm">
 				<span className="text-sm font-bold text-[#0978AA]">{streak}</span>
 				<img src="/logo.svg" alt="" className="h-5 w-5" aria-hidden />
 			</div>

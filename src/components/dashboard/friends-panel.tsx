@@ -111,7 +111,9 @@ function SearchResultRow({
 						size="sm"
 						className="h-8 rounded-full px-2 text-xs"
 						disabled={busy}
-						onClick={() => onRespond(result.requestId!, 'ACCEPTED')}
+						onClick={() =>
+							result.requestId && onRespond(result.requestId, 'ACCEPTED')
+						}
 					>
 						Accept
 					</Button>
@@ -120,7 +122,9 @@ function SearchResultRow({
 						variant="outline"
 						className="h-8 rounded-full px-2 text-xs"
 						disabled={busy}
-						onClick={() => onRespond(result.requestId!, 'DECLINED')}
+						onClick={() =>
+							result.requestId && onRespond(result.requestId, 'DECLINED')
+						}
 					>
 						Decline
 					</Button>
@@ -317,7 +321,7 @@ export function FriendsPanel() {
 				</PopoverContent>
 			</Popover>
 
-			<div className="flex flex-col gap-4 rounded-xl bg-[#F0F5FA] px-3.5 py-4">
+			<div className="flex flex-col gap-4 rounded-[16px] bg-[#F0F5FA] px-3.5 py-4">
 				{loading ? (
 					<p className="text-sm text-muted-foreground">Loading…</p>
 				) : friends.length === 0 ? (

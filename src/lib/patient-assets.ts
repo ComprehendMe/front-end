@@ -11,9 +11,9 @@ export function patientAvatarSlug(name: string): string {
 		.replace(/^-+|-+$/g, '');
 }
 
-/** Patient avatars in /dist/pacients/, filename is a slug of the patient name. */
+/** Patient avatars in /dist/patients/, filename is a slug of the patient name. */
 export function getPatientImageUrl(patientName: string): string {
-	return `/dist/pacients/${patientAvatarSlug(patientName)}.png`;
+	return `/dist/patients/${patientAvatarSlug(patientName)}.png`;
 }
 
 export const PATIENT_BADGE_VARIANTS = [

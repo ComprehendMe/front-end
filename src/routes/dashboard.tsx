@@ -76,7 +76,7 @@ function RouteComponent() {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
-			<SidebarInset className="px-5 py-[30px]">
+			<SidebarInset className="px-6 py-6 lg:px-7">
 				<DashboardHeader user={user} />
 				<Outlet />
 			</SidebarInset>

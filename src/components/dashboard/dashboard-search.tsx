@@ -209,10 +209,10 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 					onBlur={() => {
 						blurTimeoutRef.current = setTimeout(() => setOpen(false), 150);
 					}}
-					className="h-12 w-full rounded-full border-[#1C1F22]/15 bg-white px-8 py-4 pr-12"
+					className="h-12 w-full rounded-full border-[#dbe4eb] bg-white px-7 py-4 pr-12 text-[15px]"
 					placeholder="What's up?"
 				/>
-				<Search className="pointer-events-none absolute top-1/2 right-5 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+				<Search className="pointer-events-none absolute top-1/2 right-5 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground" />
 			</div>
 
 			{open && (

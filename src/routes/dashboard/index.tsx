@@ -5,9 +5,8 @@ import { ContinueSection } from "@/components/dashboard/continue-section";
 import { StatsAvatar } from "@/components/dashboard/stats-avatar";
 import { WeeklyMinutesChart } from "@/components/dashboard/weekly-minutes-chart";
 import { FriendsPanel } from "@/components/dashboard/friends-panel";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Bell } from "lucide-react";
 import {
   ApiError,
   createChat,
@@ -20,7 +19,7 @@ import {
 } from "@/lib/api";
 import { getPatientAvatar } from "@/lib/patient-avatar";
 import { getTimeGreeting } from "@/lib/format-message-time";
-import { getFirstName, getInitials } from "@/lib/user-display";
+import { getFirstName } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../dashboard";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -84,36 +83,31 @@ function DashboardPage() {
   }
 
   return (
-    <main className="mt-8 grid grid-cols-[1fr_340px] gap-5 min-h-0">
-      <div className="flex w-full flex-col gap-7 min-w-0">
-        <div className="w-full rounded-3xl bg-linear-to-bl from-[#0978AA] to-[#1497D2] px-8 py-10 text-white shadow-sm">
+    <main className="mt-6 grid min-h-0 grid-cols-[minmax(0,1fr)_360px] gap-6">
+      <div className="flex min-w-0 w-full flex-col gap-6">
+        <div className="w-full rounded-[22px] bg-linear-to-br from-[#0978AA] to-[#1497D2] px-9 py-10 text-white shadow-sm relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_18%_30%,rgba(255,255,255,0.3),transparent_18%),radial-gradient(circle_at_85%_26%,rgba(255,255,255,0.22),transparent_16%),radial-gradient(circle_at_65%_75%,rgba(255,255,255,0.16),transparent_14%)]" />
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold">Access Premium Patients</h2>
-            <p className="text-lg font-normal opacity-90">
+            <h2 className="text-[36px] leading-[1.15] font-semibold">
+              Access Premium Patients
+            </h2>
+            <p className="text-[25px] leading-[1.25] font-normal opacity-95">
               Advanced clinical cases for specialized training.
             </p>
             <Button
-              className="rounded-full bg-white text-lg font-medium text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
+              className="mt-2 h-11 rounded-full bg-white px-7 text-base font-semibold text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
               size="lg"
             >
               Go premium!
             </Button>
           </div>
-        </div>{" "}
+        </div>
         {patients.length >= 3 && (
-          <div className="relative overflow-hidden w-full">
+          <div className="relative w-full overflow-hidden">
             <div
-              className="flex gap-4 animate-scroll-left"
+              className="flex gap-4 animate-scroll-left hover:animation-paused"
               style={{
                 width: "fit-content",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.animationPlayState =
-                  "paused";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.animationPlayState =
-                  "running";
               }}
             >
               {/* First set of 3 patients */}
@@ -123,7 +117,7 @@ function DashboardPage() {
                   type="button"
                   disabled={startingId !== null}
                   onClick={() => handlePatientClick(patient)}
-                  className="flex-shrink-0 flex items-center gap-3 rounded-2xl border border-[#DDD DDE]/50 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                   style={{
                     width: "250px",
                     minWidth: "250px",
@@ -156,7 +150,7 @@ function DashboardPage() {
                   type="button"
                   disabled={startingId !== null}
                   onClick={() => handlePatientClick(patient)}
-                  className="flex-shrink-0 flex items-center gap-3 rounded-2xl border border-[#DDD DDE]/50 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                   style={{
                     width: "250px",
                     minWidth: "250px",
@@ -185,7 +179,7 @@ function DashboardPage() {
           </div>
         )}
         {activeChats.length > 0 && (
-          <div className="py-2">
+          <div className="py-1">
             <ContinueSection
               chats={activeChats}
               patients={patients}
@@ -193,24 +187,24 @@ function DashboardPage() {
             />
           </div>
         )}
-      </div>{" "}
+      </div>
       <div className="w-full">
-        <div className="min-h-screen rounded-3xl border bg-white px-3.5 py-6">
-          <h2 className="text-[16px] font-semibold text-black mb-6">
+        <div className="rounded-[22px] border border-[#E8EDF2] bg-[#FCFDFE] px-4 py-6">
+          <h2 className="mb-6 text-[18px] font-semibold text-black">
             Statistic
           </h2>
           <div className="flex flex-col gap-6 text-center">
-            <div className="relative pt-0">
+            <div className="relative">
               <StatsAvatar
                 user={user}
                 streak={stats?.streak ?? 0}
                 ringProgress={stats?.ringProgress ?? 0}
-              />{" "}
+              />
               <div className="mt-4 space-y-1">
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-[36px] leading-[1.05] font-semibold text-[#1C1F22]">
                   {greeting} {firstName}
                 </h3>
-                <p className="text-sm font-medium text-gray-500">
+                <p className="mx-auto max-w-[275px] text-[30px] leading-[1.15] font-medium text-[#4B4E58]">
                   Continue your learning to achieve your target!
                 </p>
               </div>

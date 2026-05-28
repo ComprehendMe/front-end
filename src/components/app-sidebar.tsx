@@ -75,7 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="flex items-center">
+          <SidebarMenuItem className="flex items-center gap-2">
             <img src="/logo.svg" alt="logo" className="w-10 h-10" />
             <h1 className="font-semibold text-[16px] text-primary">
               ComprehendMe

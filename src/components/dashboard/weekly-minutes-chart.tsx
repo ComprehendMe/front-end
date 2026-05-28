@@ -30,7 +30,7 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
   );
 
   return (
-    <div className="rounded-xl bg-white p-4">
+		<div className="rounded-[16px] bg-[var(--dashboard-soft)] p-3.5">
       <ChartContainer config={chartConfig} className="h-[180px] w-full">
         <BarChart
           accessibilityLayer
@@ -38,12 +38,12 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
           barCategoryGap="30%"
           margin={{ top: 8, right: 4, left: -10, bottom: 0 }}
         >
-          <CartesianGrid vertical={false} stroke="#E8EEF4" strokeWidth={1} />
+					<CartesianGrid vertical={false} stroke="#E8EEF4" strokeWidth={1} />
           <XAxis
             dataKey="day"
             axisLine={false}
             tickLine={false}
-            tickMargin={8}
+						tickMargin={7}
             tick={{ fill: "#64748B", fontSize: 12 }}
           />
           <YAxis
@@ -52,7 +52,7 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
             domain={[0, dynamicMax]}
             ticks={dynamicTicks}
             tick={{ fill: "#64748B", fontSize: 11 }}
-            width={30}
+						width={28}
           />
           <ChartTooltip
             cursor={{ fill: "rgba(20, 151, 210, 0.08)" }}
@@ -63,7 +63,7 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
               />
             }
           />
-          <Bar dataKey="minutes" radius={[6, 6, 6, 6]} maxBarSize={22}>
+					<Bar dataKey="minutes" radius={[5, 5, 5, 5]} maxBarSize={20}>
             {data.map((entry) => (
               <Cell
                 key={entry.day}

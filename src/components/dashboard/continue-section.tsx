@@ -14,7 +14,7 @@ import { getPatientIndex } from '@/lib/patient-assets';
 import { PatientCardContent } from './patient-card';
 
 const cardLinkClass =
-	'group flex cursor-pointer flex-col rounded-xl outline-none transition hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary/40';
+	'group flex cursor-pointer flex-col rounded-[22px] outline-none transition hover:opacity-95 focus-visible:ring-2 focus-visible:ring-primary/40';
 
 type ContinueSectionProps = {
 	chats: Chat[];
@@ -47,10 +47,10 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 	if (chats.length === 0) return null;
 
 	return (
-		<div className="space-y-4">
+		<div className="space-y-3">
 			<div className="flex w-full items-center justify-between px-0.5">
 				{title ? (
-					<h2 className="text-xl font-bold text-[#1C1F22]">
+					<h2 className="text-[34px] font-semibold leading-[1.1] text-[#1C1F22]">
 						{title}
 					</h2>
 				) : (
@@ -59,7 +59,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 				<div className="flex gap-3">
 					<Button
 						variant="outline"
-						className="rounded-full border-[#DDD DDE]/50 bg-white shadow-xs hover:bg-gray-50"
+						className="rounded-full border-[#DDDDDE]/80 bg-white shadow-xs hover:bg-gray-50"
 						size="icon-lg"
 						disabled={!canScrollPrev}
 						onClick={() => carouselApi?.scrollPrev()}
@@ -68,7 +68,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 					</Button>
 					<Button
 						size="icon-lg"
-						className="rounded-full shadow-xs bg-[#1497D2] hover:bg-[#2285B3]"
+						className="rounded-full bg-[#1497D2] shadow-xs hover:bg-[#2285B3]"
 						disabled={!canScrollNext}
 						onClick={() => carouselApi?.scrollNext()}
 					>
@@ -91,7 +91,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 							const patientIndex = getPatientIndex(patients, chat.patientId);
 
 							return (
-								<CarouselItem key={chat.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 max-w-[350px]">
+								<CarouselItem key={chat.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 max-w-[352px]">
 									<Link
 										to="/dashboard/chat/$chatId"
 										params={{ chatId: chat.id }}
@@ -111,7 +111,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 												patientId={chat.patientId}
 												patientName={chat.patient.name}
 												problem={chat.patient.problem}
-												className="h-full bg-white rounded-[24px] p-5 shadow-xs border border-[#DDD DDE]/30"
+												className="h-full rounded-[22px] border border-[#E6EBEF] bg-white p-5 shadow-xs"
 											/>
 										</div>
 									</Link>

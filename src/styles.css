@@ -29,6 +29,13 @@ code {
 
 :root {
   --radius: 0.65rem;
+  --dashboard-canvas: #f7fafb;
+  --dashboard-panel: #fcfdfe;
+  --dashboard-card: #ffffff;
+  --dashboard-soft: #f0f5fa;
+  --dashboard-border: #e8edf2;
+  --dashboard-text: #1c1f22;
+  --dashboard-subtle-text: #4b4e58;
   --background: #fefefe;
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -62,6 +69,13 @@ code {
   --sidebar-ring: oklch(0.708 0 0);
 }
 .dark {
+  --dashboard-canvas: oklch(0.19 0.01 270);
+  --dashboard-panel: oklch(0.23 0.01 270);
+  --dashboard-card: oklch(0.25 0.01 270);
+  --dashboard-soft: oklch(0.28 0.01 270);
+  --dashboard-border: oklch(0.35 0.01 270);
+  --dashboard-text: oklch(0.95 0 0);
+  --dashboard-subtle-text: oklch(0.78 0.01 270);
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);

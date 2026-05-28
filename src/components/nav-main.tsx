@@ -30,7 +30,7 @@ export default function NavMain({
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-			<SidebarGroupLabel>{information.name}</SidebarGroupLabel>
+			<SidebarGroupLabel className="mb-1">{information.name}</SidebarGroupLabel>
 			<SidebarMenu>
 				{information.items.map((item) => {
 					const isActive = checkIsActive(href, item);
@@ -40,7 +40,7 @@ export default function NavMain({
 							<SidebarMenuItem key={item.title}>
 								<SidebarMenuButton
 									tooltip={item.title}
-									className="text-red-500 hover:text-red-600"
+									className="text-[#d96565] hover:text-[#c75454]"
 									onClick={() => void handleLogout()}
 								>
 									{item.icon && <item.icon />}

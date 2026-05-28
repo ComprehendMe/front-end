@@ -21,9 +21,9 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 	}, []);
 
 	return (
-		<header className="flex w-full items-center gap-8">
+		<header className="flex w-full items-center gap-7">
 			<DashboardSearch patients={patients} />
-			<div className="flex w-full max-w-3xs shrink-0 items-center gap-5">
+			<div className="flex w-full max-w-[290px] shrink-0 items-center justify-end gap-5">
 				<NotificationBell />
 				<div className="flex items-center gap-2.5">
 					<Avatar className="size-10">
@@ -34,7 +34,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 							{initials}
 						</AvatarFallback>
 					</Avatar>
-					<span className="text-gray-300 text-lg">|</span>
+					<span className="text-[#d6dde3] text-lg">|</span>
 					<span className="whitespace-nowrap text-[16px] font-medium text-[#1C1F22]">
 						{displayName}
 					</span>

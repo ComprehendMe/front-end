@@ -42,7 +42,7 @@ export function PatientCardContent({
 
 	return (
 		<div className={cn('flex flex-col gap-4', className)}>
-			<div className={cn('flex justify-center rounded-[20px] py-5', bgColor)}>
+			<div className={cn('flex justify-center rounded-[18px] py-5', bgColor)}>
 				<Avatar className="size-24 shadow-xs border-2 border-white/20">
 					<AvatarImage
 						src={getPatientAvatar(patientName)}
@@ -65,7 +65,7 @@ export function PatientCardContent({
 					/>
 				</div>
 				<div className="flex flex-col gap-1 mt-0.5">
-					<p className="line-clamp-2 font-bold text-[17px] text-[#1C1F22] leading-[1.3]">
+					<p className="line-clamp-2 text-[17px] leading-[1.3] font-semibold text-[#1C1F22]">
 						{problem}
 					</p>
 					<span className="font-semibold text-muted-foreground text-[13px]">

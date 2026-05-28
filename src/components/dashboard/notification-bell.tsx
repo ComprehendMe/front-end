@@ -81,7 +81,7 @@ export function NotificationBell() {
 			<PopoverTrigger asChild>
 				<Button
 					size="icon-lg"
-					className="relative rounded-full border-[#1C1F22]/15 text-gray-500"
+					className="relative rounded-full border-[#dbe4eb] text-gray-500"
 					variant="outline"
 					aria-label="Notifications"
 				>
