@@ -50,7 +50,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 		<div className="space-y-3">
 			<div className="flex w-full items-center justify-between px-0.5">
 				{title ? (
-					<h2 className="text-[34px] font-semibold leading-[1.1] text-[#1C1F22]">
+					<h2 className="text-fluid-3xl font-semibold leading-[1.1] text-[#1C1F22]">
 						{title}
 					</h2>
 				) : (
@@ -91,7 +91,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 							const patientIndex = getPatientIndex(patients, chat.patientId);
 
 							return (
-								<CarouselItem key={chat.id} className="pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 max-w-[352px]">
+								<CarouselItem key={chat.id} className="pl-4 basis-full xs:basis-1/2 sm:basis-1/2 lg:basis-1/3">
 									<Link
 										to="/dashboard/chat/$chatId"
 										params={{ chatId: chat.id }}

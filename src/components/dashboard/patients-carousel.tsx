@@ -98,7 +98,7 @@ export function PatientsCarousel({
                 return (
                   <CarouselItem
                     key={patient.id}
-                    className="basis-full pl-4 md:basis-1/2 lg:basis-1/3 md:max-w-[266px]"
+                    className="basis-full xs:basis-1/2 sm:basis-1/2 lg:basis-1/3"
                   >
                     <button
                       type="button"

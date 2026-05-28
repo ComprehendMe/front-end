@@ -98,7 +98,7 @@ export function NotificationBell() {
 					<p className="font-semibold text-[#1C1F22]">Notifications</p>
 				</div>
 				<Separator />
-				<div className="max-h-[320px] overflow-y-auto p-2">
+				<div className="max-h-[320px] overflow-y-auto p-2 max-md:max-h-[50dvh]">
 					{loading ? (
 						<p className="px-2 py-6 text-center text-sm text-muted-foreground">
 							Loading…

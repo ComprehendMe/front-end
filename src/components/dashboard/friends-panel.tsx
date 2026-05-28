@@ -288,7 +288,7 @@ export function FriendsPanel() {
 						</div>
 					</div>
 					<Separator />
-					<div className="max-h-[220px] space-y-1 overflow-y-auto px-3 py-2">
+					<div className="max-h-[220px] space-y-1 overflow-y-auto px-3 py-2 max-md:max-h-[40dvh]">
 						{searchQuery.trim().length < 2 ? (
 							<p className="py-4 text-center text-sm text-muted-foreground">
 								Type at least 2 characters

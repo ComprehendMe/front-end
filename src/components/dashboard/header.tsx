@@ -35,7 +35,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 						</AvatarFallback>
 					</Avatar>
 					<span className="text-[#d6dde3] text-lg">|</span>
-					<span className="whitespace-nowrap text-[16px] font-medium text-[#1C1F22]">
+					<span className="whitespace-nowrap text-fluid-sm font-medium text-[#1C1F22]">
 						{displayName}
 					</span>
 				</div>

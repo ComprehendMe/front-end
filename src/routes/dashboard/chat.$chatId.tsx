@@ -245,7 +245,7 @@ function ChatPage() {
         loading={pausing}
       />
 
-      <div className="mt-4 flex min-h-[calc(100vh-10rem)] flex-col overflow-hidden rounded-2xl border bg-white shadow-sm">
+      <div className="mt-4 flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm" style={{ minHeight: "calc(100dvh - 10rem)" }}>
         <div className="flex items-center justify-end border-b px-4 py-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -298,12 +298,12 @@ function ChatPage() {
             backgroundSize: "22px 22px",
           }}
         >
-          <div className="flex flex-1 flex-col overflow-y-auto px-6 py-8 md:px-10">
+          <div className="flex flex-1 flex-col overflow-y-auto px-fluid-container py-fluid-section">
             {!hasMessages ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-5 pb-8 text-center">
                 <div className="relative">
                   <div className="absolute inset-0 scale-110 rounded-full bg-[#1497D2]/20 blur-xl" />
-                  <Avatar className="relative h-28 w-28 border-4 border-white shadow-lg">
+                  <Avatar className="relative size-[clamp(5rem,20vw,7rem)] border-4 border-white shadow-lg">
                     <AvatarImage
                       src={patientAvatarUrl}
                       alt={patient.name}
@@ -315,7 +315,7 @@ function ChatPage() {
                   </Avatar>
                 </div>
                 <div className="max-w-lg space-y-2">
-                  <h2 className="text-xl font-bold text-foreground md:text-2xl">
+                  <h2 className="text-fluid-xl font-bold text-foreground">
                     {getTimeGreeting()}, my name is {patientFirstName}.
                   </h2>
                   <p className="text-sm text-muted-foreground md:text-base">
@@ -356,7 +356,7 @@ function ChatPage() {
             )}
           </div>
 
-          <div className="shrink-0 border-t border-[#E8EEF4]/80 bg-white/80 px-6 py-6 backdrop-blur-sm md:px-10">
+          <div className="shrink-0 border-t border-[#E8EEF4]/80 bg-white/80 px-fluid-container py-fluid-section backdrop-blur-sm pb-safe-bottom">
             <ChatComposer
               value={input}
               onChange={setInput}

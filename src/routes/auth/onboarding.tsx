@@ -91,7 +91,7 @@ function OnboardingPage() {
 					'bg-[linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]',
 				)}
 			/>
-			<div className="relative z-10 w-full max-w-[444px] rounded-md border bg-white px-[42px] py-[71px] shadow-lg">
+			<div className="relative z-10 w-full max-w-[444px] rounded-md border bg-white px-fluid-lg py-fluid-xl shadow-lg">
 				{step === 2 ? (
 					<div className="flex flex-col gap-6">
 						<SignupProgress step={2} />

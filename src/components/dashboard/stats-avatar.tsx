@@ -16,11 +16,12 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 	const offset = circumference - (ringProgress / 100) * circumference;
 
 	return (
-		<div className="relative mx-auto h-[168px] w-[168px]">
+		<div className="relative mx-auto size-[clamp(8rem,40vw,10.5rem)]">
 			<svg
 				className="absolute inset-0 -rotate-90"
-				width="168"
-				height="168"
+				width="100%"
+				height="100%"
+				viewBox="0 0 168 168"
 				aria-hidden="true"
 			>
 				<circle
@@ -45,7 +46,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 				/>
 			</svg>
 
-			<div className="absolute inset-[21px] overflow-hidden rounded-full border-4 border-white shadow-md">
+			<div className="absolute inset-[12.5%] overflow-hidden rounded-full border-4 border-white shadow-md">
 				<Avatar className="h-full w-full">
 					{user.avatar ? (
 						<AvatarImage src={user.avatar} alt="" className="object-cover" />

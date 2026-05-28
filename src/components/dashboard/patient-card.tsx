@@ -42,21 +42,21 @@ export function PatientCardContent({
 
 	return (
 		<div className={cn('flex flex-col gap-4', className)}>
-			<div className={cn('flex justify-center rounded-[18px] py-5', bgColor)}>
-				<Avatar className="size-24 shadow-xs border-2 border-white/20">
+			<div className={cn('flex justify-center rounded-[18px] py-fluid-sm', bgColor)}>
+				<Avatar className="size-[clamp(4rem,16vw,6rem)] shadow-xs border-2 border-white/20">
 					<AvatarImage
 						src={getPatientAvatar(patientName)}
 						alt={patientName}
 						className="object-cover"
 					/>
-					<AvatarFallback className="bg-white/50 text-xl font-bold text-[#1497D2]">
+					<AvatarFallback className="bg-white/50 text-fluid-xl font-bold text-[#1497D2]">
 						{initials}
 					</AvatarFallback>
 				</Avatar>
 			</div>
 			<div className="flex flex-col gap-3">
 				<div className="flex items-center gap-2">
-					<Badge variant={badgeVariant} className="font-semibold px-2.5 py-0.5 rounded-full text-[11px] uppercase tracking-wide" />
+					<Badge variant={badgeVariant} className="font-semibold px-2.5 py-0.5 rounded-full text-fluid-xs uppercase tracking-wide" />
 				</div>
 				<div className="h-1.5 w-full overflow-hidden rounded-full bg-[#E8EEF2]">
 					<div
@@ -65,10 +65,10 @@ export function PatientCardContent({
 					/>
 				</div>
 				<div className="flex flex-col gap-1 mt-0.5">
-					<p className="line-clamp-2 text-[17px] leading-[1.3] font-semibold text-[#1C1F22]">
+					<p className="line-clamp-2 text-fluid-base leading-[1.3] font-semibold text-[#1C1F22]">
 						{problem}
 					</p>
-					<span className="font-semibold text-muted-foreground text-[13px]">
+					<span className="font-semibold text-muted-foreground text-fluid-sm">
 						{subtitle ?? patientName}
 					</span>
 				</div>

@@ -93,9 +93,9 @@ function HistoryPage() {
 	);
 
 	return (
-		<main className="py-4 sm:py-6 lg:py-7">
-			<div className="min-h-[70vh] space-y-6 overflow-hidden rounded-[20px] border border-[#1C1F22]/15 bg-white px-4 py-5 sm:px-8 sm:py-8 lg:space-y-[34px] lg:px-12 lg:py-[38px]">
-				<h2 className="text-2xl font-semibold text-[#1C1F22]">History</h2>
+		<main className="py-fluid-section">
+			<div className="min-h-[70vh] space-y-fluid-lg overflow-hidden rounded-[20px] border border-[#1C1F22]/15 bg-white px-fluid-container py-fluid-section">
+				<h2 className="text-fluid-2xl font-semibold text-[#1C1F22]">History</h2>
 				{loading ? (
 					<p className="text-sm text-muted-foreground">Loading…</p>
 				) : (

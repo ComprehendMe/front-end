@@ -83,98 +83,99 @@ function DashboardPage() {
   }
 
   return (
-    <main className="mt-4 grid min-h-0 grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
-      <div className="flex min-w-0 w-full flex-col gap-6">
-        <div className="w-full rounded-[22px] bg-linear-to-br from-[#0978AA] to-[#1497D2] px-5 py-7 text-white shadow-sm relative overflow-hidden sm:px-7 sm:py-9 lg:px-9 lg:py-10">
+    <main className="mt-4 grid min-h-0 grid-cols-1 gap-fluid-md lg:mt-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:gap-fluid-lg">
+      <div className="flex min-w-0 w-full flex-col gap-fluid-lg">
+        <div className="w-full rounded-[22px] bg-linear-to-br from-[#0978AA] to-[#1497D2] px-fluid-container py-fluid-section text-white shadow-sm relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_18%_30%,rgba(255,255,255,0.3),transparent_18%),radial-gradient(circle_at_85%_26%,rgba(255,255,255,0.22),transparent_16%),radial-gradient(circle_at_65%_75%,rgba(255,255,255,0.16),transparent_14%)]" />
           <div className="space-y-3">
-            <h2 className="text-[26px] leading-[1.15] font-semibold sm:text-[32px] lg:text-[36px]">
+            <h2 className="text-fluid-3xl leading-[1.15] font-semibold">
               Access Premium Patients
             </h2>
-            <p className="text-[18px] leading-[1.25] font-normal opacity-95 sm:text-[22px] lg:text-[25px]">
+            <p className="text-fluid-lg leading-[1.25] font-normal opacity-95">
               Advanced clinical cases for specialized training.
             </p>
             <Button
-              className="mt-2 h-11 rounded-full bg-white px-7 text-base font-semibold text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
+              className="mt-2 h-11 rounded-full bg-white px-7 text-fluid-sm font-semibold text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
               size="lg"
             >
               Go premium!
             </Button>
           </div>
         </div>
-        {patients.length >= 3 && (
+        {patients.length > 0 && (
           <div className="relative w-full overflow-hidden">
             <div
-              className="flex gap-4 animate-scroll-left hover:animation-paused"
+              className="flex animate-scroll-left hover:animation-paused"
               style={{
                 width: "fit-content",
               }}
             >
-              {/* First set of 3 patients */}
-              {patients.slice(0, 3).map((patient) => (
-                <button
-                  key={`${patient.id}-1`}
-                  type="button"
-                  disabled={startingId !== null}
-                  onClick={() => handlePatientClick(patient)}
-                  className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
-                  style={{
-                    width: "250px",
-                    minWidth: "250px",
-                  }}
-                >
-                  <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
-                    <Avatar className="h-full w-full rounded-lg">
-                      <AvatarImage
-                        src={getPatientAvatar(patient.name)}
-                        alt={patient.name}
-                        className="object-cover"
-                      />
-                    </Avatar>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[14px] font-bold text-[#1C1F22] leading-tight">
-                      {patient.name}
-                    </p>
-                    <p className="truncate text-[12px] text-muted-foreground font-medium mt-0.5">
-                      {patient.problem}
-                    </p>
-                  </div>
-                </button>
-              ))}
-
-              {/* Duplicate set of 3 patients for seamless loop */}
-              {patients.slice(0, 3).map((patient) => (
-                <button
-                  key={`${patient.id}-2`}
-                  type="button"
-                  disabled={startingId !== null}
-                  onClick={() => handlePatientClick(patient)}
-                  className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
-                  style={{
-                    width: "250px",
-                    minWidth: "250px",
-                  }}
-                >
-                  <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
-                    <Avatar className="h-full w-full rounded-lg">
-                      <AvatarImage
-                        src={getPatientAvatar(patient.name)}
-                        alt={patient.name}
-                        className="object-cover"
-                      />
-                    </Avatar>
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[14px] font-bold text-[#1C1F22] leading-tight">
-                      {patient.name}
-                    </p>
-                    <p className="truncate text-[12px] text-muted-foreground font-medium mt-0.5">
-                      {patient.problem}
-                    </p>
-                  </div>
-                </button>
-              ))}
+              <div className="flex gap-4">
+                {patients.map((patient) => (
+                  <button
+                    key={`${patient.id}-1`}
+                    type="button"
+                    disabled={startingId !== null}
+                    onClick={() => handlePatientClick(patient)}
+                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                    style={{
+                      width: "clamp(180px, 45vw, 250px)",
+                      minWidth: "clamp(180px, 45vw, 250px)",
+                    }}
+                  >
+                    <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
+                      <Avatar className="h-full w-full rounded-lg">
+                        <AvatarImage
+                          src={getPatientAvatar(patient.name)}
+                          alt={patient.name}
+                          className="object-cover"
+                        />
+                      </Avatar>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-fluid-sm font-bold text-[#1C1F22] leading-tight">
+                        {patient.name}
+                      </p>
+                      <p className="truncate text-fluid-xs text-muted-foreground font-medium mt-0.5">
+                        {patient.problem}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <div className="flex gap-4">
+                {patients.map((patient) => (
+                  <button
+                    key={`${patient.id}-2`}
+                    type="button"
+                    disabled={startingId !== null}
+                    onClick={() => handlePatientClick(patient)}
+                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                    style={{
+                      width: "clamp(180px, 45vw, 250px)",
+                      minWidth: "clamp(180px, 45vw, 250px)",
+                    }}
+                  >
+                    <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
+                      <Avatar className="h-full w-full rounded-lg">
+                        <AvatarImage
+                          src={getPatientAvatar(patient.name)}
+                          alt={patient.name}
+                          className="object-cover"
+                        />
+                      </Avatar>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-fluid-sm font-bold text-[#1C1F22] leading-tight">
+                        {patient.name}
+                      </p>
+                      <p className="truncate text-fluid-xs text-muted-foreground font-medium mt-0.5">
+                        {patient.problem}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -189,11 +190,11 @@ function DashboardPage() {
         )}
       </div>
       <div className="w-full">
-        <div className="rounded-[22px] border border-[#E8EDF2] bg-[#FCFDFE] px-4 py-6">
-          <h2 className="mb-6 text-[18px] font-semibold text-black">
+        <div className="rounded-[22px] border border-[#E8EDF2] bg-[#FCFDFE] px-fluid-container py-fluid-section">
+          <h2 className="mb-6 text-fluid-lg font-semibold text-black">
             Statistic
           </h2>
-          <div className="flex flex-col gap-6 text-center">
+          <div className="flex flex-col gap-fluid-xl text-center">
             <div className="relative">
               <StatsAvatar
                 user={user}
@@ -201,10 +202,10 @@ function DashboardPage() {
                 ringProgress={stats?.ringProgress ?? 0}
               />
               <div className="mt-4 space-y-1">
-                <h3 className="text-[28px] leading-[1.05] font-semibold text-[#1C1F22] sm:text-[32px] lg:text-[36px]">
+                <h3 className="text-fluid-3xl leading-[1.05] font-semibold text-[#1C1F22]">
                   {greeting} {firstName}
                 </h3>
-                <p className="mx-auto max-w-[275px] text-[22px] leading-[1.15] font-medium text-[#4B4E58] sm:text-[26px] lg:text-[30px]">
+                <p className="mx-auto max-w-[min(275px,80%)] text-fluid-xl leading-[1.15] font-medium text-[#4B4E58]">
                   Continue your learning to achieve your target!
                 </p>
               </div>

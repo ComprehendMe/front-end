@@ -121,8 +121,8 @@ function SettingsPage() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
-				<h3 className="text-lg font-semibold text-[#4B4E58]">My Profile</h3>
+			<div className="flex h-full w-full flex-col border-t px-fluid-container py-fluid-md lg:border-l lg:border-t-0">
+				<h3 className="text-fluid-lg font-semibold text-[#4B4E58]">My Profile</h3>
 				<Separator className="mt-3.5" />
 				<div className="flex flex-col gap-5">
 					<div className="mt-5 flex flex-col gap-[18px]">
@@ -202,8 +202,8 @@ function SettingsPage() {
 				</div>
 			</div>
 
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
-				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
+			<div className="flex h-full w-full flex-col border-t px-fluid-container py-fluid-md lg:border-l lg:border-t-0">
+				<h3 className="font-semibold text-[#4B4E58] text-fluid-lg">
 					Account security
 				</h3>
 				<Separator className="mt-3.5" />
@@ -218,8 +218,8 @@ function SettingsPage() {
 				</div>
 			</div>
 
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
-				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
+			<div className="flex h-full w-full flex-col border-t px-fluid-container py-fluid-md lg:border-l lg:border-t-0">
+				<h3 className="font-semibold text-[#4B4E58] text-fluid-lg">
 					Support Access
 				</h3>
 				<Separator className="mt-3.5" />

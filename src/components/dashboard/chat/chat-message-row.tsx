@@ -46,7 +46,7 @@ export function ChatMessageRow({
 						</AvatarFallback>
 					</Avatar>
 				</div>
-				<div className="max-w-[min(85%,42rem)] rounded-2xl bg-[#D6EBF7] px-4 py-3 text-[15px] leading-relaxed text-foreground">
+				<div className="max-w-[min(90%,42rem)] rounded-2xl bg-[#D6EBF7] px-4 py-3 text-fluid-sm leading-relaxed text-foreground">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 				</div>
 			</div>
@@ -70,7 +70,7 @@ export function ChatMessageRow({
 				</div>
 				<div
 					className={cn(
-						'max-w-[min(85%,42rem)] rounded-2xl bg-[#F0F5FA] px-4 py-3 text-[15px] leading-relaxed text-foreground',
+						'max-w-[min(90%,42rem)] rounded-2xl bg-[#F0F5FA] px-4 py-3 text-fluid-sm leading-relaxed text-foreground',
 					)}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>

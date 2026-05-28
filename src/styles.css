@@ -3,6 +3,162 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ====================================================================
+   RESPONSIVE FOUNDATION — Fluid design system
+   ==================================================================== */
+
+/* --- Custom Breakpoints ---
+   xs:  375px  (iPhone SE / very small phones)
+   sm:  640px  (large phones)        — default Tailwind
+   md:  768px  (tablets portrait)    — default Tailwind
+   lg:  1024px (tablets landscape)   — default Tailwind
+   xl:  1280px (desktops)            — default Tailwind
+   2xl: 1536px (large desktops)      — default Tailwind
+   3xl: 1920px (Full HD)
+   4xl: 2560px (2K / projectors)    */
+@theme {
+  --breakpoint-xs: 23.4375rem;
+  --breakpoint-3xl: 120rem;
+  --breakpoint-4xl: 160rem;
+}
+
+/* --- Fluid Typography (clamp-based modular scale) ---
+   Usage:  class="text-fluid-lg"  or  class="xs:text-fluid-base lg:text-fluid-2xl"
+   Scales smoothly between min size (small phone) and max size (wide screen).
+   Reference: https://utopia.fyi/type/calculator/?c=320,16,1.2,1440,20,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l */
+@utility text-fluid-xs {
+  font-size: clamp(0.69rem, 0.56vw + 0.56rem, 0.88rem);
+}
+@utility text-fluid-sm {
+  font-size: clamp(0.8rem, 0.39vw + 0.7rem, 1rem);
+}
+@utility text-fluid-base {
+  font-size: clamp(0.88rem, 0.63vw + 0.72rem, 1.13rem);
+}
+@utility text-fluid-lg {
+  font-size: clamp(1rem, 0.78vw + 0.8rem, 1.38rem);
+}
+@utility text-fluid-xl {
+  font-size: clamp(1.13rem, 1.09vw + 0.85rem, 1.69rem);
+}
+@utility text-fluid-2xl {
+  font-size: clamp(1.25rem, 1.56vw + 0.89rem, 2.13rem);
+}
+@utility text-fluid-3xl {
+  font-size: clamp(1.38rem, 2.19vw + 0.87rem, 2.63rem);
+}
+@utility text-fluid-4xl {
+  font-size: clamp(1.63rem, 2.82vw + 0.95rem, 3.25rem);
+}
+@utility text-fluid-5xl {
+  font-size: clamp(1.94rem, 3.75vw + 0.98rem, 4.13rem);
+}
+
+/* --- Fluid Spacing Utilities ---
+   Gap that scales with viewport */
+@utility gap-fluid-xs {
+  gap: clamp(0.25rem, 0.31vw + 0.17rem, 0.44rem);
+}
+@utility gap-fluid-sm {
+  gap: clamp(0.5rem, 0.47vw + 0.38rem, 0.75rem);
+}
+@utility gap-fluid-md {
+  gap: clamp(0.75rem, 0.63vw + 0.59rem, 1.13rem);
+}
+@utility gap-fluid-lg {
+  gap: clamp(1rem, 1.09vw + 0.72rem, 1.63rem);
+}
+@utility gap-fluid-xl {
+  gap: clamp(1.25rem, 1.56vw + 0.89rem, 2.13rem);
+}
+
+/* Fluid padding shorthand */
+@utility p-fluid-sm {
+  padding: clamp(0.5rem, 0.47vw + 0.38rem, 0.75rem);
+}
+@utility p-fluid-md {
+  padding: clamp(0.75rem, 0.63vw + 0.59rem, 1.13rem);
+}
+@utility p-fluid-lg {
+  padding: clamp(1rem, 1.09vw + 0.72rem, 1.63rem);
+}
+@utility p-fluid-xl {
+  padding: clamp(1.25rem, 1.56vw + 0.89rem, 2.13rem);
+}
+
+/* Fluid horizontal padding (most used for page/container edges) */
+@utility px-fluid-container {
+  padding-left: clamp(1rem, 3vw + 0.25rem, 2.5rem);
+  padding-right: clamp(1rem, 3vw + 0.25rem, 2.5rem);
+}
+
+/* Fluid section vertical spacing */
+@utility py-fluid-section {
+  padding-top: clamp(1.5rem, 4vw + 0.5rem, 3rem);
+  padding-bottom: clamp(1.5rem, 4vw + 0.5rem, 3rem);
+}
+
+/* --- Fluid Width Containers ---
+   Content max-width that respects viewport padding */
+@utility max-w-fluid-content {
+  max-width: min(100% - 2rem, 1700px);
+}
+
+/* --- Safe Area Insets (notched / rounded-screen devices) ---
+   Usage: class="pb-safe-bottom" to avoid the home indicator area */
+@utility pb-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@utility pt-safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+@utility pl-safe-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+@utility pr-safe-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+@utility px-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* --- Touch-friendly minimum tap target (Apple HIG / Material Design) ---
+   Usage: class="min-tap"  — ensures at least 44x44px hit area */
+@utility min-tap {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* --- Fluid height for viewport-dependent sections ---
+   Avoids mobile browser chrome issues with 100vh.
+   Usage: class="min-h-dynamic" */
+@utility min-h-dynamic {
+  min-height: 100dvh;
+}
+@utility h-dynamic {
+  height: 100dvh;
+}
+
+/* --- Responsive image that fills its container --- */
+@utility img-fluid {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* --- Hide scrollbar but keep scrolling (useful for horizontal scroll on mobile) --- */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 body {
   @apply m-0;
   font-family:

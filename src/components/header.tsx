@@ -13,11 +13,11 @@ function scrollToId(id: string) {
 
 export default function Header() {
 	return (
-		<header className="z-50 flex w-full rounded-2xl bg-white px-8 py-[13px] shadow-xl">
+		<header className="z-50 flex w-full rounded-2xl bg-white px-fluid-container py-fluid-sm shadow-xl">
 			<nav className="flex w-full items-center justify-between">
 				<div className="flex items-center gap-2.5">
 					<img src="/logo.svg" alt="logo" className="h-8 w-8" />
-					<h1 className="text-[16px] font-semibold text-primary">ComprehendMe</h1>
+					<h1 className="text-fluid-sm font-semibold text-primary">ComprehendMe</h1>
 				</div>
 				<div className="flex items-center">
 					<NavigationMenu>

@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ApiError, getMe, recordActivity, type MeUser } from "@/lib/api";
 import { loadUserPreferences } from "@/lib/user-preferences";
 
@@ -76,8 +76,11 @@ function RouteComponent() {
 	return (
 		<SidebarProvider>
 			<AppSidebar />
-			<SidebarInset className="px-4 py-4 sm:px-5 sm:py-5 lg:px-7 lg:py-6">
+			<SidebarInset className="px-fluid-container py-fluid-md">
 				<div className="mx-auto flex w-full max-w-[1700px] min-w-0 flex-1 flex-col">
+					<div className="flex items-center gap-3 md:hidden">
+						<SidebarTrigger className="size-9 rounded-full border border-[#dbe4eb] text-muted-foreground" />
+					</div>
 					<DashboardHeader user={user} />
 					<Outlet />
 				</div>

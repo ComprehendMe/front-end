@@ -221,19 +221,19 @@ function ReviewPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-[1700px] flex-col gap-5 px-3 py-4 sm:px-4 lg:h-[calc(100vh-4rem)] lg:flex-row lg:px-6 lg:py-5">
+    <main className="mx-auto flex min-h-dynamic w-full max-w-[1700px] flex-col gap-fluid-md px-fluid-container py-fluid-section lg:h-dynamic lg:flex-row lg:gap-fluid-lg" style={{ minHeight: "calc(100dvh - 4rem)" }}>
       <div className="flex min-w-0 flex-1 flex-col gap-4 overflow-hidden">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-foreground">
+            <h1 className="text-fluid-xl font-semibold text-foreground">
               Chat Review
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-fluid-sm text-muted-foreground">
               Replay your conversation step-by-step
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className="text-fluid-sm font-medium text-muted-foreground">
               Move {currentMove}/{totalMoves}
             </span>
             <div className="h-2 w-28 overflow-hidden rounded-full bg-[var(--dashboard-input)] sm:w-36">
@@ -247,12 +247,12 @@ function ReviewPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-4 sm:p-6">
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-fluid-md">
           {currentMove === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
               <div className="relative">
                 <div className="absolute inset-0 rounded-full bg-primary/20 blur-2xl" />
-                <Avatar className="relative h-24 w-24 border-4 border-white shadow-lg">
+                <Avatar className="relative size-[clamp(5rem,20vw,7rem)] border-4 border-white shadow-lg">
                   <AvatarImage
                     src={getPatientAvatar(review.patient.name)}
                     alt={review.patient.name}
@@ -263,7 +263,7 @@ function ReviewPage() {
                 </Avatar>
               </div>
               <div className="space-y-2">
-                <h2 className="text-[34px] font-semibold leading-[1.1] text-[#1C1F22]">
+                <h2 className="text-fluid-3xl font-semibold leading-[1.1] text-[#1C1F22]">
                   {`Good morning, my name is ${review.patient.name.split(" ")[0]}`}
                 </h2>
                 <p className="mx-auto max-w-xl text-lg text-[#4B4E58]">
@@ -354,12 +354,12 @@ function ReviewPage() {
         </div>
       </div>
 
-      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-5 lg:w-[360px] xl:w-[390px]">
+      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-fluid-md lg:max-w-[360px] xl:max-w-[390px]">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-fluid-lg font-semibold text-foreground">
             Performance Panel
           </h2>
-          <p className="text-xs text-muted-foreground">AI feedback per move</p>
+          <p className="text-fluid-xs text-muted-foreground">AI feedback per move</p>
         </div>
 
         {currentMove === 0 ? (

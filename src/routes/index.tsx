@@ -28,14 +28,14 @@ function App() {
 					)}
 				/>
 				<div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background mask-[linear-gradient(to_bottom,transparent_0%,black)] dark:bg-black" />
-				<div className="relative z-20 px-4 py-6 sm:px-6 lg:px-12 xl:px-20">
+				<div className="relative z-20 px-fluid-container py-fluid-section">
 					<Header />
-					<main className="z-50 mt-20 flex flex-col items-center justify-center text-center sm:mt-28 lg:mt-40">
+					<main className="z-50 mt-[clamp(3rem,10vw,10rem)] flex flex-col items-center justify-center text-center">
 						<div className="flex flex-col items-center gap-5">
-							<h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-[40px]">
+							<h1 className="text-fluid-4xl font-bold text-foreground">
 								Practice without fear. Serve without hesitation.
 							</h1>
-							<p className="max-w-4xl text-base font-medium tracking-tight text-foreground sm:text-lg">
+							<p className="max-w-4xl text-fluid-base font-medium tracking-tight text-foreground">
 								Realistic virtual patients, immediate feedback, and a safe
 								environment for you to grow as a therapist.
 							</p>
@@ -50,9 +50,9 @@ function App() {
 					</main>
 					<section
 						id={benefitsSectionId}
-						className="m-auto mt-16 grid grid-cols-1 gap-6 sm:mt-24 sm:grid-cols-2 lg:mt-36 lg:grid-cols-3 lg:gap-[30px]"
+						className="m-auto mt-[clamp(3rem,8vw,9rem)] grid grid-cols-1 gap-fluid-lg sm:grid-cols-2 lg:grid-cols-3"
 					>
-						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-5 shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
+						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/Group.svg"
@@ -61,14 +61,14 @@ function App() {
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-lg font-medium">Choose a patient</p>
-								<p className="text-[16px] font-normal text-muted-foreground">
+								<p className="text-fluid-lg font-medium">Choose a patient</p>
+								<p className="text-fluid-sm font-normal text-muted-foreground">
 									Clinical profiles with varying levels of difficulty and
 									behaviors.
 								</p>
 							</div>
 						</div>
-						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-5 shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
+						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/Vector.svg"
@@ -77,14 +77,14 @@ function App() {
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-lg font-medium">Chat in real time</p>
-								<p className="text-[16px] font-normal text-muted-foreground">
+								<p className="text-fluid-lg font-medium">Chat in real time</p>
+								<p className="text-fluid-sm font-normal text-muted-foreground">
 									Consistent and contextual AI, with emotional cues and natural
 									pacing.
 								</p>
 							</div>
 						</div>
-						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-5 shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
+						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
 								<img
 									src="/carbon_report.svg"
@@ -93,8 +93,8 @@ function App() {
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-lg font-medium">Receive a report</p>
-								<p className="text-[16px] font-normal text-muted-foreground">
+								<p className="text-fluid-lg font-medium">Receive a report</p>
+								<p className="text-fluid-sm font-normal text-muted-foreground">
 									Analyses of empathy, coherence, and key moments, with
 									recommendations.
 								</p>

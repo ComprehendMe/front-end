@@ -8,7 +8,7 @@ import {
 	IconUsers,
 } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import {
@@ -77,6 +77,11 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	const blurTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const [open, setOpen] = useState(false);
 	const [query, setQuery] = useState('');
+
+	const close = useCallback(() => {
+		setOpen(false);
+		setQuery('');
+	}, []);
 	const [chats, setChats] = useState<Chat[]>([]);
 
 	useEffect(() => {
@@ -160,8 +165,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	}, [patientItems, chatItems, billingItem, filteredNav, query]);
 
 	async function goToPatientChat(patientId: string) {
-		setOpen(false);
-		setQuery('');
+		close();
 		try {
 			const existing = chats.find((c: Chat) => c.patientId === patientId && !c.endedAt);
 			if (existing) {
@@ -184,8 +188,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	}
 
 	function go(item: SearchItem) {
-		setOpen(false);
-		setQuery('');
+		close();
 		if (item.id.startsWith('patient-')) {
 			const patientId = item.id.replace('patient-', '');
 			void goToPatientChat(patientId);
@@ -207,7 +210,13 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 						setOpen(true);
 					}}
 					onBlur={() => {
-						blurTimeoutRef.current = setTimeout(() => setOpen(false), 150);
+						blurTimeoutRef.current = setTimeout(() => close(), 200);
+					}}
+					onKeyDown={(e) => {
+						if (e.key === 'Escape') {
+							(e.target as HTMLInputElement).blur();
+							close();
+						}
 					}}
 					className="h-12 w-full rounded-full border-[#dbe4eb] bg-white px-7 py-4 pr-12 text-[15px]"
 					placeholder="What's up?"
