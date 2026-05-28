@@ -36,8 +36,9 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className="overflow-hidden rounded-md space-y-2 h-full">
-			<Table>
+		<div className="h-full space-y-2 overflow-hidden rounded-md">
+			<div className="w-full overflow-x-auto">
+				<Table>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (
 						<TableRow key={headerGroup.id}>
@@ -78,7 +79,8 @@ export function DataTable<TData, TValue>({
 						</TableRow>
 					)}
 				</TableBody>
-			</Table>
+				</Table>
+			</div>
 			<div className="gap-3 flex justify-end items-center">
 				<Button
 					variant="outline"

@@ -21,9 +21,9 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 	}, []);
 
 	return (
-		<header className="flex w-full items-center gap-7">
+		<header className="flex w-full flex-col gap-3 md:flex-row md:items-center md:gap-7">
 			<DashboardSearch patients={patients} />
-			<div className="flex w-full max-w-[290px] shrink-0 items-center justify-end gap-5">
+			<div className="flex w-full items-center justify-end gap-4 md:max-w-[290px] md:shrink-0 md:gap-5">
 				<NotificationBell />
 				<div className="flex items-center gap-2.5">
 					<Avatar className="size-10">

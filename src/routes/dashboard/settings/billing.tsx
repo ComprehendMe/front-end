@@ -188,15 +188,15 @@ function BillingPage() {
 
 	if (loading) {
 		return (
-			<div className="flex w-full flex-col border-l px-8 py-8">
+			<div className="flex w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<p className="text-muted-foreground">Loading billing…</p>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex w-full flex-col border-l">
-			<div className="px-8 py-8">
+		<div className="flex w-full flex-col border-t lg:border-l lg:border-t-0">
+			<div className="px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
 				<h3 className="text-lg font-semibold text-[#4B4E58]">Billing</h3>
 				<Separator className="mt-3.5" />
 
@@ -237,7 +237,7 @@ function BillingPage() {
 				</div>
 			</div>
 
-			<div className="px-8 pb-8">
+			<div className="px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8">
 				<h4 className="text-base font-semibold text-[#4B4E58]">
 					Previous invoices
 				</h4>
@@ -290,6 +290,7 @@ function BillingPage() {
 						</div>
 
 						<div className="mt-4 overflow-hidden rounded-xl border border-[#E8EDF2]">
+							<div className="w-full overflow-x-auto">
 							<Table>
 								<TableHeader>
 									<TableRow className="bg-[#FAFBFC] hover:bg-[#FAFBFC]">
@@ -349,6 +350,7 @@ function BillingPage() {
 									))}
 								</TableBody>
 							</Table>
+							</div>
 						</div>
 					</>
 				) : (

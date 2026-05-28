@@ -54,11 +54,11 @@ function NotificationsPage() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Notifications</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Enable desktop notifications
@@ -72,7 +72,7 @@ function NotificationsPage() {
 							onCheckedChange={(checked) => void handleDesktopToggle(checked)}
 						/>
 					</div>
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Enable unread notification badge
@@ -101,13 +101,13 @@ function NotificationsPage() {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Email notifications
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Communication emails
@@ -123,7 +123,7 @@ function NotificationsPage() {
 							}
 						/>
 					</div>
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Announcements and updates
@@ -141,11 +141,11 @@ function NotificationsPage() {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Sounds</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Disable all notification sounds

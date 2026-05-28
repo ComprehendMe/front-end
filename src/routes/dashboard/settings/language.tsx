@@ -29,7 +29,7 @@ function LanguagePage() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Language & time
 				</h3>

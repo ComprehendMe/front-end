@@ -206,9 +206,9 @@ function ReviewPage() {
   }
 
   return (
-    <main className="flex h-[calc(100vh-4rem)] gap-5 px-6 py-5">
-      <div className="flex flex-1 flex-col gap-4 overflow-hidden">
-        <div className="flex items-center justify-between">
+    <main className="flex min-h-[calc(100vh-4rem)] flex-col gap-5 px-3 py-4 sm:px-4 lg:h-[calc(100vh-4rem)] lg:flex-row lg:px-6 lg:py-5">
+      <div className="flex min-w-0 flex-1 flex-col gap-4 overflow-hidden">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-xl font-semibold text-foreground">
               Chat Review
@@ -221,7 +221,7 @@ function ReviewPage() {
             <span className="text-sm font-medium text-muted-foreground">
               Move {currentMove}/{totalMoves}
             </span>
-            <div className="h-2 w-36 overflow-hidden rounded-full bg-[#D6E6F5]">
+            <div className="h-2 w-28 overflow-hidden rounded-full bg-[#D6E6F5] sm:w-36">
               <div
                 className="h-full rounded-full bg-[#1497D2] transition-all duration-300"
                 style={{
@@ -232,7 +232,7 @@ function ReviewPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-6">
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-4 sm:p-6">
           {visibleMessages.map((msg, i) => {
             const isUser = msg.role === "user";
             const isFirstPatientMsg = i === 0 && !isUser;
@@ -307,7 +307,7 @@ function ReviewPage() {
         </div>
       </div>
 
-      <div className="flex w-[340px] flex-col rounded-xl border bg-white p-5">
+      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-5 lg:w-[340px]">
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-foreground">
             Performance Panel

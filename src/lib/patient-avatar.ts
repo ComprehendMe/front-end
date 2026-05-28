@@ -1,20 +1,12 @@
 const PATIENT_AVATAR_MAP: Record<string, string> = {
-  "Emma Richardson":
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=Emma%20Richardson",
-  "Lucas Mendes":
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=Lucas%20Mendes",
-  "Sofia Andersson":
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=Sofia%20Andersson",
-  "James Carter":
-    "https://api.dicebear.com/9.x/adventurer/svg?seed=James%20Carter",
+  "Emma Richardson": "/patients/Emma Richardson.png",
+  "Lucas Mendes": "/patients/Lucas Mendes.png",
+  "Sofia Andersson": "/patients/Sofia Andersson.png",
+  "James Carter": "/patients/James Carter.png",
 };
 
-function buildAvatarUrl(name: string): string {
-  return `https://api.dicebear.com/9.x/adventurer/svg?seed=${encodeURIComponent(
-    name
-  )}`;
-}
+const FALLBACK_AVATAR = "https://github.com/shadcn.png";
 
 export function getPatientAvatar(patientName: string): string {
-  return PATIENT_AVATAR_MAP[patientName] ?? buildAvatarUrl(patientName);
+  return PATIENT_AVATAR_MAP[patientName] ?? FALLBACK_AVATAR;
 }

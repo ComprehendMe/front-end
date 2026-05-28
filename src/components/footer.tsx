@@ -9,7 +9,7 @@ import {
 
 export default function Footer() {
 	return (
-		<footer className="flex justify-between px-20 py-16">
+		<footer className="flex flex-col gap-10 px-4 py-10 sm:px-6 lg:flex-row lg:justify-between lg:px-20 lg:py-16">
 			<div className="flex flex-col gap-6">
 				<div className="flex gap-2 items-center">
 					<img src="/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
@@ -38,7 +38,7 @@ export default function Footer() {
 					</a>
 				</div>
 			</div>
-			<div className="grid grid-cols-2 gap-[54px]">
+			<div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-[54px]">
 				<ul className="flex flex-col gap-3">
 					<li className="text-foreground font-normal text-[16px]">
 						<Link to="/">Benefits</Link>

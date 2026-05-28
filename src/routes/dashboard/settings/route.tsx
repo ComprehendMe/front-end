@@ -9,12 +9,14 @@ export const Route = createFileRoute("/dashboard/settings")({
 
 function DashboardRoute() {
 	return (
-		<main className="py-7">
+		<main className="py-4 sm:py-6 lg:py-7">
 			<div className="bg-white border border-[#1C1F22]/15 rounded-t-[20px]">
-				<h3 className="ml-[30px] my-[38px] font-semibold text-2xl">Settings</h3>
+				<h3 className="mx-4 my-6 font-semibold text-2xl sm:mx-6 sm:my-8 lg:ml-[30px] lg:my-[38px]">
+					Settings
+				</h3>
 				<Separator />
-				<div className="flex justify-between w-full h-full">
-					<aside className="py-8 pl-[30px] pr-9 max-w-[260px] w-full space-y-10">
+				<div className="flex h-full w-full flex-col lg:flex-row lg:justify-between">
+					<aside className="w-full space-y-6 px-4 py-5 sm:px-6 lg:max-w-[260px] lg:space-y-10 lg:py-8 lg:pl-[30px] lg:pr-9">
 						<ListTab
 							tabs={{
 								title: "Workspace Settings",
@@ -50,7 +52,9 @@ function DashboardRoute() {
 							url="/dashboard/settings"
 						/>
 					</aside>
-					<Outlet />
+					<div className="w-full min-w-0">
+						<Outlet />
+					</div>
 				</div>
 			</div>
 		</main>

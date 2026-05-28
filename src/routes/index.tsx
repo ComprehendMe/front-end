@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useId } from 'react';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 import MissionSection from '@/components/mission-section';
@@ -12,6 +13,9 @@ export const Route = createFileRoute('/')({
 });
 
 function App() {
+	const benefitsSectionId = useId();
+	const pricingSectionId = useId();
+
 	return (
 		<>
 			<div className="min-h-screen bg-background">
@@ -24,14 +28,14 @@ function App() {
 					)}
 				/>
 				<div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-background mask-[linear-gradient(to_bottom,transparent_0%,black)] dark:bg-black" />
-				<div className="relative z-20 px-20 py-10">
+				<div className="relative z-20 px-4 py-6 sm:px-6 lg:px-12 xl:px-20">
 					<Header />
-					<main className="z-50 mt-44 flex flex-col items-center justify-center text-center">
+					<main className="z-50 mt-20 flex flex-col items-center justify-center text-center sm:mt-28 lg:mt-40">
 						<div className="flex flex-col items-center gap-5">
-							<h1 className="text-[40px] font-bold text-foreground">
+							<h1 className="text-3xl font-bold text-foreground sm:text-4xl lg:text-[40px]">
 								Practice without fear. Serve without hesitation.
 							</h1>
-							<p className="max-w-4xl text-lg font-medium tracking-tight text-foreground">
+							<p className="max-w-4xl text-base font-medium tracking-tight text-foreground sm:text-lg">
 								Realistic virtual patients, immediate feedback, and a safe
 								environment for you to grow as a therapist.
 							</p>
@@ -45,8 +49,8 @@ function App() {
 						</div>
 					</main>
 					<section
-						id="benefits"
-						className="m-auto mt-40 grid grid-cols-3 gap-[30px]"
+						id={benefitsSectionId}
+						className="m-auto mt-16 grid grid-cols-1 gap-6 sm:mt-24 sm:grid-cols-2 lg:mt-36 lg:grid-cols-3 lg:gap-[30px]"
 					>
 						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-5 shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
 							<div className="flex w-fit items-center justify-center rounded-lg bg-linear-to-tr from-[#073E84] from-10% via-[#0978AA] via-90% to-[#1C97C8] p-4">
@@ -97,7 +101,7 @@ function App() {
 							</div>
 						</div>
 					</section>
-					<div id="pricing">
+					<div id={pricingSectionId}>
 						<PricingSection />
 					</div>
 					<MissionSection />

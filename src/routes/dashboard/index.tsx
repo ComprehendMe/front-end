@@ -83,15 +83,15 @@ function DashboardPage() {
   }
 
   return (
-    <main className="mt-6 grid min-h-0 grid-cols-[minmax(0,1fr)_360px] gap-6">
+    <main className="mt-4 grid min-h-0 grid-cols-1 gap-5 lg:mt-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
       <div className="flex min-w-0 w-full flex-col gap-6">
-        <div className="w-full rounded-[22px] bg-linear-to-br from-[#0978AA] to-[#1497D2] px-9 py-10 text-white shadow-sm relative overflow-hidden">
+        <div className="w-full rounded-[22px] bg-linear-to-br from-[#0978AA] to-[#1497D2] px-5 py-7 text-white shadow-sm relative overflow-hidden sm:px-7 sm:py-9 lg:px-9 lg:py-10">
           <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_18%_30%,rgba(255,255,255,0.3),transparent_18%),radial-gradient(circle_at_85%_26%,rgba(255,255,255,0.22),transparent_16%),radial-gradient(circle_at_65%_75%,rgba(255,255,255,0.16),transparent_14%)]" />
           <div className="space-y-3">
-            <h2 className="text-[36px] leading-[1.15] font-semibold">
+            <h2 className="text-[26px] leading-[1.15] font-semibold sm:text-[32px] lg:text-[36px]">
               Access Premium Patients
             </h2>
-            <p className="text-[25px] leading-[1.25] font-normal opacity-95">
+            <p className="text-[18px] leading-[1.25] font-normal opacity-95 sm:text-[22px] lg:text-[25px]">
               Advanced clinical cases for specialized training.
             </p>
             <Button
@@ -201,10 +201,10 @@ function DashboardPage() {
                 ringProgress={stats?.ringProgress ?? 0}
               />
               <div className="mt-4 space-y-1">
-                <h3 className="text-[36px] leading-[1.05] font-semibold text-[#1C1F22]">
+                <h3 className="text-[28px] leading-[1.05] font-semibold text-[#1C1F22] sm:text-[32px] lg:text-[36px]">
                   {greeting} {firstName}
                 </h3>
-                <p className="mx-auto max-w-[275px] text-[30px] leading-[1.15] font-medium text-[#4B4E58]">
+                <p className="mx-auto max-w-[275px] text-[22px] leading-[1.15] font-medium text-[#4B4E58] sm:text-[26px] lg:text-[30px]">
                   Continue your learning to achieve your target!
                 </p>
               </div>

@@ -121,7 +121,7 @@ function SettingsPage() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="text-lg font-semibold text-[#4B4E58]">My Profile</h3>
 				<Separator className="mt-3.5" />
 				<div className="flex flex-col gap-5">
@@ -168,7 +168,7 @@ function SettingsPage() {
 							</div>
 						</div>
 					</div>
-					<div className="grid w-full grid-cols-2 gap-3.5">
+					<div className="grid w-full grid-cols-1 gap-3.5 md:grid-cols-2">
 						<div className="flex flex-col gap-2">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								First name
@@ -202,7 +202,7 @@ function SettingsPage() {
 				</div>
 			</div>
 
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Account security
 				</h3>
@@ -210,11 +210,7 @@ function SettingsPage() {
 				<div className="mt-5 flex w-full flex-col gap-3.5">
 					<div className="flex flex-col gap-2">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">Email</p>
-						<Input
-							disabled
-							value={email}
-							className="max-w-[390px] bg-gray-50"
-						/>
+						<Input disabled value={email} className="w-full max-w-[390px] bg-gray-50" />
 						<p className="text-[#757575] text-sm">
 							Sign in with magic link or Google — email changes coming soon.
 						</p>
@@ -222,13 +218,13 @@ function SettingsPage() {
 				</div>
 			</div>
 
-			<div className="flex h-full w-full flex-col border-l px-8 py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Support Access
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-5 flex w-full flex-col gap-5">
-					<div className="flex items-center justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								Log out of all devices
