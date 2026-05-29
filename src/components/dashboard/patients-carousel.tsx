@@ -87,7 +87,7 @@ export function PatientsCarousel({
               align: "start",
               loop: false,
               dragFree: true,
-              containScroll: "trimSnaps",
+              containScroll: false,
             }}
             className="relative"
           >
@@ -98,7 +98,7 @@ export function PatientsCarousel({
                 return (
                   <CarouselItem
                     key={patient.id}
-                    className="basis-full xs:basis-1/2 sm:basis-1/2 lg:basis-1/3"
+                    className="basis-[calc(100%/2.5)]"
                   >
                     <button
                       type="button"

@@ -95,7 +95,7 @@ function DashboardPage() {
               Advanced clinical cases for specialized training.
             </p>
             <Button
-              className="mt-2 h-11 rounded-full bg-white px-7 text-fluid-sm font-semibold text-[#1497D2] hover:bg-[#2285B3] hover:text-white transition-colors"
+              className="mt-2 h-11 rounded-full bg-white px-7 text-fluid-sm font-semibold text-[#1497D2] hover:bg-white hover:text-[#1497D2] hover:shadow-md transition-shadow"
               size="lg"
             >
               Go premium!
@@ -117,7 +117,7 @@ function DashboardPage() {
                     type="button"
                     disabled={startingId !== null}
                     onClick={() => handlePatientClick(patient)}
-                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                     style={{
                       width: "clamp(180px, 45vw, 250px)",
                       minWidth: "clamp(180px, 45vw, 250px)",
@@ -150,7 +150,7 @@ function DashboardPage() {
                     type="button"
                     disabled={startingId !== null}
                     onClick={() => handlePatientClick(patient)}
-                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
                     style={{
                       width: "clamp(180px, 45vw, 250px)",
                       minWidth: "clamp(180px, 45vw, 250px)",
@@ -202,10 +202,10 @@ function DashboardPage() {
                 ringProgress={stats?.ringProgress ?? 0}
               />
               <div className="mt-4 space-y-1">
-                <h3 className="text-fluid-3xl leading-[1.05] font-semibold text-[#1C1F22]">
+                <h3 className="text-fluid-xl leading-[1.05] font-semibold text-[#1C1F22]">
                   {greeting} {firstName}
                 </h3>
-                <p className="mx-auto max-w-[min(275px,80%)] text-fluid-xl leading-[1.15] font-medium text-[#4B4E58]">
+                <p className="mx-auto max-w-[min(275px,80%)] text-fluid-sm leading-[1.15] font-medium text-[#4B4E58]">
                   Continue your learning to achieve your target!
                 </p>
               </div>

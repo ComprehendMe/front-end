@@ -42,6 +42,7 @@ export default function Footer() {
 					</a>
 				</div>
 			</div>
+		<div className="flex flex-col justify-center">
 			<ul className="flex flex-col gap-3">
 				<li>
 					<button
@@ -59,15 +60,8 @@ export default function Footer() {
 						Pricing
 					</button>
 				</li>
-				<li>
-					<button
-						onClick={() => scrollToId('mission')}
-						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
-					>
-						Our mission
-					</button>
-				</li>
 			</ul>
+		</div>
 		</footer>
 	);
 }

@@ -123,23 +123,12 @@ const PricingSection = ({
 									{plan?.button ? (
 										<AuthDialog
 											trigger={
-												<Button className="h-[50px] w-full rounded-full px-6 text-fluid-base font-medium">
+												<Button className="h-[50px] w-full rounded-full px-6 text-fluid-base font-medium text-white">
 													{plan.button.text}
 												</Button>
 											}
 										/>
-									) : (
-										<AuthDialog
-											trigger={
-												<Button
-													variant="outline"
-													className="h-[50px] w-full rounded-full px-6 text-fluid-base font-medium"
-												>
-													Get started free
-												</Button>
-											}
-										/>
-									)}
+									) : null}
 								</CardFooter>
 							</Card>
 						))}

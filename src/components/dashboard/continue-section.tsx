@@ -81,7 +81,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 					setApi={setCarouselApi}
 					opts={{
 						dragFree: true,
-						containScroll: 'trimSnaps',
+						containScroll: false,
 						align: 'start',
 					}}
 					className="relative"
@@ -91,7 +91,7 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 							const patientIndex = getPatientIndex(patients, chat.patientId);
 
 							return (
-								<CarouselItem key={chat.id} className="pl-4 basis-full xs:basis-1/2 sm:basis-1/2 lg:basis-1/3">
+								<CarouselItem key={chat.id} className="pl-4 basis-[calc(100%/2.5)]">
 									<Link
 										to="/dashboard/chat/$chatId"
 										params={{ chatId: chat.id }}

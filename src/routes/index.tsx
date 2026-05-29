@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
-import MissionSection from '@/components/mission-section';
+
 import AuthDialog from '@/components/auth/auth-dialog';
 import { PricingSection } from '@/components/pricing-card';
 import { Button } from '@/components/ui/button';
@@ -76,7 +76,7 @@ function App() {
 					</main>
 					<section
 						id="benefits"
-						className="m-auto mt-[clamp(3rem,8vw,9rem)] grid grid-cols-1 gap-fluid-lg sm:grid-cols-2 lg:grid-cols-3"
+						className="m-auto mt-[clamp(3rem,8vw,9rem)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,clamp(280px,35vw,380px)),1fr))] gap-fluid-lg"
 					>
 						<div className="z-50 space-y-5 rounded-xl border border-border bg-card p-fluid-md shadow-[0px_8px_28.1px_0px_rgba(0,0,0,0.06)]">
 							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
@@ -130,7 +130,6 @@ function App() {
 					<div id="pricing">
 						<PricingSection />
 					</div>
-					<MissionSection />
 				</div>
 			</div>
 			<Footer />
