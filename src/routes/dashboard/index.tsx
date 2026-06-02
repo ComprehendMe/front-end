@@ -2,10 +2,10 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ContinueSection } from "@/components/dashboard/continue-section";
+import { RecentConversations, StartLearningSection } from "@/components/dashboard/dashboard-sections";
 import { StatsAvatar } from "@/components/dashboard/stats-avatar";
 import { WeeklyMinutesChart } from "@/components/dashboard/weekly-minutes-chart";
 import { FriendsPanel } from "@/components/dashboard/friends-panel";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   ApiError,
@@ -17,7 +17,6 @@ import {
   type DashboardStats,
   type Patient,
 } from "@/lib/api";
-import { getPatientAvatar } from "@/lib/patient-avatar";
 import { getTimeGreeting } from "@/lib/format-message-time";
 import { getFirstName } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../dashboard";
@@ -37,6 +36,7 @@ function DashboardPage() {
   const greeting = getTimeGreeting();
 
   const activeChats = allChats.filter((c) => !c.endedAt);
+  const endedChats = allChats.filter((c) => c.endedAt);
 
   useEffect(() => {
     Promise.all([listPatients(), listChats(), getDashboardStats()])
@@ -103,90 +103,20 @@ function DashboardPage() {
           </div>
         </div>
         {patients.length > 0 && (
-          <div className="relative w-full overflow-hidden">
-            <div
-              className="flex animate-scroll-left hover:animation-paused"
-              style={{
-                width: "fit-content",
-              }}
-            >
-              <div className="flex gap-4">
-                {patients.map((patient) => (
-                  <button
-                    key={`${patient.id}-1`}
-                    type="button"
-                    disabled={startingId !== null}
-                    onClick={() => handlePatientClick(patient)}
-                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
-                    style={{
-                      width: "clamp(180px, 45vw, 250px)",
-                      minWidth: "clamp(180px, 45vw, 250px)",
-                    }}
-                  >
-                    <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
-                      <Avatar className="h-full w-full rounded-lg">
-                        <AvatarImage
-                          src={getPatientAvatar(patient.name)}
-                          alt={patient.name}
-                          className="object-cover"
-                        />
-                      </Avatar>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-fluid-sm font-bold text-[#1C1F22] leading-tight">
-                        {patient.name}
-                      </p>
-                      <p className="truncate text-fluid-xs text-muted-foreground font-medium mt-0.5">
-                        {patient.problem}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              <div className="flex gap-4">
-                {patients.map((patient) => (
-                  <button
-                    key={`${patient.id}-2`}
-                    type="button"
-                    disabled={startingId !== null}
-                    onClick={() => handlePatientClick(patient)}
-                    className="flex shrink-0 items-center gap-3 rounded-[18px] border border-[#DDDDDE]/80 bg-white p-2.5 text-left shadow-xs transition hover:shadow-sm hover:scale-[1.01] cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-not-allowed disabled:opacity-60"
-                    style={{
-                      width: "clamp(180px, 45vw, 250px)",
-                      minWidth: "clamp(180px, 45vw, 250px)",
-                    }}
-                  >
-                    <div className="h-11 w-11 shrink-0 rounded-xl bg-[#E6F1F6] p-1">
-                      <Avatar className="h-full w-full rounded-lg">
-                        <AvatarImage
-                          src={getPatientAvatar(patient.name)}
-                          alt={patient.name}
-                          className="object-cover"
-                        />
-                      </Avatar>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-fluid-sm font-bold text-[#1C1F22] leading-tight">
-                        {patient.name}
-                      </p>
-                      <p className="truncate text-fluid-xs text-muted-foreground font-medium mt-0.5">
-                        {patient.problem}
-                      </p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          <StartLearningSection
+            patients={patients}
+            startingId={startingId}
+            onStart={handlePatientClick}
+          />
         )}
         {activeChats.length > 0 && (
-          <div className="py-1">
-            <ContinueSection
-              chats={activeChats}
-              patients={patients}
-              title="Continue conversation"
-            />
-          </div>
+          <ContinueSection
+            chats={activeChats}
+            title="Continue conversation"
+          />
+        )}
+        {endedChats.length > 0 && (
+          <RecentConversations chats={endedChats} />
         )}
       </div>
       <div className="w-full">

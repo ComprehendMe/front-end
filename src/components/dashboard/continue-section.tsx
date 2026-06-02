@@ -8,21 +8,16 @@ import {
 	CarouselContent,
 	CarouselItem,
 } from '../ui/carousel';
-import { Badge } from '@/components/ui/badge';
-import type { Chat, Patient } from '@/lib/api';
-import { getPatientIndex } from '@/lib/patient-assets';
-import { PatientCardContent } from './patient-card';
-
-const cardLinkClass =
-	'group flex cursor-pointer flex-col rounded-[22px] outline-none transition hover:opacity-95 focus-visible:ring-2 focus-visible:ring-primary/40';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import type { Chat } from '@/lib/api';
+import { getPatientAvatar } from '@/lib/patient-avatar';
 
 type ContinueSectionProps = {
 	chats: Chat[];
-	patients: Patient[];
 	title?: string;
 };
 
-export function ContinueSection({ chats, patients, title }: ContinueSectionProps) {
+export function ContinueSection({ chats, title }: ContinueSectionProps) {
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 	const [canScrollPrev, setCanScrollPrev] = useState(false);
 	const [canScrollNext, setCanScrollNext] = useState(false);
@@ -47,10 +42,10 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 	if (chats.length === 0) return null;
 
 	return (
-		<div className="space-y-3">
+		<section className="space-y-3">
 			<div className="flex w-full items-center justify-between px-0.5">
 				{title ? (
-					<h2 className="text-fluid-3xl font-semibold leading-[1.1] text-[#1C1F22]">
+					<h2 className="text-2xl font-semibold leading-[1.1] text-[#1C1F22]">
 						{title}
 					</h2>
 				) : (
@@ -87,40 +82,44 @@ export function ContinueSection({ chats, patients, title }: ContinueSectionProps
 					className="relative"
 				>
 					<CarouselContent className="-ml-4">
-						{chats.map((chat) => {
-							const patientIndex = getPatientIndex(patients, chat.patientId);
-
-							return (
-								<CarouselItem key={chat.id} className="pl-4 basis-[calc(100%/2.5)]">
-									<Link
-										to="/dashboard/chat/$chatId"
-										params={{ chatId: chat.id }}
-										className={cardLinkClass}
-									>
-										<div className="relative h-full">
-											{chat.pausedAt ? (
-												<Badge
-													variant="secondary"
-													className="absolute top-4 right-4 z-10 bg-[#F8F8CD] text-[#726B07] border-none"
-												>
-													Paused
-												</Badge>
-											) : null}
-											<PatientCardContent
-												patientIndex={patientIndex}
-												patientId={chat.patientId}
-												patientName={chat.patient.name}
-												problem={chat.patient.problem}
-												className="h-full rounded-[22px] border border-[#E6EBEF] bg-white p-5 shadow-xs"
+						{chats.map((chat) => (
+							<CarouselItem key={chat.id} className="pl-4 basis-[calc(100%/2.5)]">
+								<Link
+									to="/dashboard/chat/$chatId"
+									params={{ chatId: chat.id }}
+									className="flex items-center gap-3 rounded-[18px] border border-[#E8EDF2] bg-white p-4 shadow-xs outline-none transition hover:shadow-sm hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-primary/40"
+								>
+									<div className="relative shrink-0">
+										<Avatar className="h-10 w-10">
+											<AvatarImage
+												src={getPatientAvatar(chat.patient.name)}
+												alt=""
 											/>
-										</div>
-									</Link>
-								</CarouselItem>
-							);
-						})}
+											<AvatarFallback>
+												{chat.patient.name[0]}
+											</AvatarFallback>
+										</Avatar>
+										{chat.pausedAt && (
+											<div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F8F8CD] text-[8px] font-bold text-[#726B07] border border-white">
+												P
+											</div>
+										)}
+									</div>
+									<div className="min-w-0 flex-1">
+										<p className="truncate text-sm font-semibold text-[#1C1F22]">
+											{chat.patient.name}
+										</p>
+										<p className="truncate text-xs text-muted-foreground">
+											{chat.patient.problem}
+										</p>
+									</div>
+									<ChevronRight className="h-5 w-5 shrink-0 text-[#1497D2]" />
+								</Link>
+							</CarouselItem>
+						))}
 					</CarouselContent>
 				</Carousel>
 			</div>
-		</div>
+		</section>
 	);
 }
