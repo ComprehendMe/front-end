@@ -1,14 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
-import { useUserPreferences } from '@/hooks/use-user-preferences';
-import { requestDesktopNotificationPermission } from '@/lib/user-preferences';
-import { Route as DashboardRoute } from '../../dashboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { useUserPreferences } from "@/hooks/use-user-preferences";
+import { requestDesktopNotificationPermission } from "@/lib/user-preferences";
+import { Route as DashboardRoute } from "../../dashboard";
 
-export const Route = createFileRoute('/dashboard/settings/notifications')({
+export const Route = createFileRoute("/dashboard/settings/notifications")({
 	component: NotificationsPage,
 });
 
@@ -25,13 +25,13 @@ function NotificationsPage() {
 			const allowed = await requestDesktopNotificationPermission();
 			if (!allowed) {
 				toast.error(
-					'Desktop notifications are blocked. Enable them in your browser settings.',
+					"Desktop notifications are blocked. Enable them in your browser settings.",
 				);
 				return;
 			}
 		}
 		updateNotifications({ desktopEnabled: checked });
-		toast.success('Notification settings saved.');
+		toast.success("Notification settings saved.");
 	}
 
 	function handleToggle(
@@ -39,9 +39,9 @@ function NotificationsPage() {
 		checked: boolean,
 		skipToast?: boolean,
 	) {
-		if (key === 'desktopEnabled') return;
+		if (key === "desktopEnabled") return;
 		updateNotifications({ [key]: checked });
-		if (!skipToast) toast.success('Notification settings saved.');
+		if (!skipToast) toast.success("Notification settings saved.");
 	}
 
 	function handleTimeoutBlur() {
@@ -49,13 +49,15 @@ function NotificationsPage() {
 		const minutes = Number.isFinite(parsed) && parsed > 0 ? parsed : 10;
 		setTimeoutInput(String(minutes));
 		updateNotifications({ pushTimeoutMinutes: minutes });
-		toast.success('Notification settings saved.');
+		toast.success("Notification settings saved.");
 	}
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
-				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Notifications</h3>
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
+				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
+					Notifications
+				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -84,7 +86,7 @@ function NotificationsPage() {
 						<Switch
 							checked={notifications.unreadBadgeEnabled}
 							onCheckedChange={(checked) =>
-								handleToggle('unreadBadgeEnabled', checked)
+								handleToggle("unreadBadgeEnabled", checked)
 							}
 						/>
 					</div>
@@ -101,7 +103,7 @@ function NotificationsPage() {
 					</div>
 				</div>
 			</div>
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Email notifications
 				</h3>
@@ -119,7 +121,7 @@ function NotificationsPage() {
 						<Switch
 							checked={notifications.emailCommunication}
 							onCheckedChange={(checked) =>
-								handleToggle('emailCommunication', checked)
+								handleToggle("emailCommunication", checked)
 							}
 						/>
 					</div>
@@ -135,13 +137,13 @@ function NotificationsPage() {
 						<Switch
 							checked={notifications.emailAnnouncements}
 							onCheckedChange={(checked) =>
-								handleToggle('emailAnnouncements', checked)
+								handleToggle("emailAnnouncements", checked)
 							}
 						/>
 					</div>
 				</div>
 			</div>
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Sounds</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
@@ -157,7 +159,7 @@ function NotificationsPage() {
 						<Switch
 							checked={notifications.soundsDisabled}
 							onCheckedChange={(checked) =>
-								handleToggle('soundsDisabled', checked)
+								handleToggle("soundsDisabled", checked)
 							}
 						/>
 					</div>

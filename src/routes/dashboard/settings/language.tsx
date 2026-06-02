@@ -1,15 +1,15 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useId } from 'react';
-import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Separator } from '@/components/ui/separator';
-import { useUserPreferences } from '@/hooks/use-user-preferences';
-import type { TimeFormat } from '@/lib/user-preferences';
-import { Route as DashboardRoute } from '../../dashboard';
+import { createFileRoute } from "@tanstack/react-router";
+import { useId } from "react";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
+import { useUserPreferences } from "@/hooks/use-user-preferences";
+import type { TimeFormat } from "@/lib/user-preferences";
+import { Route as DashboardRoute } from "../../dashboard";
 
-export const Route = createFileRoute('/dashboard/settings/language')({
+export const Route = createFileRoute("/dashboard/settings/language")({
 	component: LanguagePage,
 });
 
@@ -21,15 +21,15 @@ function LanguagePage() {
 	const option24Id = `${id}-24h`;
 
 	function handleTimeFormat(value: string) {
-		const timeFormat: TimeFormat = value === '24h' ? '24h' : '12h';
+		const timeFormat: TimeFormat = value === "24h" ? "24h" : "12h";
 		updatePreferences({ timeFormat });
-		document.documentElement.lang = 'en';
-		toast.success('Language and time settings saved.');
+		document.documentElement.lang = "en";
+		toast.success("Language and time settings saved.");
 	}
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
+			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
 					Language & time
 				</h3>
@@ -44,10 +44,16 @@ function LanguagePage() {
 								Choose the language you want ComprehendMe to display.
 							</span>
 						</div>
-						<Input className="w-full max-w-md bg-gray-50" disabled value="English" />
+						<Input
+							className="w-full max-w-md bg-gray-50"
+							disabled
+							value="English"
+						/>
 					</div>
 					<div className="flex flex-col gap-4">
-						<p className="font-semibold text-[#4B4E58] text-[16px]">Time format</p>
+						<p className="font-semibold text-[#4B4E58] text-[16px]">
+							Time format
+						</p>
 						<RadioGroup
 							value={preferences.timeFormat}
 							onValueChange={handleTimeFormat}

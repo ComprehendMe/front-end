@@ -1,25 +1,43 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { Bell, Globe, User } from "lucide-react";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { Bell, Globe, User, Users } from "lucide-react";
 import { ListTab } from "@/components/dashboard/tabs-list";
 import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/dashboard/settings")({
+	validateSearch: (search: Record<string, unknown>) => ({
+		ec: typeof search.ec === "string" ? search.ec : undefined,
+	}),
 	component: DashboardRoute,
 });
 
 function DashboardRoute() {
+	const { ec } = Route.useSearch();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (ec === "success") {
+			toast.success("Email changed successfully.");
+		} else if (ec === "expired") {
+			toast.error("Verification link expired or invalid.");
+		}
+		if (ec) {
+			navigate({ to: "/dashboard/settings", search: { ec: undefined }, replace: true });
+		}
+	}, [ec, navigate]);
 	return (
-		<main className="bg-[var(--dashboard-canvas-alt)] py-fluid-section">
-			<div className="bg-white border border-[#1C1F22]/15 rounded-t-[20px]">
-				<h3 className="mx-fluid-container my-fluid-lg font-semibold text-fluid-2xl">
+		<main className="bg-[var(--dashboard-canvas-alt)] py-6 sm:py-8 lg:py-12">
+			<div className="bg-white border border-[#1C1F22]/15 rounded-[20px]">
+				<h3 className="mx-4 sm:mx-6 lg:mx-8 mt-4 sm:mt-6 lg:mt-8 mb-4 sm:mb-6 lg:mb-8 font-semibold text-2xl">
 					Settings
 				</h3>
 				<Separator />
 				<div className="flex h-full w-full flex-col lg:flex-row lg:justify-between">
-					<aside className="w-full space-y-6 px-fluid-container py-fluid-md lg:max-w-[260px] lg:space-y-10 lg:py-8 lg:pl-[30px] lg:pr-9">
+					<aside className="w-full space-y-8 px-4 py-5 sm:px-6 sm:py-6 lg:max-w-[260px] lg:py-8 lg:pl-[30px] lg:pr-9">
 						<ListTab
 							tabs={{
-								title: "Workspace Settings",
+								title: "General Settings",
 								items: [
 									{
 										name: "Account",
@@ -35,6 +53,19 @@ function DashboardRoute() {
 										name: "Language & time",
 										value: "/language",
 										icon: <Globe />,
+									},
+								],
+							}}
+							url="/dashboard/settings"
+						/>
+						<ListTab
+							tabs={{
+								title: "Workspace Settings",
+								items: [
+									{
+										name: "Friends",
+										value: "/friends",
+										icon: <Users />,
 									},
 									{
 										name: "Billing",

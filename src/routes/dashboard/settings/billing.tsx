@@ -1,11 +1,11 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import type { ReactNode } from 'react';
-import { Check, Download, Search, SlidersHorizontal } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { toast } from 'sonner';
-import { DashboardButton } from '@/components/dashboard/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Check, Download, Search, SlidersHorizontal } from "lucide-react";
+import type { ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { DashboardButton } from "@/components/dashboard/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import {
 	Table,
 	TableBody,
@@ -13,38 +13,38 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
 	ApiError,
+	type BillingInvoice,
+	type BillingSummary,
 	confirmPremiumCheckout,
 	getBillingSummary,
 	startPremiumCheckout,
-	type BillingInvoice,
-	type BillingSummary,
-} from '@/lib/api';
-import { cn } from '@/lib/utils';
+} from "@/lib/api";
+import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute('/dashboard/settings/billing')({
+export const Route = createFileRoute("/dashboard/settings/billing")({
 	validateSearch: (search: Record<string, unknown>) => ({
 		session_id:
-			typeof search.session_id === 'string' ? search.session_id : undefined,
+			typeof search.session_id === "string" ? search.session_id : undefined,
 	}),
 	component: BillingPage,
 });
 
-type InvoiceFilter = 'all' | 'active' | 'archived';
+type InvoiceFilter = "all" | "active" | "archived";
 
 const BASIC_FEATURES = [
-	'Access to standard patients',
-	'Session history',
-	'Basic progress statistics',
+	"Access to standard patients",
+	"Session history",
+	"Basic progress statistics",
 ];
 
 const PREMIUM_FEATURES = [
-	'All Basic features',
-	'Premium clinical cases',
-	'Advanced reports',
-	'Priority support',
+	"All Basic features",
+	"Premium clinical cases",
+	"Advanced reports",
+	"Priority support",
 ];
 
 function PlanCard({
@@ -63,8 +63,8 @@ function PlanCard({
 	return (
 		<div
 			className={cn(
-				'flex flex-1 flex-col rounded-2xl border border-[#E8EDF2] bg-white p-6',
-				highlight && 'ring-1 ring-primary/20',
+				"flex flex-1 flex-col rounded-2xl border border-[#E8EDF2] bg-white p-6",
+				highlight && "ring-1 ring-primary/20",
 			)}
 		>
 			<p className="text-lg font-medium text-[#4B4E58]">{title}</p>
@@ -91,8 +91,8 @@ function BillingPage() {
 	const [billing, setBilling] = useState<BillingSummary | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [checkoutLoading, setCheckoutLoading] = useState(false);
-	const [invoiceFilter, setInvoiceFilter] = useState<InvoiceFilter>('all');
-	const [invoiceSearch, setInvoiceSearch] = useState('');
+	const [invoiceFilter, setInvoiceFilter] = useState<InvoiceFilter>("all");
+	const [invoiceSearch, setInvoiceSearch] = useState("");
 	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
 	const loadBilling = useCallback(async () => {
@@ -101,7 +101,7 @@ function BillingPage() {
 			setBilling(data);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not load billing.',
+				e instanceof ApiError ? e.message : "Could not load billing.",
 			);
 		} finally {
 			setLoading(false);
@@ -121,20 +121,18 @@ function BillingPage() {
 				const result = await confirmPremiumCheckout(sessionId);
 				if (cancelled) return;
 				if (result.ok) {
-					toast.success('Premium plan activated.');
+					toast.success("Premium plan activated.");
 					await loadBilling();
 				}
 				await navigate({
-					to: '/dashboard/settings/billing',
-					search: { session_id: undefined },
+					to: "/dashboard/settings/billing",
+					search: { session_id: undefined, ec: undefined },
 					replace: true,
 				});
 			} catch (e) {
 				if (cancelled) return;
 				toast.error(
-					e instanceof ApiError
-						? e.message
-						: 'Could not confirm payment.',
+					e instanceof ApiError ? e.message : "Could not confirm payment.",
 				);
 			}
 		})();
@@ -147,7 +145,7 @@ function BillingPage() {
 	const filteredInvoices = useMemo(() => {
 		if (!billing?.invoices.length) return [];
 		return billing.invoices.filter((inv: BillingInvoice) => {
-			if (invoiceFilter !== 'all' && inv.status !== invoiceFilter) {
+			if (invoiceFilter !== "all" && inv.status !== invoiceFilter) {
 				return false;
 			}
 			if (!invoiceSearch.trim()) return true;
@@ -155,12 +153,12 @@ function BillingPage() {
 		});
 	}, [billing, invoiceFilter, invoiceSearch]);
 
-	const isPremium = billing?.plan === 'PREMIUM';
+	const isPremium = billing?.plan === "PREMIUM";
 
 	async function handleUpgrade() {
 		if (!billing?.checkoutAvailable) {
 			toast.error(
-				'Online payments are not available yet. Contact support to upgrade.',
+				"Online payments are not available yet. Contact support to upgrade.",
 			);
 			return;
 		}
@@ -171,7 +169,7 @@ function BillingPage() {
 			window.location.assign(url);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not start checkout.',
+				e instanceof ApiError ? e.message : "Could not start checkout.",
 			);
 			setCheckoutLoading(false);
 		}
@@ -211,7 +209,7 @@ function BillingPage() {
 								variant="secondary"
 								disabled={!isPremium}
 							>
-								{!isPremium ? 'Current plan' : 'Switch to this plan'}
+								{!isPremium ? "Current plan" : "Switch to this plan"}
 							</DashboardButton>
 						}
 					/>
@@ -227,17 +225,17 @@ function BillingPage() {
 								onClick={() => void handleUpgrade()}
 							>
 								{isPremium
-									? 'Current plan'
+									? "Current plan"
 									: checkoutLoading
-										? 'Redirecting…'
-										: 'Switch to this plan'}
+										? "Redirecting…"
+										: "Switch to this plan"}
 							</DashboardButton>
 						}
 					/>
 				</div>
 			</div>
 
-			<div className="px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8">
+			<div className="px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
 				<h4 className="text-base font-semibold text-[#4B4E58]">
 					Previous invoices
 				</h4>
@@ -248,9 +246,9 @@ function BillingPage() {
 							<div className="flex flex-wrap gap-2">
 								{(
 									[
-										['all', 'View all'],
-										['active', 'Active'],
-										['archived', 'Archived'],
+										["all", "View all"],
+										["active", "Active"],
+										["archived", "Archived"],
 									] as const
 								).map(([value, label]) => (
 									<button
@@ -258,10 +256,10 @@ function BillingPage() {
 										type="button"
 										onClick={() => setInvoiceFilter(value)}
 										className={cn(
-											'rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+											"rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
 											invoiceFilter === value
-												? 'bg-[#1C1F22] text-white'
-												: 'bg-[#F0F5FA] text-[#4B4E58] hover:bg-[#E2E8F0]',
+												? "bg-[#1C1F22] text-white"
+												: "bg-[#F0F5FA] text-[#4B4E58] hover:bg-[#E2E8F0]",
 										)}
 									>
 										{label}
@@ -291,65 +289,65 @@ function BillingPage() {
 
 						<div className="mt-4 overflow-hidden rounded-xl border border-[#E8EDF2]">
 							<div className="w-full overflow-x-auto">
-							<Table>
-								<TableHeader>
-									<TableRow className="bg-[#FAFBFC] hover:bg-[#FAFBFC]">
-										<TableHead className="w-10" />
-										<TableHead className="font-semibold text-[#4B4E58]">
-											Invoice Name
-										</TableHead>
-										<TableHead className="font-semibold text-[#4B4E58]">
-											Date
-										</TableHead>
-										<TableHead className="font-semibold text-[#4B4E58]">
-											Plan Type
-										</TableHead>
-										<TableHead className="font-semibold text-[#4B4E58]">
-											Amount
-										</TableHead>
-										<TableHead className="w-12" />
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{filteredInvoices.map((invoice) => (
-										<TableRow key={invoice.id}>
-											<TableCell>
-												<input
-													type="checkbox"
-													checked={selectedIds.has(invoice.id)}
-													onChange={() => toggleInvoice(invoice.id)}
-													className="h-4 w-4 rounded border-gray-300"
-												/>
-											</TableCell>
-											<TableCell className="font-medium">
-												{invoice.name}
-											</TableCell>
-											<TableCell className="text-muted-foreground">
-												{invoice.date}
-											</TableCell>
-											<TableCell className="text-muted-foreground">
-												{invoice.plan}
-											</TableCell>
-											<TableCell className="font-medium">
-												{invoice.amount}
-											</TableCell>
-											<TableCell>
-												{invoice.downloadUrl ? (
-													<a
-														href={invoice.downloadUrl}
-														target="_blank"
-														rel="noreferrer"
-														className="text-muted-foreground hover:text-primary"
-														aria-label={`Download ${invoice.name}`}
-													>
-														<Download className="h-4 w-4" />
-													</a>
-												) : null}
-											</TableCell>
+								<Table>
+									<TableHeader>
+										<TableRow className="bg-[#FAFBFC] hover:bg-[#FAFBFC]">
+											<TableHead className="w-10" />
+											<TableHead className="font-semibold text-[#4B4E58]">
+												Invoice Name
+											</TableHead>
+											<TableHead className="font-semibold text-[#4B4E58]">
+												Date
+											</TableHead>
+											<TableHead className="font-semibold text-[#4B4E58]">
+												Plan Type
+											</TableHead>
+											<TableHead className="font-semibold text-[#4B4E58]">
+												Amount
+											</TableHead>
+											<TableHead className="w-12" />
 										</TableRow>
-									))}
-								</TableBody>
-							</Table>
+									</TableHeader>
+									<TableBody>
+										{filteredInvoices.map((invoice) => (
+											<TableRow key={invoice.id}>
+												<TableCell>
+													<input
+														type="checkbox"
+														checked={selectedIds.has(invoice.id)}
+														onChange={() => toggleInvoice(invoice.id)}
+														className="h-4 w-4 rounded border-gray-300"
+													/>
+												</TableCell>
+												<TableCell className="font-medium">
+													{invoice.name}
+												</TableCell>
+												<TableCell className="text-muted-foreground">
+													{invoice.date}
+												</TableCell>
+												<TableCell className="text-muted-foreground">
+													{invoice.plan}
+												</TableCell>
+												<TableCell className="font-medium">
+													{invoice.amount}
+												</TableCell>
+												<TableCell>
+													{invoice.downloadUrl ? (
+														<a
+															href={invoice.downloadUrl}
+															target="_blank"
+															rel="noreferrer"
+															className="text-muted-foreground hover:text-primary"
+															aria-label={`Download ${invoice.name}`}
+														>
+															<Download className="h-4 w-4" />
+														</a>
+													) : null}
+												</TableCell>
+											</TableRow>
+										))}
+									</TableBody>
+								</Table>
 							</div>
 						</div>
 					</>
