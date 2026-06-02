@@ -17,6 +17,7 @@ import {
 } from '@/lib/api';
 import { getInitials } from '@/lib/user-display';
 import { showDesktopNotification } from '@/lib/user-preferences';
+import { wsClient } from '@/lib/websocket';
 
 export function NotificationBell() {
 	const [open, setOpen] = useState(false);
@@ -52,9 +53,30 @@ export function NotificationBell() {
 
 		void poll();
 		const interval = setInterval(() => void poll(), 30_000);
+
+		wsClient.connect();
+		function onFriendRequest(payload: unknown) {
+			if (!mounted) return;
+			const req = payload as FriendRequest;
+			setRequests((prev) => {
+				if (prev.some((r) => r.id === req.id)) return prev;
+				return [req, ...prev];
+			});
+			if (!seenIdsRef.current.has(req.id)) {
+				const name = req.requester.name?.trim() || 'Someone';
+				showDesktopNotification(
+					'Friend request',
+					`${name} sent you a friend request.`,
+				);
+				seenIdsRef.current.add(req.id);
+			}
+		}
+		wsClient.on('FRIEND_REQUEST', onFriendRequest);
+
 		return () => {
 			mounted = false;
 			clearInterval(interval);
+			wsClient.off('FRIEND_REQUEST', onFriendRequest);
 		};
 	}, []);
 

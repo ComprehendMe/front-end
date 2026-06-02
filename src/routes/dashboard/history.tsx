@@ -56,6 +56,7 @@ function HistoryPage() {
 					duration: `${item.durationMinutes} min`,
 					analysis: 'Review',
 					patientImageUrl: getPatientAvatar(item.name),
+					pausedAt: item.pausedAt,
 				};
 			});
 

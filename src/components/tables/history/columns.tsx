@@ -23,6 +23,7 @@ export type HistoryRow = {
   duration: string;
   analysis: string;
   patientImageUrl: string;
+  pausedAt: string | null;
 };
 
 type HistoryColumnsOptions = {
@@ -72,17 +73,26 @@ export function createHistoryColumns({
     {
       accessorKey: "analysis",
       header: "Analysis",
-      cell: ({ row }) => (
-        <div className="flex items-center gap-3">
-          <Link
-            to="/dashboard/review/$chatId"
-            params={{ chatId: row.original.chatId }}
-            className="text-sm font-medium text-[#1497D2] hover:underline"
-          >
-            Review
-          </Link>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const isPaused = !!row.original.pausedAt;
+        return (
+          <div className="flex items-center gap-3">
+            {isPaused ? (
+              <span className="cursor-not-allowed text-sm font-medium text-muted-foreground">
+                Review
+              </span>
+            ) : (
+              <Link
+                to="/dashboard/review/$chatId"
+                params={{ chatId: row.original.chatId }}
+                className="text-sm font-medium text-[#1497D2] hover:underline"
+              >
+                Review
+              </Link>
+            )}
+          </div>
+        );
+      },
     },
     {
       id: "action",

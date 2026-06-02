@@ -247,7 +247,15 @@ function ReviewPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border bg-white p-fluid-md">
+        <div
+          className="flex flex-1 flex-col gap-4 overflow-y-auto rounded-xl border p-fluid-md"
+          style={{
+            backgroundColor: "#F8FAFC",
+            backgroundImage:
+              "radial-gradient(circle, #CBD5E1 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
+          }}
+        >
           {currentMove === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
               <div className="relative">
