@@ -1,9 +1,9 @@
-import type { Icon } from "@tabler/icons-react";
+import type { LucideIcon } from "lucide-react";
 import type { LinkProps } from "@tanstack/react-router";
 
 interface BaseNavItem {
 	title: string;
-	icon?: Icon;
+	icon?: LucideIcon;
 }
 
 type NavLink = BaseNavItem & {

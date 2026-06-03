@@ -1,15 +1,15 @@
 import {
-  IconLayoutDashboard as DashboardIcon,
-  IconHistory as HistoryIcon,
-  IconMessage as ConversationsIcon,
-  IconLogout as LogoutIcon,
-  IconSettings as SettingsIcon,
-} from "@tabler/icons-react";
+  LayoutDashboard,
+  History,
+  MessageSquare,
+  LogOut,
+  Settings,
+} from "lucide-react";
 
 export {
-  DashboardIcon,
-  HistoryIcon,
-  ConversationsIcon,
-  LogoutIcon,
-  SettingsIcon,
+  LayoutDashboard as DashboardIcon,
+  History as HistoryIcon,
+  MessageSquare as ConversationsIcon,
+  LogOut as LogoutIcon,
+  Settings as SettingsIcon,
 };

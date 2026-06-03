@@ -1,13 +1,13 @@
 import { useNavigate } from '@tanstack/react-router';
 import {
-	IconCoin,
-	IconHistory,
-	IconMessage,
-	IconSettings,
-	IconUser,
-	IconUsers,
-} from '@tabler/icons-react';
-import { Search } from 'lucide-react';
+	CircleDollarSign,
+	History,
+	MessageSquare,
+	Search,
+	Settings,
+	User,
+	Users,
+} from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -44,32 +44,32 @@ function useNavItems(): SearchItem[] {
 		{
 			id: 'patients',
 			label: t('dashboard.search.talk_with_patients'),
-			icon: <IconUser className="h-5 w-5 text-[#1497D2]" />,
+			icon: <User className="h-5 w-5 text-[#1497D2]" />,
 			to: '/dashboard',
 		},
 		{
 			id: 'friends',
 			label: t('dashboard.search.find_friends'),
 			description: t('dashboard.search.coming_soon'),
-			icon: <IconUsers className="h-5 w-5 text-[#1497D2]" />,
+			icon: <Users className="h-5 w-5 text-[#1497D2]" />,
 			to: '/dashboard',
 		},
 		{
 			id: 'history',
 			label: t('dashboard.search.history'),
-			icon: <IconHistory className="h-5 w-5 text-[#1497D2]" />,
+			icon: <History className="h-5 w-5 text-[#1497D2]" />,
 			to: '/dashboard/history',
 		},
 		{
 			id: 'conversations',
 			label: t('dashboard.search.conversations'),
-			icon: <IconMessage className="h-5 w-5 text-[#1497D2]" />,
+			icon: <MessageSquare className="h-5 w-5 text-[#1497D2]" />,
 			to: '/dashboard',
 		},
 		{
 			id: 'settings',
 			label: t('dashboard.search.settings'),
-			icon: <IconSettings className="h-5 w-5 text-[#1497D2]" />,
+			icon: <Settings className="h-5 w-5 text-[#1497D2]" />,
 			to: '/dashboard/settings',
 		},
 	];
@@ -114,7 +114,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 				id: `patient-${p.id}`,
 				label: p.name,
 				description: `${p.problem} · ${p.age} · ${p.nationality} · ${p.difficulty}`,
-				icon: <IconUser className="h-5 w-5 text-[#1497D2]" />,
+				icon: <User className="h-5 w-5 text-[#1497D2]" />,
 				to: '/dashboard',
 			}));
 	}, [patients, query]);
@@ -134,7 +134,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 				id: `chat-${c.id}`,
 				label: c.title,
 				description: `${c.patient.name}`,
-				icon: <IconMessage className="h-5 w-5 text-[#1497D2]" />,
+				icon: <MessageSquare className="h-5 w-5 text-[#1497D2]" />,
 				to: '/dashboard/chat/$chatId',
 				params: { chatId: c.id },
 			}));
@@ -150,7 +150,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 				id: 'billing',
 				label: t('dashboard.search.billing_label'),
 				description: t('dashboard.search.billing_desc'),
-				icon: <IconCoin className="h-5 w-5 text-[#1497D2]" />,
+				icon: <CircleDollarSign className="h-5 w-5 text-[#1497D2]" />,
 				to: '/dashboard/settings/billing',
 			};
 		}
