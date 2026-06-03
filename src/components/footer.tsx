@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	BsDiscord,
 	BsInstagram,
@@ -12,17 +13,18 @@ function scrollToId(id: string) {
 }
 
 export default function Footer() {
+	const { t } = useTranslation();
 	return (
 		<footer className="flex flex-col gap-fluid-xl px-fluid-container py-fluid-section lg:flex-row lg:justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="flex gap-2 items-center">
-					<img src="/logo.svg" alt="logo" className="w-8 h-8 object-contain" />
+					<img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="w-8 h-8 object-contain" />
 					<span className="font-semibold text-fluid-sm text-primary">
-						ComprehendMe
+						{t('dashboard.layout.sidebar_app_name')}
 					</span>
 				</div>
 				<p className="text-foreground font-normal text-fluid-sm">
-					© 2025 ComprehendMe. All rights reserved.
+					{t('landing.footer_copyright')}
 				</p>
 				<div className="flex gap-3 items-center">
 					<a href="https://github.com" target="_blank" rel="noopener">
@@ -49,7 +51,7 @@ export default function Footer() {
 						onClick={() => scrollToId('benefits')}
 						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
 					>
-						Benefits
+						{t('landing.footer_benefits')}
 					</button>
 				</li>
 				<li>
@@ -57,7 +59,7 @@ export default function Footer() {
 						onClick={() => scrollToId('pricing')}
 						className="text-foreground font-normal text-fluid-sm cursor-pointer hover:underline"
 					>
-						Pricing
+						{t('landing.footer_pricing')}
 					</button>
 				</li>
 			</ul>

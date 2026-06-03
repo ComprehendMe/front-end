@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { DashboardSearch } from '@/components/dashboard/dashboard-search';
 import { NotificationBell } from '@/components/dashboard/notification-bell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -11,7 +12,8 @@ type DashboardHeaderProps = {
 
 export function DashboardHeader({ user }: DashboardHeaderProps) {
 	const [patients, setPatients] = useState<Patient[]>([]);
-	const displayName = getDisplayName(user);
+	const { t } = useTranslation();
+	const displayName = getDisplayName(user, t('dashboard.settings.account.add_your_name'));
 	const initials = getInitials(user);
 
 	useEffect(() => {
@@ -28,13 +30,13 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 				<div className="flex items-center gap-2.5">
 					<Avatar className="size-10">
 						{user.avatar ? (
-							<AvatarImage src={user.avatar} alt={displayName} />
+							<AvatarImage src={user.avatar} alt={t('dashboard.layout.header_user_avatar_alt', { displayName })} />
 						) : null}
 						<AvatarFallback className="bg-primary/10 text-sm font-medium text-primary">
 							{initials}
 						</AvatarFallback>
 					</Avatar>
-					<span className="text-[#d6dde3] text-lg">|</span>
+					<span className="text-[#d6dde3] text-lg">{t('dashboard.layout.header_user_separator')}</span>
 					<span className="whitespace-nowrap text-fluid-sm font-medium text-[#1C1F22]">
 						{displayName}
 					</span>

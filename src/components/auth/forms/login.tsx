@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import type z from "zod";
 import { ApiError, login } from "@/lib/api";
@@ -24,6 +25,7 @@ export default function LoginForm({
 	toggleMode: () => void;
 	onEmailSent: (email: string) => void;
 }) {
+	const { t } = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const loginForm = useForm<z.infer<typeof LoginFormSchema>>({
 		resolver: zodResolver(LoginFormSchema),
@@ -37,7 +39,7 @@ export default function LoginForm({
 			onEmailSent(data.email);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not sign in.",
+				e instanceof ApiError ? e.message : t('auth.login_toast_error'),
 			);
 		} finally {
 			setLoading(false);
@@ -51,7 +53,7 @@ export default function LoginForm({
 					<div className="flex w-full flex-col gap-[19px] text-center">
 						<div className="flex flex-col w-full gap-4 items-center">
 							<GoogleSignInButton disabled={loading} />
-							<p className="text-[16px] font-normal text-[#1C1F22]">or</p>
+							<p className="text-[16px] font-normal text-[#1C1F22]">{t('auth.login_or')}</p>
 							<FormField
 								control={loginForm.control}
 								name="email"
@@ -59,7 +61,7 @@ export default function LoginForm({
 									<FormItem className="w-full">
 										<FormControl>
 											<Input
-												placeholder="E-mail"
+												placeholder={t('auth.login_email_placeholder')}
 												className="py-2.5 px-5 h-[45px] text-[16px] font-normal text-[#1C1F22]"
 												{...field}
 											/>
@@ -75,7 +77,7 @@ export default function LoginForm({
 							className="rounded-full h-[45px]"
 							disabled={loading}
 						>
-							{loading ? "Sending…" : "Continue with email"}
+							{loading ? t('auth.login_loading_button') : t('auth.login_continue_button')}
 						</Button>
 					</div>
 				</form>
@@ -83,7 +85,7 @@ export default function LoginForm({
 			<DialogFooter className="justify-center">
 				<Button variant="link" onClick={toggleMode} type="button">
 					<span className="text-blue-500 text-[16px] font-normal">
-						Create account
+						{t('auth.login_create_account_link')}
 					</span>
 				</Button>
 			</DialogFooter>

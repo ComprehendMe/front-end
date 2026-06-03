@@ -8,6 +8,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
 	Table,
@@ -27,6 +28,7 @@ export function DataTable<TData, TValue>({
 	columns,
 	data,
 }: DataTableProps<TData, TValue>) {
+	const { t } = useTranslation();
 	const table = useReactTable({
 		data,
 		columns,
@@ -74,7 +76,7 @@ export function DataTable<TData, TValue>({
 					) : (
 						<TableRow>
 							<TableCell colSpan={columns.length} className="h-24 text-center">
-								No conversations found.
+								{t('dashboard.history.table_empty')}
 							</TableCell>
 						</TableRow>
 					)}

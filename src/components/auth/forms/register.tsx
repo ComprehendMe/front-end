@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import type z from "zod";
 import { ApiError, signup } from "@/lib/api";
@@ -25,6 +26,7 @@ export default function SignUpForm({
 	toggleMode: () => void;
 	onEmailSent: (email: string) => void;
 }) {
+	const { t } = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const signUpForm = useForm<z.infer<typeof SignUpFormSchema>>({
 		resolver: zodResolver(SignUpFormSchema),
@@ -38,7 +40,7 @@ export default function SignUpForm({
 			onEmailSent(data.email);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not create account.",
+				e instanceof ApiError ? e.message : t('auth.signup_toast_error'),
 			);
 		} finally {
 			setLoading(false);
@@ -51,7 +53,7 @@ export default function SignUpForm({
 				<form onSubmit={signUpForm.handleSubmit(onRegisterSubmit)}>
 					<div className="flex w-full flex-col gap-4 text-center">
 						<GoogleSignInButton disabled={loading} />
-						<p className="text-[16px] font-normal text-[#1C1F22]">or</p>
+						<p className="text-[16px] font-normal text-[#1C1F22]">{t('auth.signup_or')}</p>
 						<FormField
 							control={signUpForm.control}
 							name="name"
@@ -59,7 +61,7 @@ export default function SignUpForm({
 								<FormItem>
 									<FormControl>
 										<Input
-											placeholder="Name"
+											placeholder={t('auth.signup_name_placeholder')}
 											className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
 											{...field}
 										/>
@@ -75,7 +77,7 @@ export default function SignUpForm({
 								<FormItem>
 									<FormControl>
 										<Input
-											placeholder="E-mail"
+											placeholder={t('auth.signup_email_placeholder')}
 											className="py-2.5 px-5 h-[45px] text-normal text-[16px] text-[#1C1F22]"
 											{...field}
 										/>
@@ -90,7 +92,7 @@ export default function SignUpForm({
 							className="rounded-full text-[16px] font-normal w-full"
 							disabled={loading}
 						>
-							{loading ? "Sending…" : "Create account"}
+							{loading ? t('common.sending') : t('auth.signup_create_button')}
 						</Button>
 					</div>
 				</form>
@@ -104,7 +106,7 @@ export default function SignUpForm({
 					className="text-[#1C1F22] text-[16px] font-normal"
 				>
 					<ChevronLeft className="w-6 h-6" />
-					<span>To go back</span>
+					<span>{t('auth.signup_go_back')}</span>
 				</Button>
 			</DialogFooter>
 		</>

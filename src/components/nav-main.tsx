@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { logout } from "@/lib/api";
 import type { NavLink } from "@/lib/types";
@@ -16,6 +17,7 @@ export default function NavMain({
 }: {
 	information: { name: string; items: NavLink[] };
 }) {
+	const { t } = useTranslation();
 	const href = useLocation({ select: (location) => location.href });
 	const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export default function NavMain({
 			await logout();
 			await navigate({ to: "/" });
 		} catch {
-			toast.error("Could not sign out.");
+			toast.error(t('dashboard.layout.nav_logout_toast'));
 		}
 	}
 

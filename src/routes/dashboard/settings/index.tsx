@@ -1,5 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { DashboardButton } from "@/components/dashboard/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/dashboard/settings/")({
 });
 
 function SettingsPage() {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const { user: contextUser } = DashboardRoute.useRouteContext();
 	const [firstName, setFirstName] = useState("");
@@ -51,7 +53,7 @@ function SettingsPage() {
 	async function handleSaveProfile() {
 		const name = joinFullName(firstName, lastName);
 		if (!name.trim()) {
-			toast.error("Please enter at least a first name.");
+			toast.error(t('dashboard.settings.account.toast_name_required'));
 			return;
 		}
 
@@ -64,9 +66,9 @@ function SettingsPage() {
 			setFirstName(parts.firstName);
 			setLastName(parts.lastName);
 			setAvatar(fresh.avatar);
-			toast.success("Profile updated.");
+			toast.success(t('dashboard.settings.account.toast_profile_updated'));
 		} catch (e) {
-			toast.error(e instanceof ApiError ? e.message : "Could not save.");
+			toast.error(e instanceof ApiError ? e.message : t('dashboard.settings.account.toast_save_error'));
 		} finally {
 			setSaving(false);
 		}
@@ -76,7 +78,7 @@ function SettingsPage() {
 		const file = e.target.files?.[0];
 		if (!file) return;
 		if (file.size > 2 * 1024 * 1024) {
-			toast.error("Image is too large (max 2MB).");
+			toast.error(t('dashboard.settings.account.toast_image_too_large'));
 			return;
 		}
 
@@ -86,10 +88,10 @@ function SettingsPage() {
 			const fresh = await uploadAvatarBlob(webp);
 			setAvatar(fresh.avatar);
 			await router.invalidate();
-			toast.success("Profile photo updated.");
+			toast.success(t('dashboard.settings.account.toast_photo_updated'));
 		} catch (err) {
 			toast.error(
-				err instanceof ApiError ? err.message : "Could not update photo.",
+				err instanceof ApiError ? err.message : t('dashboard.settings.account.toast_photo_update_error'),
 			);
 		} finally {
 			setAvatarLoading(false);
@@ -103,10 +105,10 @@ function SettingsPage() {
 			await removeAvatar();
 			setAvatar(null);
 			await router.invalidate();
-			toast.success("Photo removed.");
+			toast.success(t('dashboard.settings.account.toast_photo_removed'));
 		} catch (err) {
 			toast.error(
-				err instanceof ApiError ? err.message : "Could not remove photo.",
+				err instanceof ApiError ? err.message : t('dashboard.settings.account.toast_photo_remove_error'),
 			);
 		} finally {
 			setAvatarLoading(false);
@@ -124,10 +126,10 @@ function SettingsPage() {
 			const result = await requestEmailChange(newEmail.trim());
 			setEmailVerificationSent(true);
 			setEditingEmail(false);
-			toast.success(result.message || "Verification email sent.");
+			toast.success(result.message || t('dashboard.settings.account.toast_email_sent'));
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not request email change.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.account.toast_email_change_error'),
 			);
 		} finally {
 			setSaving(false);
@@ -138,11 +140,11 @@ function SettingsPage() {
 		setDeleting(true);
 		try {
 			await deleteAccount();
-			toast.success("Account deleted.");
+			toast.success(t('dashboard.settings.account.toast_account_deleted'));
 			await router.navigate({ to: "/" });
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not delete account.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.account.toast_delete_error'),
 			);
 			setConfirmDelete(false);
 		} finally {
@@ -155,7 +157,7 @@ function SettingsPage() {
 			await logout();
 			await router.navigate({ to: "/" });
 		} catch {
-			toast.error("Could not sign out.");
+			toast.error(t('dashboard.settings.account.toast_logout_error'));
 		}
 	}
 
@@ -168,12 +170,12 @@ function SettingsPage() {
 		<div className="flex w-full flex-col">
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					My Profile
+					{t('dashboard.settings.account.title')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-5 flex flex-col gap-[18px]">
 					<p className="font-semibold text-[#4B4E58] text-[16px]">
-						Profile photo
+						{t('dashboard.settings.account.profile_photo')}
 					</p>
 					<div className="flex items-center gap-4">
 						<Avatar className="h-[120px] w-[120px]">
@@ -190,7 +192,7 @@ function SettingsPage() {
 									asChild
 								>
 									<label className="cursor-pointer">
-										{avatarLoading ? "Uploading…" : "Change Image"}
+										{avatarLoading ? t('dashboard.settings.account.uploading_dots') : t('dashboard.settings.account.change_image')}
 										<input
 											type="file"
 											accept="image/png,image/jpeg,image/webp"
@@ -205,11 +207,11 @@ function SettingsPage() {
 									disabled={avatarLoading || !avatar}
 									onClick={() => void handleRemoveAvatar()}
 								>
-									Remove Image
+									{t('dashboard.settings.account.remove_image')}
 								</DashboardButton>
 							</div>
 							<p className="font-medium text-[#757575] text-sm">
-								PNG, JPG or WebP up to 2MB
+								{t('dashboard.settings.account.image_hint')}
 							</p>
 						</div>
 					</div>
@@ -217,22 +219,22 @@ function SettingsPage() {
 				<div className="mt-5 grid w-full grid-cols-1 gap-3.5 md:grid-cols-2">
 					<div className="flex flex-col gap-2">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">
-							First name
+							{t('dashboard.settings.account.first_name')}
 						</p>
 						<Input
 							className="w-full bg-gray-100"
-							placeholder="Jane"
+							placeholder={t('dashboard.settings.account.first_name_placeholder')}
 							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
 						/>
 					</div>
 					<div className="flex flex-col gap-2">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">
-							Last name
+							{t('dashboard.settings.account.last_name')}
 						</p>
 						<Input
 							className="w-full bg-gray-100"
-							placeholder="Doe"
+							placeholder={t('dashboard.settings.account.last_name_placeholder')}
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
 						/>
@@ -243,30 +245,30 @@ function SettingsPage() {
 					disabled={saving}
 					onClick={() => void handleSaveProfile()}
 				>
-					{saving ? "Saving…" : "Save changes"}
+					{saving ? t('dashboard.settings.account.saving_dots') : t('dashboard.settings.account.save_changes')}
 				</DashboardButton>
 			</div>
 
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					Account security
+					{t('dashboard.settings.account.account_security')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col gap-1.5">
-						<p className="font-semibold text-[#4B4E58] text-[16px]">Email</p>
+						<p className="font-semibold text-[#4B4E58] text-[16px]">{t('dashboard.settings.account.email_label')}</p>
 						<p className="text-[#1C1F22] text-sm">{email}</p>
 					</div>
 					{emailVerificationSent ? (
 						<p className="text-sm text-emerald-600 font-medium">
-							Verification email sent to {newEmail}. Check your inbox.
+							{t('dashboard.settings.account.verification_sent', { email: newEmail })}
 						</p>
 					) : editingEmail ? (
 						<div className="flex items-center gap-2">
 							<Input
 								value={newEmail}
 								onChange={(e) => setNewEmail(e.target.value)}
-								placeholder="new@email.com"
+								placeholder={t('dashboard.settings.account.email_change_placeholder')}
 								className="w-full sm:w-[220px] bg-gray-100"
 							/>
 							<DashboardButton
@@ -274,7 +276,7 @@ function SettingsPage() {
 								disabled={saving}
 								onClick={() => void handleChangeEmail()}
 							>
-								{saving ? "Saving…" : "Save"}
+								{saving ? t('dashboard.settings.account.saving_dots') : t('dashboard.settings.account.change_email')}
 							</DashboardButton>
 							<DashboardButton
 								className="rounded-full"
@@ -282,7 +284,7 @@ function SettingsPage() {
 								disabled={saving}
 								onClick={() => setEditingEmail(false)}
 							>
-								Cancel
+								{t('common.cancel')}
 							</DashboardButton>
 						</div>
 					) : (
@@ -295,15 +297,15 @@ function SettingsPage() {
 								setEmailVerificationSent(false);
 							}}
 						>
-							Change email
+							{t('dashboard.settings.account.change_email')}
 						</DashboardButton>
 					)}
 				</div>
 				<div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col gap-1.5">
-						<p className="font-semibold text-[#4B4E58] text-[16px]">Password</p>
+						<p className="font-semibold text-[#4B4E58] text-[16px]">{t('dashboard.settings.account.password_label')}</p>
 						<p className="text-sm text-[#757575]">
-							You sign in with a magic link or Google — no password needed.
+							{t('dashboard.settings.account.password_hint')}
 						</p>
 					</div>
 				</div>
@@ -311,16 +313,16 @@ function SettingsPage() {
 
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					Support Access
+					{t('dashboard.settings.account.support_access')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">
-							Log out of all devices
+							{t('dashboard.settings.account.logout_all')}
 						</p>
 						<span className="font-normal text-[#757575] text-sm tracking-tight">
-							Sign out on this device.
+							{t('dashboard.settings.account.logout_all_desc')}
 						</span>
 					</div>
 					<DashboardButton
@@ -328,23 +330,23 @@ function SettingsPage() {
 						variant="secondary"
 						onClick={() => void handleLogoutAll()}
 					>
-						Log out
+						{t('dashboard.settings.account.log_out')}
 					</DashboardButton>
 				</div>
 			</div>
 
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					Delete my account
+					{t('dashboard.settings.account.delete_account')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-col">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">
-							Permanently delete account
+							{t('dashboard.settings.account.delete_account_label')}
 						</p>
 						<span className="font-normal text-[#757575] text-sm tracking-tight">
-							Permanently delete the account and remove all associated data.
+							{t('dashboard.settings.account.delete_account_desc')}
 						</span>
 					</div>
 					{confirmDelete ? (
@@ -355,7 +357,7 @@ function SettingsPage() {
 								disabled={deleting}
 								onClick={() => void handleDeleteAccount()}
 							>
-								{deleting ? "Deleting…" : "Confirm delete"}
+								{deleting ? t('dashboard.settings.account.deleting_dots') : t('dashboard.settings.account.confirm_delete')}
 							</DashboardButton>
 							<DashboardButton
 								className="rounded-full"
@@ -363,7 +365,7 @@ function SettingsPage() {
 								disabled={deleting}
 								onClick={() => setConfirmDelete(false)}
 							>
-								Cancel
+								{t('common.cancel')}
 							</DashboardButton>
 						</div>
 					) : (
@@ -372,7 +374,7 @@ function SettingsPage() {
 							variant="destructive"
 							onClick={() => setConfirmDelete(true)}
 						>
-							Delete account
+							{t('dashboard.settings.account.delete_account_btn')}
 						</DashboardButton>
 					)}
 				</div>

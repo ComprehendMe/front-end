@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 import {
 	Carousel,
@@ -18,6 +19,7 @@ type ContinueSectionProps = {
 };
 
 export function ContinueSection({ chats, title }: ContinueSectionProps) {
+	const { t } = useTranslation();
 	const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 	const [canScrollPrev, setCanScrollPrev] = useState(false);
 	const [canScrollNext, setCanScrollNext] = useState(false);
@@ -100,7 +102,7 @@ export function ContinueSection({ chats, title }: ContinueSectionProps) {
 											</AvatarFallback>
 										</Avatar>
 										{chat.pausedAt && (
-											<div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F8F8CD] text-[8px] font-bold text-[#726B07] border border-white">
+											<div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F8F8CD] text-[8px] font-bold text-[#726B07] border border-white" title={t('components.continue-section.paused_indicator')}>
 												P
 											</div>
 										)}

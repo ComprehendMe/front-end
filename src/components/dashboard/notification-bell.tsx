@@ -1,5 +1,6 @@
 import { Bell, Check, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -20,6 +21,7 @@ import { showDesktopNotification } from '@/lib/user-preferences';
 import { wsClient } from '@/lib/websocket';
 
 export function NotificationBell() {
+	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 	const [requests, setRequests] = useState<FriendRequest[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -37,15 +39,14 @@ export function NotificationBell() {
 
 				for (const req of data) {
 					if (seenIdsRef.current.has(req.id)) continue;
-					const name = req.requester.name?.trim() || 'Someone';
+					const name = req.requester.name?.trim() || t('components.notification-bell.fallback_name');
 					showDesktopNotification(
-						'Friend request',
-						`${name} sent you a friend request.`,
+						t('components.notification-bell.friend_request_desktop_title'),
+						t('components.notification-bell.friend_request_desktop_body', { name }),
 					);
 					seenIdsRef.current.add(req.id);
 				}
 			} catch {
-				// silent — user may be offline
 			} finally {
 				if (mounted) setLoading(false);
 			}
@@ -63,10 +64,10 @@ export function NotificationBell() {
 				return [req, ...prev];
 			});
 			if (!seenIdsRef.current.has(req.id)) {
-				const name = req.requester.name?.trim() || 'Someone';
+				const name = req.requester.name?.trim() || t('components.notification-bell.fallback_name');
 				showDesktopNotification(
-					'Friend request',
-					`${name} sent you a friend request.`,
+					t('components.notification-bell.friend_request_desktop_title'),
+					t('components.notification-bell.friend_request_desktop_body', { name }),
 				);
 				seenIdsRef.current.add(req.id);
 			}
@@ -78,7 +79,7 @@ export function NotificationBell() {
 			clearInterval(interval);
 			wsClient.off('FRIEND_REQUEST', onFriendRequest);
 		};
-	}, []);
+	}, [t]);
 
 	async function handleRespond(
 		requestId: string,
@@ -90,12 +91,12 @@ export function NotificationBell() {
 			setRequests((prev) => prev.filter((r) => r.id !== requestId));
 			toast.success(
 				status === 'ACCEPTED'
-					? 'Friend request accepted.'
-					: 'Friend request declined.',
+					? t('components.notification-bell.toast_accepted')
+					: t('components.notification-bell.toast_declined'),
 			);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not update request.',
+				e instanceof ApiError ? e.message : t('components.notification-bell.toast_error'),
 			);
 		} finally {
 			setRespondingId(null);
@@ -111,33 +112,33 @@ export function NotificationBell() {
 					size="icon-lg"
 					className="relative rounded-full border-[#dbe4eb] text-gray-500"
 					variant="outline"
-					aria-label="Notifications"
+					aria-label={t('components.notification-bell.button_aria')}
 				>
 					<Bell size={22} />
 					{count > 0 ? (
 						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-white">
-							{count > 9 ? '9+' : count}
+							{count > 9 ? t('components.notification-bell.count_over_9') : count}
 						</span>
 					) : null}
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent align="end" className="w-[min(360px,calc(100vw-2rem))] p-0">
 				<div className="px-4 py-3">
-					<p className="font-semibold text-[#1C1F22]">Notifications</p>
+					<p className="font-semibold text-[#1C1F22]">{t('components.notification-bell.title')}</p>
 				</div>
 				<Separator />
 				<div className="max-h-[320px] overflow-y-auto p-2 max-md:max-h-[50dvh]">
 					{loading ? (
 						<p className="px-2 py-6 text-center text-sm text-muted-foreground">
-							Loading…
+							{t('components.notification-bell.loading')}
 						</p>
 					) : requests.length === 0 ? (
 						<p className="px-2 py-6 text-center text-sm text-muted-foreground">
-							No new notifications
+							{t('components.notification-bell.empty')}
 						</p>
 					) : (
 						requests.map((req) => {
-							const name = req.requester.name?.trim() || 'Someone';
+							const name = req.requester.name?.trim() || t('components.notification-bell.fallback_name');
 							return (
 								<div
 									key={req.id}
@@ -157,11 +158,11 @@ export function NotificationBell() {
 										</Avatar>
 										<div className="min-w-0 flex-1">
 											<p className="text-sm text-[#1C1F22]">
-												<span className="font-semibold">{name}</span> sent you a
-												friend request.
+												<span className="font-semibold">{name}</span>{' '}
+												{t('components.notification-bell.friend_request_text_prefix')}
 											</p>
 											<p className="mt-0.5 text-xs text-muted-foreground">
-												Do you want to accept?
+												{t('components.notification-bell.friend_request_question')}
 											</p>
 											<div className="mt-2 flex gap-2">
 												<Button
@@ -173,7 +174,7 @@ export function NotificationBell() {
 													}
 												>
 													<Check className="mr-1 h-3.5 w-3.5" />
-													Accept
+													{t('components.notification-bell.friend_accept')}
 												</Button>
 												<Button
 													size="sm"
@@ -185,7 +186,7 @@ export function NotificationBell() {
 													}
 												>
 													<X className="mr-1 h-3.5 w-3.5" />
-													Decline
+													{t('components.notification-bell.friend_decline')}
 												</Button>
 											</div>
 										</div>

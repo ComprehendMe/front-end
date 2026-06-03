@@ -2,6 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import AuthDialog from "@/components/auth/auth-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,47 +31,59 @@ interface PricingPlan {
 
 interface Pricing2Props {
 	heading?: string;
-	description?: string;
 	plans?: PricingPlan[];
 }
 
-const PricingSection = ({
-	heading = "Pricing",
-	plans = [
-		{
-			id: "free",
-			name: "Free",
-			monthlyPrice: "€0",
-			yearlyPrice: "€0",
-			features: [
-				{ text: "Chat with 4 AI patient profiles" },
-				{ text: "25 messages per day" },
-				{ text: "Basic AI conversation review" },
-				{ text: "Full session history" },
-				{ text: "Progress and streak tracking" },
-				{ text: "Connect with friends" },
-			],
-		},
-		{
-			id: "premium",
-			name: "Premium",
-			monthlyPrice: "€15",
-			yearlyPrice: "€12",
-			features: [
-				{ text: "Unlimited messages per day" },
-				{ text: "Advanced AI performance reviews" },
-				{ text: "Downloadable session reports" },
-				{ text: "All difficulty levels from Easy to Hard" },
-				{ text: "Priority support" },
-				{ text: "Premium profile badge" },
-			],
-			button: {
-				text: "Get Premium",
-				url: "/",
+function usePricingPlans(): { heading: string; plans: PricingPlan[] } {
+	const { t } = useTranslation();
+
+	return {
+		heading: t('pricing.heading'),
+		plans: [
+			{
+				id: "free",
+				name: t('pricing.free_plan_name'),
+				monthlyPrice: t('pricing.free_monthly_price'),
+				yearlyPrice: t('pricing.free_yearly_price'),
+				features: [
+					{ text: t('pricing.free_feature_1') },
+					{ text: t('pricing.free_feature_2') },
+					{ text: t('pricing.free_feature_3') },
+					{ text: t('pricing.free_feature_4') },
+					{ text: t('pricing.free_feature_5') },
+					{ text: t('pricing.free_feature_6') },
+				],
 			},
-		},
-	],
+			{
+				id: "premium",
+				name: t('pricing.premium_plan_name'),
+				monthlyPrice: t('pricing.premium_monthly_price'),
+				yearlyPrice: t('pricing.premium_yearly_price'),
+				features: [
+					{ text: t('pricing.premium_feature_1') },
+					{ text: t('pricing.premium_feature_2') },
+					{ text: t('pricing.premium_feature_3') },
+					{ text: t('pricing.premium_feature_4') },
+					{ text: t('pricing.premium_feature_5') },
+					{ text: t('pricing.premium_feature_6') },
+				],
+				button: {
+					text: t('pricing.premium_button'),
+					url: "/",
+				},
+			},
+		],
+	};
+}
+
+const PricingSection = ({
+	heading: headingProp,
+	plans: plansProp,
 }: Pricing2Props) => {
+	const { t } = useTranslation();
+	const defaults = usePricingPlans();
+	const heading = headingProp ?? defaults.heading;
+	const plans = plansProp ?? defaults.plans;
 	const [isYearly, setIsYearly] = useState(false);
 	return (
 		<section className="py-fluid-section lg:py-fluid-xl">
@@ -84,8 +97,8 @@ const PricingSection = ({
 							defaultValue="monthly"
 						>
 							<TabsList>
-								<TabsTrigger value="monthly">Monthly</TabsTrigger>
-								<TabsTrigger value="annual">Annual</TabsTrigger>
+								<TabsTrigger value="monthly">{t('pricing.tab_monthly')}</TabsTrigger>
+								<TabsTrigger value="annual">{t('pricing.tab_annual')}</TabsTrigger>
 							</TabsList>
 						</Tabs>
 					</div>
@@ -102,7 +115,7 @@ const PricingSection = ({
 											{isYearly ? plan.yearlyPrice : plan.monthlyPrice}
 										</span>
 									<span className="text-muted-foreground text-fluid-base font-normal">
-										{isYearly ? "/month, billed annually" : "/month"}
+										{isYearly ? t('pricing.billing_yearly') : t('pricing.billing_monthly')}
 									</span>
 									</div>
 								</CardHeader>

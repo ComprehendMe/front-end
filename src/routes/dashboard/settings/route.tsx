@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Bell, Globe, User, Users } from "lucide-react";
 import { ListTab } from "@/components/dashboard/tabs-list";
@@ -15,42 +16,43 @@ export const Route = createFileRoute("/dashboard/settings")({
 function DashboardRoute() {
 	const { ec } = Route.useSearch();
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (ec === "success") {
-			toast.success("Email changed successfully.");
+			toast.success(t('dashboard.settings.route.toast_email_changed'));
 		} else if (ec === "expired") {
-			toast.error("Verification link expired or invalid.");
+			toast.error(t('dashboard.settings.route.toast_verification_expired'));
 		}
 		if (ec) {
 			navigate({ to: "/dashboard/settings", search: { ec: undefined }, replace: true });
 		}
-	}, [ec, navigate]);
+	}, [ec, navigate, t]);
 	return (
 		<main className="bg-[var(--dashboard-canvas-alt)] py-6 sm:py-8 lg:py-12">
 			<div className="bg-white border border-[#1C1F22]/15 rounded-[20px]">
 				<h3 className="mx-4 sm:mx-6 lg:mx-8 mt-4 sm:mt-6 lg:mt-8 mb-4 sm:mb-6 lg:mb-8 font-semibold text-2xl">
-					Settings
+					{t('dashboard.settings.route.title')}
 				</h3>
 				<Separator />
 				<div className="flex h-full w-full flex-col lg:flex-row lg:justify-between">
 					<aside className="w-full space-y-8 px-4 py-5 sm:px-6 sm:py-6 lg:max-w-[260px] lg:py-8 lg:pl-[30px] lg:pr-9">
 						<ListTab
 							tabs={{
-								title: "General Settings",
+								title: t('dashboard.settings.route.general_section'),
 								items: [
 									{
-										name: "Account",
+										name: t('dashboard.settings.route.tab_account'),
 										value: "/",
 										icon: <User />,
 									},
 									{
-										name: "Notifications",
+										name: t('dashboard.settings.route.tab_notifications'),
 										value: "/notifications",
 										icon: <Bell />,
 									},
 									{
-										name: "Language & time",
+										name: t('dashboard.settings.route.tab_language_time'),
 										value: "/language",
 										icon: <Globe />,
 									},
@@ -60,15 +62,15 @@ function DashboardRoute() {
 						/>
 						<ListTab
 							tabs={{
-								title: "Workspace Settings",
+								title: t('dashboard.settings.route.workspace_section'),
 								items: [
 									{
-										name: "Friends",
+										name: t('dashboard.settings.route.tab_friends'),
 										value: "/friends",
 										icon: <Users />,
 									},
 									{
-										name: "Billing",
+										name: t('dashboard.settings.route.tab_billing'),
 										value: "/billing",
 										icon: (
 											<img

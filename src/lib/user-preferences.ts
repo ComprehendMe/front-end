@@ -1,5 +1,5 @@
 export type TimeFormat = '12h' | '24h';
-export type AppLanguage = 'en';
+export type AppLanguage = 'en' | 'pt-PT';
 
 export type NotificationPreferences = {
 	desktopEnabled: boolean;
@@ -45,7 +45,7 @@ export function loadUserPreferences(userKey: string): UserPreferences {
 		if (!raw) return defaultUserPreferences;
 		const parsed = JSON.parse(raw) as Partial<UserPreferences>;
 		return {
-			language: 'en',
+			language: parsed.language === 'pt-PT' ? 'pt-PT' : 'en',
 			timeFormat: parsed.timeFormat === '24h' ? '24h' : '12h',
 			notifications: {
 				...defaultNotificationPreferences,

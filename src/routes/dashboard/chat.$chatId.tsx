@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Loader2, MoreVertical, Pause, Square } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ChatComposer } from "@/components/dashboard/chat/chat-composer";
 import { ChatMessageRow } from "@/components/dashboard/chat/chat-message-row";
@@ -37,7 +38,7 @@ import {
 } from "@/lib/api";
 import {
   getPatientFirstName,
-  getTimeGreeting,
+  getGreetingKey,
 } from "@/lib/format-message-time";
 import { getPatientAvatar } from "@/lib/patient-avatar";
 import { getInitials } from "@/lib/user-display";
@@ -51,6 +52,7 @@ function ChatPage() {
   const { chatId } = Route.useParams();
   const navigate = useNavigate();
   const { user } = DashboardRoute.useRouteContext();
+  const { t } = useTranslation();
   const { preferences } = useUserPreferences(user.email);
   const [patient, setPatient] = useState<Patient | null>(null);
   const [patientAvatarUrl, setPatientAvatarUrl] = useState("");
@@ -67,7 +69,7 @@ function ChatPage() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const userInitials = getInitials(user);
-  const userLabel = "Me";
+  const userLabel = t('dashboard.chat.user_label');
   const hasMessages = messages.length > 0;
   const messagesSentToday = messages.filter((m) => m.role === "user").length;
   const isActiveConversation = hasMessages && !chatEnded && !chatPaused;
@@ -93,12 +95,12 @@ function ChatPage() {
       setMessages(msgs);
     } catch (e) {
       toast.error(
-        e instanceof ApiError ? e.message : "Could not load the conversation."
+        e instanceof ApiError ? e.message : t('dashboard.chat.toast_load_error')
       );
     } finally {
       setLoading(false);
     }
-  }, [chatId]);
+  }, [chatId, t]);
 
   useEffect(() => {
     loadChat();
@@ -130,11 +132,11 @@ function ChatPage() {
       setMessages(finalMessages);
 
       if (!reply) {
-        toast.error("No reply from the patient. Please try again.");
+        toast.error(t('dashboard.chat.toast_no_reply'));
       }
     } catch (err) {
       toast.error(
-        err instanceof ApiError ? err.message : "Could not send message."
+        err instanceof ApiError ? err.message : t('dashboard.chat.toast_send_error')
       );
       setInput(text);
     } finally {
@@ -155,12 +157,12 @@ function ChatPage() {
     try {
       await pauseChat(chatId);
       setChatPaused(true);
-      toast.success("Conversation paused.");
+      toast.success(t('dashboard.chat.toast_pause_success'));
       skipBlockRef.current = true;
       await navigate({ to: "/dashboard" });
     } catch (e) {
       toast.error(
-        e instanceof ApiError ? e.message : "Could not pause the conversation."
+        e instanceof ApiError ? e.message : t('dashboard.chat.toast_pause_error')
       );
     } finally {
       skipBlockRef.current = false;
@@ -174,11 +176,11 @@ function ChatPage() {
       await endChat(chatId);
       setChatEnded(true);
       setChatPaused(false);
-      toast.success("Conversation ended.");
+      toast.success(t('dashboard.chat.toast_end_success'));
       setReviewPromptOpen(true);
     } catch (e) {
       toast.error(
-        e instanceof ApiError ? e.message : "Could not end the conversation."
+        e instanceof ApiError ? e.message : t('dashboard.chat.toast_end_error')
       );
     } finally {
       skipBlockRef.current = false;
@@ -208,9 +210,9 @@ function ChatPage() {
       <Dialog open={reviewPromptOpen} onOpenChange={setReviewPromptOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Conversation ended</DialogTitle>
+            <DialogTitle>{t('dashboard.chat.dialog_end_title')}</DialogTitle>
             <DialogDescription>
-              Do you want to review this conversation now?
+              {t('dashboard.chat.dialog_end_desc')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:justify-end">
@@ -221,7 +223,7 @@ function ChatPage() {
                 void navigate({ to: "/dashboard/history" });
               }}
             >
-              Maybe later
+              {t('dashboard.chat.dialog_end_maybe_later')}
             </Button>
             <Button
               onClick={() => {
@@ -232,7 +234,7 @@ function ChatPage() {
                 });
               }}
             >
-              Review now
+              {t('dashboard.chat.dialog_end_review_now')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -264,14 +266,14 @@ function ChatPage() {
                 disabled={chatEnded}
               >
                 <Pause className="h-4 w-4" />
-                {chatPaused ? "Back to dashboard" : "Pause conversation"}
+                {chatPaused ? t('dashboard.chat.menu_back_to_dashboard') : t('dashboard.chat.menu_pause')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => void handleEndConversation()}
                 disabled={chatEnded}
               >
                 <Square className="h-4 w-4" />
-                End conversation
+                {t('dashboard.chat.menu_end')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -279,13 +281,12 @@ function ChatPage() {
 
         {showEndedBanner && (
           <div className="border-b bg-amber-50 px-4 py-2 text-center text-sm text-amber-900">
-            Conversation ended — review it in History.
+            {t('dashboard.chat.ended_banner')}
           </div>
         )}
         {showPausedBanner && (
           <div className="border-b bg-[#F0F5FA] px-4 py-2 text-center text-sm text-[#0978AA]">
-            Conversation paused. Send a message to resume or return to the
-            dashboard.
+            {t('dashboard.chat.paused_banner')}
           </div>
         )}
 
@@ -316,7 +317,7 @@ function ChatPage() {
                 </div>
                 <div className="max-w-lg space-y-2">
                   <h2 className="text-fluid-xl font-bold text-foreground">
-                    {getTimeGreeting()}, my name is {patientFirstName}.
+                    {t('dashboard.chat.empty_greeting', { greeting: t(getGreetingKey()), name: patientFirstName })}
                   </h2>
                   <p className="text-sm text-muted-foreground md:text-base">
                     {patient.problem}
@@ -347,7 +348,7 @@ function ChatPage() {
                     </Avatar>
                     <div className="flex items-center gap-2 rounded-2xl bg-[#F0F5FA] px-4 py-3 text-sm text-muted-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      Waiting for a reply…
+                      {t('dashboard.chat.waiting_reply')}
                     </div>
                   </div>
                 )}

@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
 	createHistoryColumns,
@@ -27,6 +28,7 @@ export const Route = createFileRoute('/dashboard/history')({
 });
 
 function HistoryPage() {
+	const { t } = useTranslation();
 	const [rows, setRows] = useState<HistoryRow[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -53,8 +55,8 @@ function HistoryPage() {
 						addSuffix: true,
 						locale: enUS,
 					}),
-					duration: `${item.durationMinutes} min`,
-					analysis: 'Review',
+					duration: t('dashboard.history.duration_format', { duration: item.durationMinutes }),
+					analysis: t('dashboard.history.review_link'),
 					patientImageUrl: getPatientAvatar(item.name),
 					pausedAt: item.pausedAt,
 				};
@@ -63,13 +65,13 @@ function HistoryPage() {
 			setRows(mapped);
 		} catch (e) {
 			setRows([]);
-			const msg = e instanceof ApiError ? e.message : 'Could not load history.';
+			const msg = e instanceof ApiError ? e.message : t('dashboard.history.toast_load_error');
 			setError(msg);
 			toast.error(msg);
 		} finally {
 			setLoading(false);
 		}
-	}, []);
+	}, [t]);
 
 	useEffect(() => {
 		void loadHistory();
@@ -81,24 +83,24 @@ function HistoryPage() {
 				onDelete: async (chatId) => {
 					try {
 						await deleteChat(chatId);
-						toast.success('Conversation deleted.');
+						toast.success(t('dashboard.history.toast_delete_success'));
 						await loadHistory();
 					} catch (e) {
 						toast.error(
 							e instanceof ApiError
 								? e.message
-								: 'Could not delete.',
+								: t('dashboard.history.toast_delete_error'),
 						);
 					}
 				},
 			}),
-		[loadHistory],
+		[loadHistory, t],
 	);
 
 	return (
 		<main className="bg-[var(--dashboard-canvas-alt)] py-fluid-section">
 			<div className="min-h-[70vh] space-y-fluid-lg overflow-hidden rounded-[20px] border border-[#1C1F22]/15 bg-white px-fluid-container py-fluid-section">
-				<h2 className="text-fluid-2xl font-semibold text-[#1C1F22]">History</h2>
+				<h2 className="text-fluid-2xl font-semibold text-[#1C1F22]">{t('dashboard.history.title')}</h2>
 				{loading ? (
 					<div className="space-y-4 animate-pulse">
 						<div className="h-10 w-full rounded bg-muted" />
@@ -110,14 +112,14 @@ function HistoryPage() {
 					<div className="flex flex-col items-center gap-3 py-12">
 						<p className="text-sm text-muted-foreground">{error}</p>
 						<Button variant="outline" size="sm" onClick={() => void loadHistory()}>
-							Try again
+							{t('dashboard.history.error_try_again')}
 						</Button>
 					</div>
 				) : rows.length === 0 ? (
 					<div className="flex flex-col items-center gap-2 py-12">
-						<p className="text-sm font-medium text-muted-foreground">No history yet</p>
+						<p className="text-sm font-medium text-muted-foreground">{t('dashboard.history.empty_title')}</p>
 						<p className="text-xs text-muted-foreground">
-							Complete your first conversation to see it here.
+							{t('dashboard.history.empty_desc')}
 						</p>
 					</div>
 				) : (

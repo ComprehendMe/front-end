@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check, Download, Search, SlidersHorizontal } from "lucide-react";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { DashboardButton } from "@/components/dashboard/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,19 +34,6 @@ export const Route = createFileRoute("/dashboard/settings/billing")({
 });
 
 type InvoiceFilter = "all" | "active" | "archived";
-
-const BASIC_FEATURES = [
-	"Access to standard patients",
-	"Session history",
-	"Basic progress statistics",
-];
-
-const PREMIUM_FEATURES = [
-	"All Basic features",
-	"Premium clinical cases",
-	"Advanced reports",
-	"Priority support",
-];
 
 function PlanCard({
 	title,
@@ -86,6 +74,7 @@ function PlanCard({
 }
 
 function BillingPage() {
+	const { t } = useTranslation();
 	const { session_id: sessionId } = Route.useSearch();
 	const navigate = useNavigate();
 	const [billing, setBilling] = useState<BillingSummary | null>(null);
@@ -95,18 +84,31 @@ function BillingPage() {
 	const [invoiceSearch, setInvoiceSearch] = useState("");
 	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
+	const featuresBasic = useMemo(() => [
+		t('dashboard.settings.billing.basic_feature_1'),
+		t('dashboard.settings.billing.basic_feature_2'),
+		t('dashboard.settings.billing.basic_feature_3'),
+	], [t]);
+
+	const featuresPremium = useMemo(() => [
+		t('dashboard.settings.billing.premium_feature_1'),
+		t('dashboard.settings.billing.premium_feature_2'),
+		t('dashboard.settings.billing.premium_feature_3'),
+		t('dashboard.settings.billing.premium_feature_4'),
+	], [t]);
+
 	const loadBilling = useCallback(async () => {
 		try {
 			const data = await getBillingSummary();
 			setBilling(data);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not load billing.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.billing.toast_load_error'),
 			);
 		} finally {
 			setLoading(false);
 		}
-	}, []);
+	}, [t]);
 
 	useEffect(() => {
 		void loadBilling();
@@ -121,7 +123,7 @@ function BillingPage() {
 				const result = await confirmPremiumCheckout(sessionId);
 				if (cancelled) return;
 				if (result.ok) {
-					toast.success("Premium plan activated.");
+					toast.success(t('dashboard.settings.billing.toast_premium_activated'));
 					await loadBilling();
 				}
 				await navigate({
@@ -132,7 +134,7 @@ function BillingPage() {
 			} catch (e) {
 				if (cancelled) return;
 				toast.error(
-					e instanceof ApiError ? e.message : "Could not confirm payment.",
+					e instanceof ApiError ? e.message : t('dashboard.settings.billing.toast_confirm_error'),
 				);
 			}
 		})();
@@ -140,7 +142,7 @@ function BillingPage() {
 		return () => {
 			cancelled = true;
 		};
-	}, [sessionId, loadBilling, navigate]);
+	}, [sessionId, loadBilling, navigate, t]);
 
 	const filteredInvoices = useMemo(() => {
 		if (!billing?.invoices.length) return [];
@@ -157,9 +159,7 @@ function BillingPage() {
 
 	async function handleUpgrade() {
 		if (!billing?.checkoutAvailable) {
-			toast.error(
-				"Online payments are not available yet. Contact support to upgrade.",
-			);
+			toast.error(t('dashboard.settings.billing.toast_upgrade_unavailable'));
 			return;
 		}
 
@@ -169,7 +169,7 @@ function BillingPage() {
 			window.location.assign(url);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not start checkout.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.billing.toast_checkout_error'),
 			);
 			setCheckoutLoading(false);
 		}
@@ -187,36 +187,42 @@ function BillingPage() {
 	if (loading) {
 		return (
 			<div className="flex w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:border-l lg:border-t-0 lg:px-8 lg:py-8">
-				<p className="text-muted-foreground">Loading billing…</p>
+				<p className="text-muted-foreground">{t('common.loading')}</p>
 			</div>
 		);
 	}
 
+	const filterOptions: { value: InvoiceFilter; label: string }[] = [
+		{ value: "all", label: t('dashboard.settings.billing.filter_all') },
+		{ value: "active", label: t('dashboard.settings.billing.filter_active') },
+		{ value: "archived", label: t('dashboard.settings.billing.filter_archived') },
+	];
+
 	return (
 		<div className="flex w-full flex-col border-t lg:border-l lg:border-t-0">
 			<div className="px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-				<h3 className="text-lg font-semibold text-[#4B4E58]">Billing</h3>
+				<h3 className="text-lg font-semibold text-[#4B4E58]">{t('dashboard.settings.billing.title')}</h3>
 				<Separator className="mt-3.5" />
 
 				<div className="mt-6 flex flex-col gap-5 lg:flex-row">
 					<PlanCard
-						title="Basic Plan"
-						price="0$"
-						features={BASIC_FEATURES}
+						title={t('dashboard.settings.billing.basic_plan')}
+						price={t('dashboard.settings.billing.basic_price')}
+						features={featuresBasic}
 						action={
 							<DashboardButton
 								className="w-full rounded-full"
 								variant="secondary"
 								disabled={!isPremium}
 							>
-								{!isPremium ? "Current plan" : "Switch to this plan"}
+								{!isPremium ? t('dashboard.settings.billing.basic_current_plan') : t('dashboard.settings.billing.basic_switch')}
 							</DashboardButton>
 						}
 					/>
 					<PlanCard
-						title="Premium Plan"
-						price="10$"
-						features={PREMIUM_FEATURES}
+						title={t('dashboard.settings.billing.premium_plan')}
+						price={t('dashboard.settings.billing.premium_price')}
+						features={featuresPremium}
 						highlight
 						action={
 							<DashboardButton
@@ -225,10 +231,10 @@ function BillingPage() {
 								onClick={() => void handleUpgrade()}
 							>
 								{isPremium
-									? "Current plan"
+									? t('dashboard.settings.billing.premium_current_plan')
 									: checkoutLoading
-										? "Redirecting…"
-										: "Switch to this plan"}
+										? t('common.redirecting')
+										: t('dashboard.settings.billing.premium_switch')}
 							</DashboardButton>
 						}
 					/>
@@ -237,20 +243,14 @@ function BillingPage() {
 
 			<div className="px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
 				<h4 className="text-base font-semibold text-[#4B4E58]">
-					Previous invoices
+					{t('dashboard.settings.billing.previous_invoices')}
 				</h4>
 
 				{billing && billing.invoices.length > 0 ? (
 					<>
 						<div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 							<div className="flex flex-wrap gap-2">
-								{(
-									[
-										["all", "View all"],
-										["active", "Active"],
-										["archived", "Archived"],
-									] as const
-								).map(([value, label]) => (
+								{filterOptions.map(({ value, label }) => (
 									<button
 										key={value}
 										type="button"
@@ -271,7 +271,7 @@ function BillingPage() {
 								<div className="relative min-w-[180px]">
 									<Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 									<Input
-										placeholder="Search"
+										placeholder={t('dashboard.settings.billing.search_placeholder')}
 										value={invoiceSearch}
 										onChange={(e) => setInvoiceSearch(e.target.value)}
 										className="h-9 rounded-lg bg-[#F0F5FA] pl-9"
@@ -282,7 +282,7 @@ function BillingPage() {
 									className="flex h-9 items-center gap-2 rounded-lg border border-[#E8EDF2] bg-white px-3 text-sm font-medium text-[#4B4E58]"
 								>
 									<SlidersHorizontal className="h-4 w-4" />
-									Most recent
+									{t('dashboard.settings.billing.sort_most_recent')}
 								</button>
 							</div>
 						</div>
@@ -294,16 +294,16 @@ function BillingPage() {
 										<TableRow className="bg-[#FAFBFC] hover:bg-[#FAFBFC]">
 											<TableHead className="w-10" />
 											<TableHead className="font-semibold text-[#4B4E58]">
-												Invoice Name
+												{t('dashboard.settings.billing.table_invoice_name')}
 											</TableHead>
 											<TableHead className="font-semibold text-[#4B4E58]">
-												Date
+												{t('dashboard.settings.billing.table_date')}
 											</TableHead>
 											<TableHead className="font-semibold text-[#4B4E58]">
-												Plan Type
+												{t('dashboard.settings.billing.table_plan_type')}
 											</TableHead>
 											<TableHead className="font-semibold text-[#4B4E58]">
-												Amount
+												{t('dashboard.settings.billing.table_amount')}
 											</TableHead>
 											<TableHead className="w-12" />
 										</TableRow>
@@ -338,7 +338,7 @@ function BillingPage() {
 															target="_blank"
 															rel="noreferrer"
 															className="text-muted-foreground hover:text-primary"
-															aria-label={`Download ${invoice.name}`}
+															aria-label={t('dashboard.settings.billing.invoice_download_aria', { name: invoice.name })}
 														>
 															<Download className="h-4 w-4" />
 														</a>
@@ -353,8 +353,7 @@ function BillingPage() {
 					</>
 				) : (
 					<p className="mt-4 text-sm text-muted-foreground">
-						You have no invoices yet. Invoices appear here after a Premium
-						purchase.
+						{t('dashboard.settings.billing.no_invoices')}
 					</p>
 				)}
 			</div>

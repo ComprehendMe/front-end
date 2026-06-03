@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import AuthDialog from "./auth/auth-dialog";
 import {
   NavigationMenu,
@@ -12,13 +13,14 @@ function scrollToId(id: string) {
 }
 
 export default function Header() {
+  const { t } = useTranslation();
   return (
     <header className="z-50 flex w-full rounded-2xl bg-white px-fluid-container py-[10px] shadow-xl">
       <nav className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <img src="/logo.svg" alt="logo" className="h-8 w-8" />
+          <img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="h-8 w-8" />
           <h1 className="text-fluid-sm font-semibold text-primary">
-            ComprehendMe
+            {t('dashboard.layout.sidebar_app_name')}
           </h1>
         </div>
         <div className="flex items-center">
@@ -29,7 +31,7 @@ export default function Header() {
                   className="cursor-pointer"
                   onClick={() => scrollToId("benefits")}
                 >
-                  Benefits
+                  {t('landing.navigation_benefits')}
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -37,7 +39,7 @@ export default function Header() {
                   className="cursor-pointer"
                   onClick={() => scrollToId("pricing")}
                 >
-                  Pricing
+                  {t('landing.navigation_pricing')}
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

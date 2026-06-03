@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 
@@ -42,6 +43,7 @@ export const Route = createFileRoute('/')({
 });
 
 function App() {
+	const { t } = useTranslation();
 	return (
 		<>
 			<div className="min-h-screen bg-background">
@@ -59,16 +61,15 @@ function App() {
 					<main className="z-50 mt-[clamp(3rem,10vw,10rem)] flex flex-col items-center justify-center text-center">
 						<div className="flex flex-col items-center gap-5">
 							<h1 className="text-fluid-4xl font-bold text-foreground">
-								Practice without fear. Serve without hesitation.
+								{t('landing.hero_title')}
 							</h1>
 							<p className="max-w-4xl text-fluid-base font-medium tracking-tight text-foreground">
-								Realistic virtual patients, immediate feedback, and a safe
-								environment for you to grow as a therapist.
+								{t('landing.hero_subtitle')}
 							</p>
 							<AuthDialog
 								trigger={
 									<Button size="lg" className="w-fit rounded-full px-6 text-lg">
-										Get started
+										{t('landing.cta_button')}
 									</Button>
 								}
 							/>
@@ -82,15 +83,14 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/Group.svg"
-									alt="Choose a patient"
+									alt={t('landing.benefit_1_alt')}
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-fluid-lg font-medium">Choose a patient</p>
+								<p className="text-fluid-lg font-medium">{t('landing.benefit_1_title')}</p>
 								<p className="text-fluid-sm font-normal text-muted-foreground">
-									Clinical profiles with varying levels of difficulty and
-									behaviors.
+									{t('landing.benefit_1_desc')}
 								</p>
 							</div>
 						</div>
@@ -98,15 +98,14 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/Vector.svg"
-									alt="Chat in real time"
+									alt={t('landing.benefit_2_alt')}
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-fluid-lg font-medium">Chat in real time</p>
+								<p className="text-fluid-lg font-medium">{t('landing.benefit_2_title')}</p>
 								<p className="text-fluid-sm font-normal text-muted-foreground">
-									Consistent and contextual AI, with emotional cues and natural
-									pacing.
+									{t('landing.benefit_2_desc')}
 								</p>
 							</div>
 						</div>
@@ -114,15 +113,14 @@ function App() {
 							<div className="flex w-fit items-center justify-center rounded-lg bg-[#0978AA] p-4">
 								<img
 									src="/carbon_report.svg"
-									alt="Receive a report"
+									alt={t('landing.benefit_3_alt')}
 									className="h-7 w-7 object-contain"
 								/>
 							</div>
 							<div className="flex flex-col gap-1">
-								<p className="text-fluid-lg font-medium">Receive a report</p>
+								<p className="text-fluid-lg font-medium">{t('landing.benefit_3_title')}</p>
 								<p className="text-fluid-sm font-normal text-muted-foreground">
-									Analyses of empathy, coherence, and key moments, with
-									recommendations.
+									{t('landing.benefit_3_desc')}
 								</p>
 							</div>
 						</div>

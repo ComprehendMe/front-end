@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -24,6 +25,7 @@ export function PatientsCarousel({
   onSelectPatient,
 }: PatientsCarouselProps) {
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const { t } = useTranslation();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
@@ -55,7 +57,7 @@ export function PatientsCarousel({
             size="icon-lg"
             disabled={!canScrollPrev || loading}
             onClick={() => carouselApi?.scrollPrev()}
-            aria-label="Previous patient"
+            aria-label={t('common.previous_patient_aria')}
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
@@ -64,7 +66,7 @@ export function PatientsCarousel({
             className="rounded-full"
             disabled={!canScrollNext || loading}
             onClick={() => carouselApi?.scrollNext()}
-            aria-label="Next patient"
+            aria-label={t('common.next_patient_aria')}
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
@@ -78,7 +80,7 @@ export function PatientsCarousel({
           </div>
         ) : patients.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground text-sm">
-            No patients available.
+            {t('dashboard.index.no_patients')}
           </p>
         ) : (
           <Carousel
@@ -113,7 +115,7 @@ export function PatientsCarousel({
                         problem={patient.problem}
                         subtitle={
                           isStarting
-                            ? `${patient.name} · Starting…`
+                            ? `${patient.name} · ${t('dashboard.index.starting')}`
                             : patient.name
                         }
                       />

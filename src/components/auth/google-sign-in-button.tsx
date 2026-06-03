@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Google } from '@/components/ui/svgs/google';
 import { Button } from '@/components/ui/button';
 import { startGoogleOAuth } from '@/lib/api';
@@ -12,6 +13,7 @@ export function GoogleSignInButton({
 	disabled = false,
 	className,
 }: GoogleSignInButtonProps) {
+	const { t } = useTranslation();
 	return (
 		<Button
 			type="button"
@@ -23,7 +25,7 @@ export function GoogleSignInButton({
 		>
 			<Google className="w-6 h-6" />
 			<p className="font-normal text-[16px] text-[#1C1F22]">
-				Continue with Google
+				{t('auth.google_sign_in')}
 			</p>
 		</Button>
 	);

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -21,22 +22,22 @@ export function PauseConversationDialog({
 	onCancel,
 	loading,
 }: PauseConversationDialogProps) {
+	const { t } = useTranslation();
 	return (
 		<Dialog open={open} onOpenChange={(v) => !v && onCancel()}>
 			<DialogContent className="max-w-md">
 				<DialogHeader>
-					<DialogTitle>Pause conversation?</DialogTitle>
+					<DialogTitle>{t('components.pause-dialog.title')}</DialogTitle>
 					<DialogDescription>
-						You have an active conversation. Do you want to pause it before
-						leaving? If you cancel, you will stay in this chat.
+						{t('components.pause-dialog.description')}
 					</DialogDescription>
 				</DialogHeader>
 				<DialogFooter className="gap-2 sm:gap-0">
 					<Button variant="outline" onClick={onCancel} disabled={loading}>
-						No, stay here
+						{t('components.pause-dialog.cancel_btn')}
 					</Button>
 					<Button onClick={onConfirm} disabled={loading}>
-						{loading ? 'Pausing…' : 'Yes, pause'}
+						{loading ? t('components.pause-dialog.pausing_btn') : t('components.pause-dialog.confirm_btn')}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

@@ -34,7 +34,7 @@ export function useUserPreferences(userKey: string) {
 
 	const updatePreferences = useCallback(
 		(patch: Partial<Omit<UserPreferences, 'notifications'>>) => {
-			persist({ ...preferences, ...patch, language: 'en' });
+			persist({ ...preferences, ...patch });
 		},
 		[preferences, persist],
 	);

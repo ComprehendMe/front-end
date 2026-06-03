@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type z from 'zod';
@@ -46,6 +47,7 @@ export default function SignupWizard({
 	onEmailSent,
 	onStepChange,
 }: SignupWizardProps) {
+	const { t } = useTranslation();
 	const [step, setStep] = useState<1 | 2 | 3>(1);
 
 	function goToStep(next: 1 | 2 | 3) {
@@ -78,7 +80,7 @@ export default function SignupWizard({
 			onEmailSent(draft.email);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not create account.',
+				e instanceof ApiError ? e.message : t('components.signup-wizard.toast_error'),
 			);
 		} finally {
 			setLoading(false);
@@ -94,11 +96,11 @@ export default function SignupWizard({
 
 	function goToStep3() {
 		if (!draft.dateOfBirth) {
-			toast.error('Please select your date of birth.');
+			toast.error(t('components.signup-wizard.toast_dob_required'));
 			return;
 		}
 		if (!draft.college) {
-			toast.error('Please select your college.');
+			toast.error(t('components.signup-wizard.toast_college_required'));
 			return;
 		}
 		goToStep(3);
@@ -116,7 +118,7 @@ export default function SignupWizard({
 						}}
 					>
 						<GoogleSignInButton disabled={loading} />
-						<p className="text-[16px] font-normal text-[#1C1F22]">or</p>
+						<p className="text-[16px] font-normal text-[#1C1F22]">{t('components.signup-wizard.or')}</p>
 						<FormField
 							control={signUpForm.control}
 							name="name"
@@ -124,7 +126,7 @@ export default function SignupWizard({
 								<FormItem>
 									<FormControl>
 										<Input
-											placeholder="Name"
+											placeholder={t('components.signup-wizard.name_placeholder')}
 											className={signupFieldClassName()}
 											{...field}
 										/>
@@ -140,7 +142,7 @@ export default function SignupWizard({
 								<FormItem>
 									<FormControl>
 										<Input
-											placeholder="E-mail"
+											placeholder={t('components.signup-wizard.email_placeholder')}
 											className={signupFieldClassName()}
 											{...field}
 										/>
@@ -151,7 +153,7 @@ export default function SignupWizard({
 						/>
 						<SignupFooter
 							onBack={onBackToLogin}
-							primaryLabel={loading ? 'Sending…' : 'Continue'}
+							primaryLabel={loading ? t('components.signup-wizard.sending_dots') : t('components.signup-wizard.continue')}
 							primaryDisabled={loading}
 							primaryType="submit"
 						/>
@@ -168,7 +170,7 @@ export default function SignupWizard({
 				<div className="space-y-5 text-left">
 					<div className="space-y-2">
 						<Label className="text-[16px] font-medium text-[#1C1F22]">
-							What is your date of birth?
+							{t('components.signup-wizard.dob_label')}
 						</Label>
 						<Popover open={dobOpen} onOpenChange={setDobOpen}>
 							<PopoverTrigger asChild>
@@ -182,7 +184,7 @@ export default function SignupWizard({
 								>
 									{selectedDob
 										? format(selectedDob, 'MMMM d yyyy')
-										: 'Select your date of birth'}
+										: t('components.signup-wizard.dob_placeholder')}
 									<span className="text-[#4B4E58]" aria-hidden>
 										▾
 									</span>
@@ -211,7 +213,7 @@ export default function SignupWizard({
 					</div>
 					<div className="space-y-2">
 						<Label className="text-[16px] font-medium text-[#1C1F22]">
-							Where do you study?
+							{t('components.signup-wizard.college_label')}
 						</Label>
 						<select
 							value={draft.college}
@@ -223,7 +225,7 @@ export default function SignupWizard({
 							)}
 						>
 							<option value="" disabled>
-								Select your college
+								{t('components.signup-wizard.college_placeholder')}
 							</option>
 							{COLLEGE_OPTIONS.map((college) => (
 								<option key={college} value={college} className="text-[#1C1F22]">
@@ -235,7 +237,7 @@ export default function SignupWizard({
 				</div>
 				<SignupFooter
 					onBack={() => goToStep(1)}
-					primaryLabel="Continue"
+					primaryLabel={t('components.signup-wizard.continue')}
 					onPrimary={goToStep3}
 				/>
 			</div>
@@ -248,10 +250,10 @@ export default function SignupWizard({
 			<div className="space-y-4 border-t border-[#E8EEF4] pt-6 text-left">
 				<div>
 					<p className="text-[16px] font-medium text-[#1C1F22]">
-						How did you hear about us?
+						{t('components.signup-wizard.referral_heading')}
 					</p>
 					<p className="mt-1 text-[14px] font-normal text-[#4B4E58]">
-						Pick one option - It will help us improve
+						{t('components.signup-wizard.referral_hint')}
 					</p>
 				</div>
 				<RadioGroup
@@ -262,10 +264,10 @@ export default function SignupWizard({
 					className="gap-4"
 				>
 					{[
-						{ value: 'friends', label: 'Friends' },
-						{ value: 'university', label: 'University/School' },
-						{ value: 'recommendation', label: 'Recommendation' },
-						{ value: 'others', label: 'Others' },
+						{ value: 'friends', label: t('components.signup-wizard.referral_friends') },
+						{ value: 'university', label: t('components.signup-wizard.referral_university') },
+						{ value: 'recommendation', label: t('components.signup-wizard.referral_recommendation') },
+						{ value: 'others', label: t('components.signup-wizard.referral_others') },
 					].map((option) => (
 						<label
 							key={option.value}
@@ -284,7 +286,7 @@ export default function SignupWizard({
 			</div>
 			<SignupFooter
 				onBack={() => goToStep(2)}
-				primaryLabel={loading ? 'Creating…' : 'Create account'}
+				primaryLabel={loading ? t('components.signup-wizard.creating_dots') : t('components.signup-wizard.create_account')}
 				primaryDisabled={loading}
 				onPrimary={() => void submitSignup()}
 			/>

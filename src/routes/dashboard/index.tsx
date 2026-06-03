@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContinueSection } from "@/components/dashboard/continue-section";
 import { RecentConversations, StartLearningSection } from "@/components/dashboard/dashboard-sections";
@@ -17,7 +18,7 @@ import {
   type DashboardStats,
   type Patient,
 } from "@/lib/api";
-import { getTimeGreeting } from "@/lib/format-message-time";
+import { getGreetingKey } from "@/lib/format-message-time";
 import { getFirstName } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../dashboard";
 
@@ -28,12 +29,13 @@ export const Route = createFileRoute("/dashboard/")({
 function DashboardPage() {
   const { user } = DashboardRoute.useRouteContext();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [allChats, setAllChats] = useState<Chat[]>([]);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [startingId, setStartingId] = useState<string | null>(null);
-  const firstName = getFirstName(user);
-  const greeting = getTimeGreeting();
+  const firstName = getFirstName(user, t('dashboard.index.greeting_there'));
+  const greeting = t(getGreetingKey());
 
   const activeChats = allChats.filter((c) => !c.endedAt);
   const endedChats = allChats.filter((c) => c.endedAt);
@@ -50,7 +52,7 @@ function DashboardPage() {
       })
       .catch((e) => {
         toast.error(
-          e instanceof ApiError ? e.message : "Could not load dashboard data."
+          e instanceof ApiError ? e.message : t('dashboard.index.toast_error_load')
         );
       });
   }, []);
@@ -75,7 +77,7 @@ function DashboardPage() {
       }
     } catch (e) {
       toast.error(
-        e instanceof ApiError ? e.message : "Could not start the conversation."
+        e instanceof ApiError ? e.message : t('dashboard.index.toast_error_start')
       );
     } finally {
       setStartingId(null);
@@ -89,16 +91,16 @@ function DashboardPage() {
           <div className="pointer-events-none absolute inset-0 opacity-35 [background:radial-gradient(circle_at_18%_30%,rgba(255,255,255,0.3),transparent_18%),radial-gradient(circle_at_85%_26%,rgba(255,255,255,0.22),transparent_16%),radial-gradient(circle_at_65%_75%,rgba(255,255,255,0.16),transparent_14%)]" />
           <div className="space-y-3">
             <h2 className="text-fluid-3xl leading-[1.15] font-semibold">
-              Access Premium Patients
+              {t('dashboard.index.premium_banner_title')}
             </h2>
             <p className="text-fluid-lg leading-[1.25] font-normal opacity-95">
-              Advanced clinical cases for specialized training.
+              {t('dashboard.index.premium_banner_desc')}
             </p>
             <Button
               className="mt-2 h-11 rounded-full bg-white px-7 text-fluid-sm font-semibold text-[#1497D2] hover:bg-white hover:text-[#1497D2] hover:shadow-md transition-shadow"
               size="lg"
             >
-              Go premium!
+              {t('dashboard.index.premium_banner_cta')}
             </Button>
           </div>
         </div>
@@ -112,7 +114,7 @@ function DashboardPage() {
         {activeChats.length > 0 && (
           <ContinueSection
             chats={activeChats}
-            title="Continue conversation"
+            title={t('components.continue-section.title')}
           />
         )}
         {endedChats.length > 0 && (
@@ -122,7 +124,7 @@ function DashboardPage() {
       <div className="w-full">
         <div className="rounded-[22px] border border-[#E8EDF2] bg-[#FCFDFE] px-fluid-container py-fluid-section">
           <h2 className="mb-6 text-fluid-lg font-semibold text-black">
-            Statistic
+            {t('dashboard.index.statistic_title')}
           </h2>
           <div className="flex flex-col gap-fluid-xl text-center">
             <div className="relative">
@@ -136,7 +138,7 @@ function DashboardPage() {
                   {greeting} {firstName}
                 </h3>
                 <p className="mx-auto max-w-[min(275px,80%)] text-fluid-sm leading-[1.15] font-medium text-[#4B4E58]">
-                  Continue your learning to achieve your target!
+                  {t('dashboard.index.greeting_subtitle')}
                 </p>
               </div>
             </div>

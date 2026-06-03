@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ApiError, completeOnboarding, getMe } from '@/lib/api';
 import {
@@ -28,6 +29,7 @@ export const Route = createFileRoute('/auth/onboarding')({
 });
 
 function OnboardingPage() {
+	const { t } = useTranslation();
 	const navigate = useNavigate();
 	const [step, setStep] = useState<2 | 3>(2);
 	const [loading, setLoading] = useState(false);
@@ -67,7 +69,7 @@ function OnboardingPage() {
 			await navigate({ to: '/dashboard' });
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not save your profile.',
+				e instanceof ApiError ? e.message : t('auth.onboarding_toast_error'),
 			);
 		} finally {
 			setLoading(false);
@@ -77,7 +79,7 @@ function OnboardingPage() {
 	if (checking) {
 		return (
 			<div className="flex min-h-screen items-center justify-center bg-background">
-				<p className="text-muted-foreground">Loading…</p>
+				<p className="text-muted-foreground">{t('auth.onboarding_loading')}</p>
 			</div>
 		);
 	}
@@ -98,7 +100,7 @@ function OnboardingPage() {
 						<div className="space-y-5 text-left">
 							<div className="space-y-2">
 								<Label className="text-[16px] font-medium text-[#1C1F22]">
-									What is your date of birth?
+									{t('auth.onboarding_step2_dob_label')}
 								</Label>
 								<Popover open={dobOpen} onOpenChange={setDobOpen}>
 									<PopoverTrigger asChild>
@@ -112,7 +114,7 @@ function OnboardingPage() {
 										>
 											{selectedDob
 												? format(selectedDob, 'MMMM d yyyy')
-												: 'Select your date of birth'}
+												: t('auth.onboarding_step2_dob_placeholder')}
 											<span className="text-[#4B4E58]" aria-hidden>
 												▾
 											</span>
@@ -141,7 +143,7 @@ function OnboardingPage() {
 							</div>
 							<div className="space-y-2">
 								<Label className="text-[16px] font-medium text-[#1C1F22]">
-									Where do you study?
+									{t('auth.onboarding_step2_college_label')}
 								</Label>
 								<select
 									value={draft.college}
@@ -153,7 +155,7 @@ function OnboardingPage() {
 									)}
 								>
 									<option value="" disabled>
-										Select your college
+										{t('auth.onboarding_step2_college_placeholder')}
 									</option>
 									{COLLEGE_OPTIONS.map((college) => (
 										<option
@@ -169,14 +171,14 @@ function OnboardingPage() {
 						</div>
 						<SignupFooter
 							onBack={() => void navigate({ to: '/dashboard' })}
-							primaryLabel="Continue"
+							primaryLabel={t('components.signup-wizard.continue')}
 							onPrimary={() => {
 								if (!draft.dateOfBirth) {
-									toast.error('Please select your date of birth.');
+									toast.error(t('auth.onboarding_step2_toast_dob'));
 									return;
 								}
 								if (!draft.college) {
-									toast.error('Please select your college.');
+									toast.error(t('auth.onboarding_step2_toast_college'));
 									return;
 								}
 								setStep(3);
@@ -189,10 +191,10 @@ function OnboardingPage() {
 						<div className="space-y-4 border-t border-[#E8EEF4] pt-6 text-left">
 							<div>
 								<p className="text-[16px] font-medium text-[#1C1F22]">
-									How did you hear about us?
+									{t('auth.onboarding_step3_heading')}
 								</p>
 								<p className="mt-1 text-[14px] font-normal text-[#4B4E58]">
-									Pick one option - It will help us improve
+									{t('auth.onboarding_step3_hint')}
 								</p>
 							</div>
 							<RadioGroup
@@ -203,10 +205,10 @@ function OnboardingPage() {
 								className="gap-4"
 							>
 								{[
-									{ value: 'friends', label: 'Friends' },
-									{ value: 'university', label: 'University/School' },
-									{ value: 'recommendation', label: 'Recommendation' },
-									{ value: 'others', label: 'Others' },
+									{ value: 'friends', label: t('auth.onboarding_step3_option_friends') },
+									{ value: 'university', label: t('auth.onboarding_step3_option_university') },
+									{ value: 'recommendation', label: t('auth.onboarding_step3_option_recommendation') },
+									{ value: 'others', label: t('auth.onboarding_step3_option_others') },
 								].map((option) => (
 									<label
 										key={option.value}
@@ -225,7 +227,7 @@ function OnboardingPage() {
 						</div>
 						<SignupFooter
 							onBack={() => setStep(2)}
-							primaryLabel={loading ? 'Creating…' : 'Create account'}
+							primaryLabel={loading ? t('auth.onboarding_loading') : t('auth.signup_create_button')}
 							primaryDisabled={loading}
 							onPrimary={() => void finishOnboarding()}
 						/>

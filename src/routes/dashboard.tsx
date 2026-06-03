@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { ApiError, getMe, recordActivity, type MeUser } from "@/lib/api";
 import { loadUserPreferences } from "@/lib/user-preferences";
+import i18n from "@/lib/i18n";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
@@ -34,8 +35,11 @@ function RouteComponent() {
   const { user } = Route.useRouteContext();
 
   useEffect(() => {
-    document.documentElement.lang = "en";
-    loadUserPreferences(user.email);
+    const prefs = loadUserPreferences(user.email);
+    if (prefs.language !== i18n.language) {
+      i18n.changeLanguage(prefs.language);
+    }
+    document.documentElement.lang = i18n.language;
   }, [user.email]);
 
   const IDLE_TIMEOUT_MS = 5 * 60_000;

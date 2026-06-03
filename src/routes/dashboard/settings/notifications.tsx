@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/dashboard/settings/notifications")({
 });
 
 function NotificationsPage() {
+	const { t } = useTranslation();
 	const { user } = DashboardRoute.useRouteContext();
 	const { preferences, updateNotifications } = useUserPreferences(user.email);
 	const { notifications } = preferences;
@@ -24,14 +26,12 @@ function NotificationsPage() {
 		if (checked) {
 			const allowed = await requestDesktopNotificationPermission();
 			if (!allowed) {
-				toast.error(
-					"Desktop notifications are blocked. Enable them in your browser settings.",
-				);
+				toast.error(t('dashboard.settings.notifications.toast_blocked'));
 				return;
 			}
 		}
 		updateNotifications({ desktopEnabled: checked });
-		toast.success("Notification settings saved.");
+		toast.success(t('dashboard.settings.notifications.toast_saved'));
 	}
 
 	function handleToggle(
@@ -41,7 +41,7 @@ function NotificationsPage() {
 	) {
 		if (key === "desktopEnabled") return;
 		updateNotifications({ [key]: checked });
-		if (!skipToast) toast.success("Notification settings saved.");
+		if (!skipToast) toast.success(t('dashboard.settings.notifications.toast_saved'));
 	}
 
 	function handleTimeoutBlur() {
@@ -49,24 +49,24 @@ function NotificationsPage() {
 		const minutes = Number.isFinite(parsed) && parsed > 0 ? parsed : 10;
 		setTimeoutInput(String(minutes));
 		updateNotifications({ pushTimeoutMinutes: minutes });
-		toast.success("Notification settings saved.");
+		toast.success(t('dashboard.settings.notifications.toast_saved'));
 	}
 
 	return (
 		<div className="flex w-full flex-col">
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					Notifications
+					{t('dashboard.settings.notifications.title')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
-								Enable desktop notifications
+								{t('dashboard.settings.notifications.desktop_label')}
 							</p>
 							<span className="font-regular text-gray-400 text-sm">
-								Receive notifications for messages, sessions, and updates.
+								{t('dashboard.settings.notifications.desktop_desc')}
 							</span>
 						</div>
 						<Switch
@@ -77,10 +77,10 @@ function NotificationsPage() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
-								Enable unread notification badge
+								{t('dashboard.settings.notifications.unread_badge_label')}
 							</p>
 							<span className="font-regular text-gray-400 text-sm">
-								Show an unread indicator in the browser tab title.
+								{t('dashboard.settings.notifications.unread_badge_desc')}
 							</span>
 						</div>
 						<Switch
@@ -92,10 +92,10 @@ function NotificationsPage() {
 					</div>
 					<div className="flex flex-col gap-2">
 						<p className="font-semibold text-[#4B4E58] text-[16px]">
-							Push notification timeout
+							{t('dashboard.settings.notifications.push_timeout_label')}
 						</p>
 						<Input
-							placeholder="10 minutes"
+							placeholder={t('dashboard.settings.notifications.push_timeout_placeholder')}
 							value={timeoutInput}
 							onChange={(e) => setTimeoutInput(e.target.value)}
 							onBlur={handleTimeoutBlur}
@@ -105,17 +105,17 @@ function NotificationsPage() {
 			</div>
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">
-					Email notifications
+					{t('dashboard.settings.notifications.email_section')}
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
-								Communication emails
+								{t('dashboard.settings.notifications.email_communication_label')}
 							</p>
 							<span className="font-regular text-gray-400 text-sm">
-								Receive emails for messages and session activity.
+								{t('dashboard.settings.notifications.email_communication_desc')}
 							</span>
 						</div>
 						<Switch
@@ -128,10 +128,10 @@ function NotificationsPage() {
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
-								Announcements and updates
+								{t('dashboard.settings.notifications.email_announcements_label')}
 							</p>
 							<span className="font-regular text-gray-400 text-sm">
-								Receive emails about product updates and improvements.
+								{t('dashboard.settings.notifications.email_announcements_desc')}
 							</span>
 						</div>
 						<Switch
@@ -144,16 +144,16 @@ function NotificationsPage() {
 				</div>
 			</div>
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
-				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Sounds</h3>
+				<h3 className="font-semibold text-[#4B4E58] text-[18px]">{t('dashboard.settings.notifications.sounds_section')}</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
-								Disable all notification sounds
+								{t('dashboard.settings.notifications.sounds_label')}
 							</p>
 							<span className="font-regular text-gray-400 text-sm">
-								Mute sounds for messages and session notifications.
+								{t('dashboard.settings.notifications.sounds_desc')}
 							</span>
 						</div>
 						<Switch

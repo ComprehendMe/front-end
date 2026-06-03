@@ -5,16 +5,16 @@ function hasDisplayName(user: MeUser): boolean {
 }
 
 /** First name — never uses email */
-export function getFirstName(user: MeUser): string {
-	if (!hasDisplayName(user)) return 'there';
+export function getFirstName(user: MeUser, fallback = 'there'): string {
+	if (!hasDisplayName(user)) return fallback;
 
 	const first = user.name!.trim().split(/\s+/)[0];
 	return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
 /** Full name for the header — never uses email */
-export function getDisplayName(user: MeUser): string {
-	if (!hasDisplayName(user)) return 'Add your name';
+export function getDisplayName(user: MeUser, fallback = 'Add your name'): string {
+	if (!hasDisplayName(user)) return fallback;
 	return user.name!.trim();
 }
 

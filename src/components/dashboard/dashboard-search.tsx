@@ -9,6 +9,7 @@ import {
 } from '@tabler/icons-react';
 import { Search } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import {
@@ -32,47 +33,51 @@ type DashboardSearchProps = {
 	patients?: Patient[];
 };
 
-const NAV_ITEMS: SearchItem[] = [
-	{
-		id: 'patients',
-		label: 'Talk with patients',
-		icon: <IconUser className="h-5 w-5 text-[#1497D2]" />,
-		to: '/dashboard',
-	},
-	{
-		id: 'friends',
-		label: 'Find friends',
-		description: 'Coming soon',
-		icon: <IconUsers className="h-5 w-5 text-[#1497D2]" />,
-		to: '/dashboard',
-	},
-	{
-		id: 'history',
-		label: 'History',
-		icon: <IconHistory className="h-5 w-5 text-[#1497D2]" />,
-		to: '/dashboard/history',
-	},
-	{
-		id: 'conversations',
-		label: 'Conversations',
-		icon: <IconMessage className="h-5 w-5 text-[#1497D2]" />,
-		to: '/dashboard',
-	},
-	{
-		id: 'settings',
-		label: 'Settings',
-		icon: <IconSettings className="h-5 w-5 text-[#1497D2]" />,
-		to: '/dashboard/settings',
-	},
-];
-
 const BILLING_KEYWORDS = [
 	'plan', 'premium', 'billing', 'upgrade', 'payment', 'subscription',
 	'invoice', 'checkout', 'free', 'stripe', 'pagamento', 'assinatura',
 ];
 
+function useNavItems(): SearchItem[] {
+	const { t } = useTranslation();
+	return [
+		{
+			id: 'patients',
+			label: t('dashboard.search.talk_with_patients'),
+			icon: <IconUser className="h-5 w-5 text-[#1497D2]" />,
+			to: '/dashboard',
+		},
+		{
+			id: 'friends',
+			label: t('dashboard.search.find_friends'),
+			description: t('dashboard.search.coming_soon'),
+			icon: <IconUsers className="h-5 w-5 text-[#1497D2]" />,
+			to: '/dashboard',
+		},
+		{
+			id: 'history',
+			label: t('dashboard.search.history'),
+			icon: <IconHistory className="h-5 w-5 text-[#1497D2]" />,
+			to: '/dashboard/history',
+		},
+		{
+			id: 'conversations',
+			label: t('dashboard.search.conversations'),
+			icon: <IconMessage className="h-5 w-5 text-[#1497D2]" />,
+			to: '/dashboard',
+		},
+		{
+			id: 'settings',
+			label: t('dashboard.search.settings'),
+			icon: <IconSettings className="h-5 w-5 text-[#1497D2]" />,
+			to: '/dashboard/settings',
+		},
+	];
+}
+
 export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	const searchRef = useRef<HTMLDivElement>(null);
 	const blurTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 	const [open, setOpen] = useState(false);
@@ -135,34 +140,36 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 			}));
 	}, [chats, query]);
 
+	const navItems = useNavItems();
+
 	const billingItem = useMemo<SearchItem | null>(() => {
 		const q = query.trim().toLowerCase();
 		if (!q) return null;
 		if (BILLING_KEYWORDS.some((kw) => kw.includes(q) || q.includes(kw))) {
 			return {
 				id: 'billing',
-				label: 'Billing & Plan',
-				description: 'View your subscription, plan details and invoices',
+				label: t('dashboard.search.billing_label'),
+				description: t('dashboard.search.billing_desc'),
 				icon: <IconCoin className="h-5 w-5 text-[#1497D2]" />,
 				to: '/dashboard/settings/billing',
 			};
 		}
 		return null;
-	}, [query]);
+	}, [query, t]);
 
 	const filteredNav = useMemo(() => {
 		const q = query.trim().toLowerCase();
-		if (!q) return NAV_ITEMS;
-		return NAV_ITEMS.filter((item) => item.label.toLowerCase().includes(q));
-	}, [query]);
+		if (!q) return navItems;
+		return navItems.filter((item) => item.label.toLowerCase().includes(q));
+	}, [query, navItems]);
 
 	const items = useMemo(() => {
-		if (!query.trim()) return NAV_ITEMS;
+		if (!query.trim()) return navItems;
 		const result = [...patientItems, ...chatItems];
 		if (billingItem) result.push(billingItem);
 		result.push(...filteredNav);
 		return result;
-	}, [patientItems, chatItems, billingItem, filteredNav, query]);
+	}, [patientItems, chatItems, billingItem, filteredNav, query, navItems]);
 
 	async function goToPatientChat(patientId: string) {
 		close();
@@ -182,7 +189,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 			});
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : 'Could not open conversation.',
+				e instanceof ApiError ? e.message : t('dashboard.search.toast_error_open'),
 			);
 		}
 	}
@@ -220,7 +227,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 						}
 					}}
 					className="h-12 w-full rounded-full border-[#dbe4eb] bg-white px-7 py-4 pr-12 text-[15px]"
-					placeholder="What's up?"
+					placeholder={t('dashboard.search.placeholder')}
 				/>
 				<Search className="pointer-events-none absolute top-1/2 right-5 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground" />
 			</div>
@@ -230,7 +237,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 					<ul className="flex flex-col">
 						{items.length === 0 ? (
 							<li className="px-3 py-4 text-center text-sm text-muted-foreground">
-								No results
+								{t('common.no_results')}
 							</li>
 						) : (
 							items.map((item) => (
@@ -251,7 +258,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 												</p>
 											) : null}
 										</div>
-										<span className="text-sm font-medium text-[#1497D2]">Go</span>
+										<span className="text-sm font-medium text-[#1497D2]">{t('common.go')}</span>
 									</button>
 								</li>
 							))

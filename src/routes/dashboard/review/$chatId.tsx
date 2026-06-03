@@ -8,6 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -37,16 +38,16 @@ export const Route = createFileRoute("/dashboard/review/$chatId")({
   component: ReviewPage,
 });
 
-function formatReviewText(text: string) {
+function formatReviewText(text: string, t: (key: string) => string) {
   const trimmed = text.trim();
   if (!trimmed) {
-    return "No written feedback was generated for this move.";
+    return t('dashboard.review.feedback_empty');
   }
   const looksLikeJson =
     (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
     trimmed.startsWith("```");
   if (looksLikeJson) {
-    return "Feedback format is being normalized. Recompute this move to see a clean explanation.";
+    return t('dashboard.review.feedback_format_error');
   }
   return trimmed;
 }
@@ -54,6 +55,7 @@ function formatReviewText(text: string) {
 function ReviewPage() {
   const { chatId } = Route.useParams();
   const { user } = DashboardRoute.useRouteContext();
+  const { t } = useTranslation();
   const [review, setReview] = useState<ReviewResult | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,11 +75,11 @@ function ReviewPage() {
       })
       .catch((e) => {
         toast.error(
-          e instanceof ApiError ? e.message : "Failed to load review."
+          e instanceof ApiError ? e.message : t('dashboard.review.toast_load_error')
         );
       })
       .finally(() => setLoading(false));
-  }, [chatId]);
+  }, [chatId, t]);
 
   useEffect(() => {
     if (review?.reviewStatus !== "PENDING") return;
@@ -130,7 +132,7 @@ function ReviewPage() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast.error("Failed to download report.");
+      toast.error(t('dashboard.review.toast_download_error'));
     }
   }
 
@@ -142,13 +144,13 @@ function ReviewPage() {
       setReview(refreshed);
       setCurrentMove(0);
       if (refreshed.reviewStatus === "FAILED") {
-        toast.error(refreshed.errorMessage ?? "Review generation failed.");
+        toast.error(refreshed.errorMessage ?? t('dashboard.review.toast_recompute_generation_failed'));
       } else {
-        toast.success("Review recomputed.");
+        toast.success(t('dashboard.review.toast_recompute_success'));
       }
     } catch (error) {
       toast.error(
-        error instanceof ApiError ? error.message : "Failed to recompute review."
+        error instanceof ApiError ? error.message : t('dashboard.review.toast_recompute_error')
       );
     } finally {
       setRecomputing(false);
@@ -161,7 +163,7 @@ function ReviewPage() {
         <div className="flex flex-col items-center gap-4 text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm text-muted-foreground">
-            Analysing your conversation with AI...
+            {t('dashboard.review.loading_analysis')}
           </p>
         </div>
       </main>
@@ -171,7 +173,7 @@ function ReviewPage() {
   if (!review) {
     return (
       <main className="flex flex-1 items-center justify-center py-20">
-        <p className="text-sm text-muted-foreground">Review not available.</p>
+        <p className="text-sm text-muted-foreground">{t('dashboard.review.not_available')}</p>
       </main>
     );
   }
@@ -182,10 +184,10 @@ function ReviewPage() {
         <div className="flex max-w-md flex-col items-center gap-4 text-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
           <p className="text-sm font-medium text-foreground">
-            Your move-by-move review is being generated.
+            {t('dashboard.review.pending_title')}
           </p>
           <p className="text-sm text-muted-foreground">
-            This may take a few seconds. We analyze only your interventions.
+            {t('dashboard.review.pending_desc')}
           </p>
           <Button
             variant="outline"
@@ -194,7 +196,7 @@ function ReviewPage() {
               setReview(refreshed);
             }}
           >
-            Refresh
+            {t('dashboard.review.pending_refresh')}
           </Button>
         </div>
       </main>
@@ -207,17 +209,35 @@ function ReviewPage() {
         <div className="flex max-w-md flex-col items-center gap-4 text-center">
           <AlertCircle className="h-8 w-8 text-red-500" />
           <p className="text-sm font-medium text-foreground">
-            We could not generate this review.
+            {t('dashboard.review.failed_title')}
           </p>
           <p className="text-sm text-muted-foreground">
-            {review.errorMessage ?? "Please try again."}
+            {review.errorMessage ?? t('dashboard.review.failed_default_error')}
           </p>
           <Button onClick={() => void handleRecompute()} disabled={recomputing}>
-            {recomputing ? "Retrying..." : "Retry review"}
+            {recomputing ? t('dashboard.review.failed_retrying_btn') : t('dashboard.review.failed_retry_btn')}
           </Button>
         </div>
       </main>
     );
+  }
+
+  function qualityLabel(quality: string) {
+    switch (quality) {
+      case "strong": return t('dashboard.review.badge_strong');
+      case "adequate": return t('dashboard.review.badge_adequate');
+      case "needs_attention": return t('dashboard.review.badge_needs_attention');
+      default: return t('dashboard.review.badge_needs_adjustment');
+    }
+  }
+
+  function qualityLabelShort(quality: string) {
+    switch (quality) {
+      case "strong": return t('dashboard.review.badge_strong_short');
+      case "adequate": return t('dashboard.review.badge_adequate_short');
+      case "needs_attention": return t('dashboard.review.badge_needs_attention_short');
+      default: return t('dashboard.review.badge_needs_adjustment_short');
+    }
   }
 
   return (
@@ -226,15 +246,15 @@ function ReviewPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-fluid-xl font-semibold text-foreground">
-              Chat Review
+              {t('dashboard.review.title')}
             </h1>
             <p className="text-fluid-sm text-muted-foreground">
-              Replay your conversation step-by-step
+              {t('dashboard.review.subtitle')}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-fluid-sm font-medium text-muted-foreground">
-              Move {currentMove}/{totalMoves}
+              {t('dashboard.review.move_label', { current: currentMove, total: totalMoves })}
             </span>
             <div className="h-2 w-28 overflow-hidden rounded-full bg-[var(--dashboard-input)] sm:w-36">
               <div
@@ -272,7 +292,7 @@ function ReviewPage() {
               </div>
               <div className="space-y-2">
                 <h2 className="text-fluid-3xl font-semibold leading-[1.1] text-[#1C1F22]">
-                  {`Good morning, my name is ${review.patient.name.split(" ")[0]}`}
+                  {t('dashboard.review.start_title', { name: review.patient.name.split(" ")[0] })}
                 </h2>
                 <p className="mx-auto max-w-xl text-lg text-[#4B4E58]">
                   {review.patient.problem}
@@ -283,7 +303,7 @@ function ReviewPage() {
                 className="rounded-full bg-[#1497D2] px-6 text-white hover:bg-[#2285B3]"
               >
                 <Sparkles className="mr-2 h-4 w-4" />
-                Start review
+                {t('dashboard.review.start_button')}
               </Button>
             </div>
           ) : (
@@ -298,7 +318,7 @@ function ReviewPage() {
                   <div className="flex items-center gap-2">
                     <div className="text-right">
                       <p className="text-sm font-semibold text-foreground">
-                        Me
+                        {t('dashboard.review.me_label')}
                       </p>
                       {msg.createdAt ? (
                         <p className="text-xs text-muted-foreground">
@@ -365,18 +385,17 @@ function ReviewPage() {
       <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-fluid-md lg:max-w-[360px] xl:max-w-[390px]">
         <div className="mb-4">
           <h2 className="text-fluid-lg font-semibold text-foreground">
-            Performance Panel
+            {t('dashboard.review.performance_panel_title')}
           </h2>
-          <p className="text-fluid-xs text-muted-foreground">AI feedback per move</p>
+          <p className="text-fluid-xs text-muted-foreground">{t('dashboard.review.performance_panel_subtitle')}</p>
         </div>
 
         {currentMove === 0 ? (
           <div className="flex flex-1 flex-col gap-3 text-sm text-foreground">
-            <p className="font-semibold text-[var(--dashboard-primary)]">Game not started!</p>
-            <p className="text-muted-foreground">No moves on the chat.</p>
+            <p className="font-semibold text-[var(--dashboard-primary)]">{t('dashboard.review.panel_not_started')}</p>
+            <p className="text-muted-foreground">{t('dashboard.review.panel_no_moves')}</p>
             <p className="text-muted-foreground">
-              Press <Play className="mx-1 inline h-3.5 w-3.5" /> to reveal the
-              first intervention.
+              {t('dashboard.review.panel_press_play')}
             </p>
           </div>
         ) : currentAnalysis ? (
@@ -394,13 +413,7 @@ function ReviewPage() {
                         : "border-red-300 bg-red-100 text-red-700")
                 }
               >
-                {currentAnalysis.quality === "strong"
-                    ? "Strong intervention"
-                  : currentAnalysis.quality === "adequate"
-                      ? "Adequate"
-                    : currentAnalysis.quality === "needs_attention"
-                        ? "Needs Attention"
-                      : "Needs Adjustment"}
+                {qualityLabel(currentAnalysis.quality)}
               </span>
               <span className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
                 {currentAnalysis.category}
@@ -408,7 +421,7 @@ function ReviewPage() {
             </div>
 
             <div className="flex-1 overflow-y-auto text-sm leading-relaxed text-foreground">
-              {formatReviewText(currentAnalysis.feedback)
+              {formatReviewText(currentAnalysis.feedback, t)
                 .split(/(\*\*.*?\*\*)/)
                 .map((part, i) =>
                   part.startsWith("**") && part.endsWith("**") ? (
@@ -422,7 +435,7 @@ function ReviewPage() {
             {currentAnalysis.highlights.length > 0 && (
               <div>
                 <p className="mb-1 text-xs font-semibold text-green-700">
-                  Highlights
+                  {t('dashboard.review.highlights_label')}
                 </p>
                 <ul className="list-inside list-disc space-y-0.5 text-xs text-muted-foreground">
                   {currentAnalysis.highlights.map((h, i) => (
@@ -435,7 +448,7 @@ function ReviewPage() {
             {currentAnalysis.improvements.length > 0 && (
               <div>
                 <p className="mb-1 text-xs font-semibold text-amber-700">
-                  Improvements
+                  {t('dashboard.review.improvements_label')}
                 </p>
                 <ul className="list-inside list-disc space-y-0.5 text-xs text-muted-foreground">
                   {currentAnalysis.improvements.map((im, i) => (
@@ -472,22 +485,18 @@ function ReviewPage() {
           </div>
           {currentAnalysis && (
             <p className="text-sm font-medium">
-              Move score:{" "}
-              <span className="font-bold">{currentAnalysis.score}/10</span>
+              {t('dashboard.review.move_score', { score: currentAnalysis.score })}
             </p>
           )}
           <p className="text-sm text-muted-foreground">
-            Total score:{" "}
-            <span className="font-bold text-foreground">
-              {review.totalScore}/100
-            </span>
+            {t('dashboard.review.total_score', { score: review.totalScore })}
           </p>
           {currentMove >= totalMoves && totalMoves > 0 && (
             <Button
               className="w-full bg-[var(--dashboard-input)] text-[var(--dashboard-primary)] hover:bg-[#cfe5f4]"
               onClick={() => setSummaryOpen(true)}
             >
-              View full summary
+              {t('dashboard.review.view_summary')}
             </Button>
           )}
         </div>
@@ -496,20 +505,20 @@ function ReviewPage() {
       <Dialog open={summaryOpen} onOpenChange={setSummaryOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>Conversation Summary</DialogTitle>
+            <DialogTitle>{t('dashboard.review.summary_title')}</DialogTitle>
             <DialogDescription>
-              All moves and points breakdown.
+              {t('dashboard.review.summary_desc')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="flex items-center justify-around rounded-lg bg-gray-50 p-4">
             <div className="text-center">
               <p className="text-2xl font-bold">{review.totalScore}/100</p>
-              <p className="text-xs text-muted-foreground">Total score</p>
+              <p className="text-xs text-muted-foreground">{t('dashboard.review.summary_total_score')}</p>
             </div>
             <div className="text-center">
               <p className="text-2xl font-bold">{review.averageMove}/10</p>
-              <p className="text-xs text-muted-foreground">Average Move</p>
+              <p className="text-xs text-muted-foreground">{t('dashboard.review.summary_avg_move')}</p>
             </div>
           </div>
 
@@ -539,7 +548,7 @@ function ReviewPage() {
               >
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium">
-                    Move {move.moveNumber}/{review.moves.length}
+                    {t('dashboard.review.summary_move', { number: move.moveNumber, total: review.moves.length })}
                   </span>
                   <span
                     className={
@@ -553,17 +562,11 @@ function ReviewPage() {
                             : "border-red-300 bg-red-100 text-red-700")
                     }
                   >
-                    {move.quality === "strong"
-                      ? "Strong"
-                      : move.quality === "adequate"
-                        ? "Adequate"
-                        : move.quality === "needs_attention"
-                          ? "Needs Attention"
-                          : "Needs Adjustment"}
+                    {qualityLabelShort(move.quality)}
                   </span>
                 </div>
                 <span className="text-sm font-bold">
-                  {String(move.score).padStart(2, "0")}/10
+                  {t('dashboard.review.summary_move_score', { score: String(move.score).padStart(2, "0") })}
                 </span>
               </button>
             ))}
@@ -576,10 +579,10 @@ function ReviewPage() {
               onClick={() => void handleRecompute()}
               disabled={recomputing}
             >
-              {recomputing ? "Recomputing..." : "Recompute review"}
+              {recomputing ? t('common.recomputing') : t('dashboard.review.dialog_recompute')}
             </Button>
             <Button className="flex-1" onClick={handleDownload}>
-              Download report
+              {t('dashboard.review.dialog_download')}
             </Button>
           </div>
         </DialogContent>

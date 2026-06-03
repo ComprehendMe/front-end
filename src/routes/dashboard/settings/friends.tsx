@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/dashboard/settings/friends")({
 });
 
 function FriendsSettingsPage() {
+	const { t } = useTranslation();
 	const [friends, setFriends] = useState<FriendInfo[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [editingId, setEditingId] = useState<string | null>(null);
@@ -32,12 +34,12 @@ function FriendsSettingsPage() {
 			setFriends(data);
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not load friends.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.friends.toast_load_error'),
 			);
 		} finally {
 			setLoading(false);
 		}
-	}, []);
+	}, [t]);
 
 	useEffect(() => {
 		void loadFriends();
@@ -62,10 +64,10 @@ function FriendsSettingsPage() {
 					f.id === friend.id ? { ...f, nickname: trimmed } : f,
 				),
 			);
-			toast.success("Nickname saved.");
+			toast.success(t('dashboard.settings.friends.toast_nickname_saved'));
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not save nickname.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.friends.toast_nickname_error'),
 			);
 		} finally {
 			setEditingId(null);
@@ -78,28 +80,28 @@ function FriendsSettingsPage() {
 		try {
 			await removeFriend(friendId);
 			setFriends((prev) => prev.filter((f) => f.id !== friendId));
-			toast.success("Friend removed.");
+			toast.success(t('dashboard.settings.friends.toast_friend_removed'));
 		} catch (e) {
 			toast.error(
-				e instanceof ApiError ? e.message : "Could not remove friend.",
+				e instanceof ApiError ? e.message : t('dashboard.settings.friends.toast_remove_error'),
 			);
 		} finally {
 			setRemovingId(null);
 		}
 	}
 
-	const displayName = (f: FriendInfo) => f.nickname?.trim() || f.name?.trim() || "User";
+	const displayName = (f: FriendInfo) => f.nickname?.trim() || f.name?.trim() || t('dashboard.settings.friends.display_name_fallback');
 
 	return (
 		<div className="flex w-full flex-col">
 			<div className="flex h-full w-full flex-col border-t px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8 lg:border-l lg:border-t-0">
-				<h3 className="font-semibold text-[#4B4E58] text-[18px]">Friends</h3>
+				<h3 className="font-semibold text-[#4B4E58] text-[18px]">{t('dashboard.settings.friends.title')}</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-4">
 					{loading ? (
-						<p className="text-sm text-muted-foreground">Loading…</p>
+						<p className="text-sm text-muted-foreground">{t('dashboard.settings.friends.loading')}</p>
 					) : friends.length === 0 ? (
-						<p className="text-sm text-muted-foreground">No friends yet.</p>
+						<p className="text-sm text-muted-foreground">{t('dashboard.settings.friends.empty')}</p>
 					) : (
 						friends.map((friend) => (
 							<div
@@ -119,7 +121,7 @@ function FriendsSettingsPage() {
 												<Input
 													value={nicknameDraft}
 													onChange={(e) => setNicknameDraft(e.target.value)}
-													placeholder="Set a nickname…"
+													placeholder={t('dashboard.settings.friends.nickname_placeholder')}
 													className="h-8 w-[180px] text-sm"
 													autoFocus
 													onKeyDown={(e) => {
@@ -131,6 +133,7 @@ function FriendsSettingsPage() {
 													size="icon-sm"
 													variant="ghost"
 													className="h-7 w-7 text-emerald-600"
+													aria-label={t('dashboard.settings.friends.nickname_save_aria')}
 													onClick={() => void saveNickname(friend)}
 												>
 													<Check className="h-4 w-4" />
@@ -139,6 +142,7 @@ function FriendsSettingsPage() {
 													size="icon-sm"
 													variant="ghost"
 													className="h-7 w-7 text-muted-foreground"
+													aria-label={t('dashboard.settings.friends.nickname_cancel_aria')}
 													onClick={cancelEdit}
 												>
 													<X className="h-4 w-4" />

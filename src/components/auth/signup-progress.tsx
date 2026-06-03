@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 type SignupProgressProps = {
@@ -5,15 +6,16 @@ type SignupProgressProps = {
 };
 
 export function SignupProgress({ step }: SignupProgressProps) {
+	const { t } = useTranslation();
 	const progress = step === 2 ? 66.666 : 100;
 
 	return (
 		<div className="flex w-full flex-col gap-3 text-center">
 			<h2 className="text-[24px] font-medium leading-tight text-[#1C1F22]">
-				You&apos;re almost there!
+				{t('auth.signup_progress_title')}
 			</h2>
 			<p className="text-[16px] font-normal text-[#4B4E58]">
-				{step} of 3 steps completed
+				{t('auth.signup_progress_label', { step })}
 			</p>
 			<div className="h-2 w-full overflow-hidden rounded-full bg-[#E8EEF4]">
 				<div
@@ -45,6 +47,7 @@ export function SignupFooter({
 	onPrimary?: () => void;
 	primaryType?: 'button' | 'submit';
 }) {
+	const { t } = useTranslation();
 	return (
 		<div className="flex w-full items-center justify-between pt-2">
 			<button
@@ -53,7 +56,7 @@ export function SignupFooter({
 				className="inline-flex items-center gap-1 text-[16px] font-normal text-[#1C1F22] hover:opacity-80"
 			>
 				<span aria-hidden>&lt;</span>
-				<span>To go back</span>
+				<span>{t('components.signup-wizard.go_back')}</span>
 			</button>
 			<button
 				type={primaryType}

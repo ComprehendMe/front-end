@@ -3,6 +3,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Trash } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,12 @@ type HistoryColumnsOptions = {
 export function createHistoryColumns({
   onDelete,
 }: HistoryColumnsOptions): ColumnDef<HistoryRow>[] {
+  const { t } = useTranslation();
+
   return [
     {
       accessorKey: "patient",
-      header: "Patients",
+      header: t('dashboard.history.table_header_patients'),
       cell: ({ row }) => {
         const patient = row.original;
         return (
@@ -56,7 +59,7 @@ export function createHistoryColumns({
     },
     {
       accessorKey: "difficult",
-      header: "Difficult",
+      header: t('dashboard.history.table_header_difficult'),
       cell: ({ row }) => {
         const { difficult } = row.original;
         return <Badge variant={difficult} />;
@@ -64,22 +67,22 @@ export function createHistoryColumns({
     },
     {
       accessorKey: "ended",
-      header: "Ended",
+      header: t('dashboard.history.table_header_ended'),
     },
     {
       accessorKey: "duration",
-      header: "Duration",
+      header: t('dashboard.history.table_header_duration'),
     },
     {
       accessorKey: "analysis",
-      header: "Analysis",
+      header: t('dashboard.history.table_header_analysis'),
       cell: ({ row }) => {
         const isPaused = !!row.original.pausedAt;
         return (
           <div className="flex items-center gap-3">
             {isPaused ? (
               <span className="cursor-not-allowed text-sm font-medium text-muted-foreground">
-                Review
+                {t('dashboard.history.review_link_disabled')}
               </span>
             ) : (
               <Link
@@ -87,7 +90,7 @@ export function createHistoryColumns({
                 params={{ chatId: row.original.chatId }}
                 className="text-sm font-medium text-[#1497D2] hover:underline"
               >
-                Review
+                {t('dashboard.history.review_link')}
               </Link>
             )}
           </div>
@@ -101,7 +104,7 @@ export function createHistoryColumns({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">{t('dashboard.history.table_action_open_menu_sr')}</span>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -111,7 +114,7 @@ export function createHistoryColumns({
               onClick={() => onDelete(row.original.chatId)}
             >
               <Trash />
-              <span className="text-sm font-medium">Delete</span>
+              <span className="text-sm font-medium">{t('dashboard.history.table_action_delete')}</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

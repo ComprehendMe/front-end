@@ -17,11 +17,12 @@ export function formatMessageTime(
 	return `${day} ${time}`;
 }
 
-export function getTimeGreeting(date = new Date()): string {
+/** Returns the i18n key for the time-of-day greeting. */
+export function getGreetingKey(date = new Date()): string {
 	const hour = date.getHours();
-	if (hour >= 5 && hour < 12) return 'Good morning';
-	if (hour >= 12 && hour < 18) return 'Good afternoon';
-	return 'Good night';
+	if (hour >= 5 && hour < 12) return 'dashboard.index.greeting_morning';
+	if (hour >= 12 && hour < 18) return 'dashboard.index.greeting_afternoon';
+	return 'dashboard.index.greeting_night';
 }
 export function getPatientFirstName(fullName: string): string {
 	return fullName.trim().split(/\s+/)[0] ?? fullName;

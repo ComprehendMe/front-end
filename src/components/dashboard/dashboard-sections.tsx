@@ -1,5 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -13,15 +14,15 @@ import {
 import { getPatientAvatar } from '@/lib/patient-avatar';
 import { getPatientBadgeVariant, getPatientIndex } from '@/lib/patient-assets';
 
-function formatDate(iso: string) {
+function formatDate(iso: string, t: (key: string, options?: Record<string, unknown>) => string) {
 	const date = new Date(iso);
 	const now = new Date();
 	const diffMs = now.getTime() - date.getTime();
 	const diffDays = Math.floor(diffMs / 86_400_000);
 
-	if (diffDays === 0) return 'Today';
-	if (diffDays === 1) return 'Yesterday';
-	if (diffDays < 7) return `${diffDays} days ago`;
+	if (diffDays === 0) return t('components.dashboard-sections.date_today');
+	if (diffDays === 1) return t('components.dashboard-sections.date_yesterday');
+	if (diffDays < 7) return t('components.dashboard-sections.date_days_ago', { days: diffDays });
 	return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
@@ -31,6 +32,7 @@ type RecentConversationsProps = {
 
 export function RecentConversations({ chats }: RecentConversationsProps) {
 	const navigate = useNavigate();
+	const { t } = useTranslation();
 	const [startingId, setStartingId] = useState<string | null>(null);
 
 	const recent = [...chats]
@@ -52,7 +54,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 			toast.error(
 				e instanceof ApiError
 					? e.message
-					: 'Could not start conversation.',
+					: t('components.dashboard-sections.toast_error'),
 			);
 		} finally {
 			setStartingId(null);
@@ -62,7 +64,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 	return (
 		<section className="space-y-3">
 			<h2 className="text-fluid-3xl font-semibold leading-[1.1] text-[#1C1F22]">
-				Recent conversations
+				{t('components.dashboard-sections.recent_title')}
 			</h2>
 			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 				{recent.map((chat) => (
@@ -89,7 +91,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 								</p>
 							</div>
 							<span className="shrink-0 text-xs text-muted-foreground">
-								{formatDate(chat.updatedAt)}
+								{formatDate(chat.updatedAt, t)}
 							</span>
 						</div>
 						<div className="flex gap-2">
@@ -103,7 +105,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 									size="sm"
 									className="w-full rounded-full text-xs"
 								>
-									Review report
+									{t('components.dashboard-sections.review_report')}
 								</Button>
 							</Link>
 							<Button
@@ -112,7 +114,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 								disabled={startingId === chat.patientId}
 								onClick={() => void handleNewChat(chat.patientId)}
 							>
-								New conversation
+								{t('components.dashboard-sections.new_conversation')}
 							</Button>
 						</div>
 					</div>

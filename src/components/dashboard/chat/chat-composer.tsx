@@ -1,4 +1,5 @@
 import { MessageCircle, Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 const MAX_CHARS = 1500;
@@ -21,6 +22,7 @@ export function ChatComposer({
 	messagesSentToday = 0,
 	className,
 }: ChatComposerProps) {
+	const { t } = useTranslation();
 	const charCount = value.length;
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -40,14 +42,14 @@ export function ChatComposer({
 							if (e.target.value.length <= MAX_CHARS) onChange(e.target.value);
 						}}
 						onKeyDown={handleKeyDown}
-						placeholder="Ask me anything..."
+						placeholder={t('components.chat-composer.placeholder')}
 						disabled={disabled}
 						rows={2}
 						className="min-h-[44px] flex-1 resize-none border-0 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none disabled:opacity-60"
 					/>
 					<button
 						type="button"
-						aria-label="Send message"
+						aria-label={t('components.chat-composer.send_aria')}
 						disabled={disabled || !value.trim()}
 						onClick={onSubmit}
 						className="mt-0.5 shrink-0 rounded-md p-1.5 text-[#1497D2] transition-colors hover:bg-[#1497D2]/10 disabled:opacity-40"
@@ -58,7 +60,7 @@ export function ChatComposer({
 				<div className="flex items-center justify-between border-t border-[#E8EEF4] px-4 py-2 text-[11px] text-muted-foreground">
 					<span className="flex items-center gap-1">
 						<MessageCircle className="h-3 w-3" />
-						{messagesSentToday}/{MAX_MESSAGES_PER_DAY} messages per day*
+						{t('components.chat-composer.message_count', { sent: messagesSentToday, max: MAX_MESSAGES_PER_DAY })}
 					</span>
 					<span>
 						{charCount.toLocaleString('en-US')}/{MAX_CHARS.toLocaleString('en-US')}
@@ -66,9 +68,9 @@ export function ChatComposer({
 				</div>
 			</div>
 			<p className="max-w-3xl text-center text-[11px] text-muted-foreground">
-				*Do you want unlimited training with our patients?{' '}
+				{t('components.chat-composer.upgrade_text')}{' '}
 				<button type="button" className="font-medium text-foreground underline">
-					Upgrade to premium
+					{t('components.chat-composer.upgrade_link')}
 				</button>
 			</p>
 		</div>
