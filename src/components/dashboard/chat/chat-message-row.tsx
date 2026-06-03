@@ -40,7 +40,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
 					</div>
 					<Avatar className="h-10 w-10 shrink-0 border border-[#E8EEF4]">
 						{userAvatarUrl ? (
-							<AvatarImage src={userAvatarUrl} alt={userLabel} />
+							<AvatarImage src={userAvatarUrl} alt={userLabel} loading="lazy" />
 						) : null}
 						<AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
 							{userInitials}
@@ -57,7 +57,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
 	return (
 		<div className="flex gap-3">
 			<Avatar className="h-10 w-10 shrink-0 border border-[#E8EEF4]">
-				<AvatarImage src={patientAvatarUrl} alt={patientName} />
+				<AvatarImage src={patientAvatarUrl} alt={patientName} loading="lazy" />
 				<AvatarFallback className="bg-[#F0F5FA] text-xs font-semibold text-primary">
 					{patientName.charAt(0)}
 				</AvatarFallback>

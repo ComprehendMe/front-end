@@ -179,7 +179,7 @@ function SettingsPage() {
 					</p>
 					<div className="flex items-center gap-4">
 						<Avatar className="h-[120px] w-[120px]">
-							{avatar ? <AvatarImage src={avatar} alt="" /> : null}
+							{avatar ? <AvatarImage src={avatar} alt="" loading="lazy" /> : null}
 							<AvatarFallback className="bg-primary/10 text-2xl text-primary">
 								{initials}
 							</AvatarFallback>

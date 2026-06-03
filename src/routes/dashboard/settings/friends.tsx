@@ -110,7 +110,7 @@ function FriendsSettingsPage() {
 							>
 								<div className="flex min-w-0 items-center gap-3">
 									<Avatar className="h-10 w-10 shrink-0">
-										{friend.avatar ? <AvatarImage src={friend.avatar} alt="" /> : null}
+										{friend.avatar ? <AvatarImage src={friend.avatar} alt="" loading="lazy" /> : null}
 										<AvatarFallback className="bg-primary/10 text-xs text-primary">
 											{getInitials({ name: friend.name, email: "" })}
 										</AvatarFallback>

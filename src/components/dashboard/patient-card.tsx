@@ -54,6 +54,7 @@ export const PatientCardContent = memo(function PatientCardContent({
 						src={getPatientAvatar(patientName)}
 						alt={patientName}
 						className="object-cover"
+						loading="lazy"
 					/>
 					<AvatarFallback className="bg-white/50 text-fluid-xl font-bold text-[#1497D2]">
 						{initials}

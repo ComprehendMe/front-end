@@ -78,7 +78,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="w-10 h-10" />
+            <img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="w-10 h-10" loading="lazy" />
             <h1 className="font-semibold text-[16px] text-primary">
               {t('dashboard.layout.sidebar_app_name')}
             </h1>

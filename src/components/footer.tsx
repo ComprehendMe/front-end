@@ -11,7 +11,7 @@ export default function Footer() {
 		<footer className="flex flex-col gap-fluid-xl px-fluid-container py-fluid-section lg:flex-row lg:justify-between">
 			<div className="flex flex-col gap-6">
 				<div className="flex gap-2 items-center">
-					<img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="w-8 h-8 object-contain" />
+					<img src="/logo.svg" alt={t('dashboard.layout.sidebar_logo_alt')} className="w-8 h-8 object-contain" loading="lazy" />
 					<span className="font-semibold text-fluid-sm text-primary">
 						{t('dashboard.layout.sidebar_app_name')}
 					</span>

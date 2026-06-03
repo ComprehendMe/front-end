@@ -96,6 +96,7 @@ export function ContinueSection({ chats, title }: ContinueSectionProps) {
 											<AvatarImage
 												src={getPatientAvatar(chat.patient.name)}
 												alt=""
+												loading="lazy"
 											/>
 											<AvatarFallback>
 												{chat.patient.name[0]}

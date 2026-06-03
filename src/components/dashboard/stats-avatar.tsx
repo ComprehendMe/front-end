@@ -49,7 +49,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 			<div className="absolute inset-[12.5%] overflow-hidden rounded-full border-4 border-white shadow-md">
 				<Avatar className="h-full w-full">
 					{user.avatar ? (
-						<AvatarImage src={user.avatar} alt="" className="object-cover" />
+						<AvatarImage src={user.avatar} alt="" className="object-cover" loading="lazy" />
 					) : null}
 					<AvatarFallback className="bg-primary/10 text-3xl font-semibold text-primary">
 						{initials}
@@ -59,7 +59,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 
 			<div className="absolute top-2 right-1 flex items-center gap-1 rounded-full bg-[#D6EBF7] px-2.5 py-1 shadow-sm">
 				<span className="text-sm font-bold text-[#0978AA]">{streak}</span>
-				<img src="/logo.svg" alt="" className="h-5 w-5" aria-hidden />
+				<img src="/logo.svg" alt="" className="h-5 w-5" aria-hidden loading="lazy" />
 			</div>
 		</div>
 	);

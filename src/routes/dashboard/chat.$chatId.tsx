@@ -309,6 +309,7 @@ function ChatPage() {
                       src={patientAvatarUrl}
                       alt={patient.name}
                       className="object-cover"
+                      loading="lazy"
                     />
                     <AvatarFallback className="bg-[#F0F5FA] text-2xl font-semibold text-primary">
                       {patientFirstName.charAt(0)}
@@ -341,7 +342,7 @@ function ChatPage() {
                 {waitingReply && (
                   <div className="flex gap-3">
                     <Avatar className="h-10 w-10 shrink-0">
-                      <AvatarImage src={patientAvatarUrl} alt={patient.name} />
+                      <AvatarImage src={patientAvatarUrl} alt={patient.name} loading="lazy" />
                       <AvatarFallback>
                         {patientFirstName.charAt(0)}
                       </AvatarFallback>

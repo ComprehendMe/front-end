@@ -46,7 +46,7 @@ const FriendRow = memo(function FriendRow({
 		<div className="flex items-center justify-between gap-2">
 			<div className="flex min-w-0 items-center gap-2.5">
 				<Avatar className="h-9 w-9 shrink-0">
-					{user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
+					{user.avatar ? <AvatarImage src={user.avatar} alt="" loading="lazy" /> : null}
 					<AvatarFallback className="bg-primary/10 text-xs text-primary">
 						{getInitials({ name: user.name, email: user.email ?? '' })}
 					</AvatarFallback>
@@ -97,7 +97,7 @@ const SearchResultRow = memo(function SearchResultRow({
 		<div className="flex items-center justify-between gap-2 py-1">
 			<div className="flex min-w-0 items-center gap-2.5">
 				<Avatar className="h-9 w-9 shrink-0">
-					{result.avatar ? <AvatarImage src={result.avatar} alt="" /> : null}
+					{result.avatar ? <AvatarImage src={result.avatar} alt="" loading="lazy" /> : null}
 					<AvatarFallback className="bg-primary/10 text-xs text-primary">
 						{getInitials({ name: result.name, email: '' })}
 					</AvatarFallback>

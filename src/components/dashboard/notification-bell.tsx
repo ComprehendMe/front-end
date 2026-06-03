@@ -147,7 +147,7 @@ export function NotificationBell() {
 									<div className="flex gap-3">
 										<Avatar className="h-10 w-10 shrink-0">
 											{req.requester.avatar ? (
-												<AvatarImage src={req.requester.avatar} alt="" />
+												<AvatarImage src={req.requester.avatar} alt="" loading="lazy" />
 											) : null}
 											<AvatarFallback className="bg-primary/10 text-xs text-primary">
 												{getInitials({

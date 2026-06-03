@@ -77,6 +77,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 								<AvatarImage
 									src={getPatientAvatar(chat.patient.name)}
 									alt=""
+									loading="lazy"
 								/>
 								<AvatarFallback>
 									{chat.patient.name[0]}
@@ -157,6 +158,7 @@ export function StartLearningSection({
 										src={getPatientAvatar(patient.name)}
 										alt={patient.name}
 										className="object-cover"
+										loading="lazy"
 									/>
 								</Avatar>
 							</div>

@@ -30,7 +30,7 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 				<div className="flex items-center gap-2.5">
 					<Avatar className="size-10">
 						{user.avatar ? (
-							<AvatarImage src={user.avatar} alt={t('dashboard.layout.header_user_avatar_alt', { displayName })} />
+							<AvatarImage src={user.avatar} alt={t('dashboard.layout.header_user_avatar_alt', { displayName })} loading="lazy" />
 						) : null}
 						<AvatarFallback className="bg-primary/10 text-sm font-medium text-primary">
 							{initials}

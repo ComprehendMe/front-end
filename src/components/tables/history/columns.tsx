@@ -46,7 +46,7 @@ export function createHistoryColumns({
         return (
           <div className="flex items-center space-x-2">
             <Avatar className="h-[54px] w-[54px]">
-              <AvatarImage src={patient.patientImageUrl} alt={patient.name} />
+              <AvatarImage src={patient.patientImageUrl} alt={patient.name} loading="lazy" />
             </Avatar>
             <div className="flex flex-col">
               <p className="text-sm font-semibold">{patient.name}</p>

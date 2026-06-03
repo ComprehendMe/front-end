@@ -284,6 +284,7 @@ function ReviewPage() {
                   <AvatarImage
                     src={getPatientAvatar(review.patient.name)}
                     alt={review.patient.name}
+                    loading="lazy"
                   />
                   <AvatarFallback className="bg-[#F0F5FA] text-2xl font-semibold text-primary">
                     {review.patient.name.charAt(0)}
@@ -328,7 +329,7 @@ function ReviewPage() {
                     </div>
                     <Avatar className="size-8">
                       {user.avatar ? (
-                        <AvatarImage src={user.avatar} alt="" />
+                        <AvatarImage src={user.avatar} alt="" loading="lazy" />
                       ) : null}
                       <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                         {getInitials(user)}
@@ -350,6 +351,7 @@ function ReviewPage() {
                     <AvatarImage
                       src={getPatientAvatar(patient.name)}
                       alt={patient.name}
+                      loading="lazy"
                     />
                     <AvatarFallback className="bg-[#F0F5FA] text-xs font-semibold text-primary">
                       {patient.name.charAt(0)}
