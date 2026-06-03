@@ -193,7 +193,7 @@
       "dialog_pause_no": "Não, ficar aqui",
       "dialog_pause_yes": "Sim, pausar",
       "dialog_pause_loading": "A pausar…",
-      "empty_greeting": "{greeting}, chamo-me {name}.",
+      "empty_greeting": "{{greeting}}, chamo-me {{name}}.",
       "toast_no_reply": "Sem resposta do paciente. Por favor, tenta novamente.",
       "toast_send_error": "Não foi possível enviar a mensagem.",
       "toast_load_error": "Não foi possível carregar a conversa.",
@@ -214,8 +214,8 @@
       "failed_default_error": "Por favor, tenta novamente.",
       "title": "Revisão da Conversa",
       "subtitle": "Reproduz a tua conversa passo a passo",
-      "move_label": "Jogada {current}/{total}",
-      "start_title": "Bom dia, chamo-me {name}",
+      "move_label": "Jogada {{current}}/{{total}}",
+      "start_title": "Bom dia, chamo-me {{name}}",
       "start_button": "Iniciar revisão",
       "performance_panel_title": "Painel de Desempenho",
       "performance_panel_subtitle": "Feedback IA por jogada",
@@ -427,7 +427,7 @@
     },
     "weekly-minutes-chart": {
       "label": "Minutos",
-      "min_format": "{value} min"
+      "min_format": "{{value}} min"
     },
     "friends-panel": {
       "title": "Amigos",

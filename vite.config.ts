@@ -97,4 +97,33 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/scheduler')) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/@tanstack')) {
+            return 'vendor-tanstack';
+          }
+          if (id.includes('node_modules/@radix-ui') || id.includes('node_modules/lucide-react') || id.includes('node_modules/embla-carousel') || id.includes('node_modules/next-themes') || id.includes('node_modules/sonner') || id.includes('node_modules/react-hook-form') || id.includes('node_modules/react-day-picker')) {
+            return 'vendor-ui';
+          }
+          if (id.includes('node_modules/date-fns')) {
+            return 'vendor-date';
+          }
+          if (id.includes('node_modules/zod') || id.includes('node_modules/@hookform')) {
+            return 'vendor-validation';
+          }
+          if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
+            return 'vendor-i18n';
+          }
+          if (id.includes('node_modules/tailwind-merge') || id.includes('node_modules/class-variance-authority') || id.includes('node_modules/clsx') || id.includes('node_modules/tw-animate-css')) {
+            return 'vendor-utils';
+          }
+        },
+      },
+    },
+  },
 })

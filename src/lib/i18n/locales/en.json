@@ -193,7 +193,7 @@
       "dialog_pause_no": "No, stay here",
       "dialog_pause_yes": "Yes, pause",
       "dialog_pause_loading": "Pausing…",
-      "empty_greeting": "{greeting}, my name is {name}.",
+      "empty_greeting": "{{greeting}}, my name is {{name}}.",
       "toast_no_reply": "No reply from the patient. Please try again.",
       "toast_send_error": "Could not send message.",
       "toast_load_error": "Could not load the conversation.",
@@ -214,8 +214,8 @@
       "failed_default_error": "Please try again.",
       "title": "Chat Review",
       "subtitle": "Replay your conversation step-by-step",
-      "move_label": "Move {current}/{total}",
-      "start_title": "Good morning, my name is {name}",
+      "move_label": "Move {{current}}/{{total}}",
+      "start_title": "Good morning, my name is {{name}}",
       "start_button": "Start review",
       "performance_panel_title": "Performance Panel",
       "performance_panel_subtitle": "AI feedback per move",
@@ -427,7 +427,7 @@
     },
     "weekly-minutes-chart": {
       "label": "Minutes",
-      "min_format": "{value} min"
+      "min_format": "{{value}} min"
     },
     "friends-panel": {
       "title": "Friends",
