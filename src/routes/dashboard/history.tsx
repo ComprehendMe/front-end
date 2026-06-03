@@ -80,6 +80,7 @@ function HistoryPage() {
 	const columns = useMemo(
 		() =>
 			createHistoryColumns({
+				t,
 				onDelete: async (chatId) => {
 					try {
 						await deleteChat(chatId);

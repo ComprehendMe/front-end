@@ -2,8 +2,8 @@
 
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
+import type { TFunction } from "i18next";
 import { MoreHorizontal, Trash } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,12 +29,13 @@ export type HistoryRow = {
 
 type HistoryColumnsOptions = {
   onDelete: (chatId: string) => void;
+  t: TFunction;
 };
 
 export function createHistoryColumns({
   onDelete,
+  t,
 }: HistoryColumnsOptions): ColumnDef<HistoryRow>[] {
-  const { t } = useTranslation();
 
   return [
     {
