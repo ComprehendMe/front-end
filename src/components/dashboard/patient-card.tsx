@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -16,7 +17,7 @@ type PatientCardContentProps = {
 	className?: string;
 };
 
-export function PatientCardContent({
+export const PatientCardContent = memo(function PatientCardContent({
 	patientIndex,
 	patientId,
 	patientName,
@@ -80,4 +81,4 @@ export function PatientCardContent({
 			</div>
 		</div>
 	);
-}
+});

@@ -1,5 +1,5 @@
 import { Check, MoreVertical, Plus, Search, Trash2 } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,7 +32,7 @@ import { getInitials } from '@/lib/user-display';
 
 const PREVIEW_LIMIT = 3;
 
-function FriendRow({
+const FriendRow = memo(function FriendRow({
 	user,
 	onRemove,
 }: {
@@ -77,9 +77,9 @@ function FriendRow({
 			</DropdownMenu>
 		</div>
 	);
-}
+});
 
-function SearchResultRow({
+const SearchResultRow = memo(function SearchResultRow({
 	result,
 	onAdd,
 	onRespond,
@@ -144,7 +144,7 @@ function SearchResultRow({
 			)}
 		</div>
 	);
-}
+});
 
 export function FriendsPanel() {
 	const { t } = useTranslation();

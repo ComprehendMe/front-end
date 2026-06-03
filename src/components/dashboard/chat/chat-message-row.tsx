@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatMessageTime } from '@/lib/format-message-time';
 import type { Message } from '@/lib/api';
@@ -13,7 +14,7 @@ type ChatMessageRowProps = {
 	timeFormat?: '12h' | '24h';
 };
 
-export function ChatMessageRow({
+export const ChatMessageRow = memo(function ChatMessageRow({
 	message,
 	patientName,
 	patientAvatarUrl,
@@ -78,4 +79,4 @@ export function ChatMessageRow({
 			</div>
 		</div>
 	);
-}
+});
