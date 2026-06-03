@@ -27,7 +27,7 @@ export const Route = createFileRoute('/')({
 			},
 			{ property: 'og:type', content: 'website' },
 			{ property: 'og:url', content: 'https://comprehendme.com' },
-			{ property: 'og:image', content: '/og-image.png' },
+			{ property: 'og:image', content: '/og-image.webp' },
 			{ property: 'og:locale', content: 'en_US' },
 			{ name: 'twitter:card', content: 'summary_large_image' },
 			{ name: 'twitter:title', content: 'ComprehendMe' },
@@ -36,7 +36,7 @@ export const Route = createFileRoute('/')({
 				content:
 					'Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.',
 			},
-			{ name: 'twitter:image', content: '/og-image.png' },
+			{ name: 'twitter:image', content: '/og-image.webp' },
 		],
 	}),
 	component: App,

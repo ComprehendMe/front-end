@@ -1,8 +1,8 @@
 const PATIENT_AVATAR_MAP: Record<string, string> = {
-  "Emma Richardson": "/patients/Emma Richardson.png",
-  "Lucas Mendes": "/patients/Lucas Mendes.png",
-  "Sofia Andersson": "/patients/Sofia Andersson.png",
-  "James Carter": "/patients/James Carter.png",
+  "Emma Richardson": "/patients/Emma Richardson.webp",
+  "Lucas Mendes": "/patients/Lucas Mendes.webp",
+  "Sofia Andersson": "/patients/Sofia Andersson.webp",
+  "James Carter": "/patients/James Carter.webp",
 };
 
 const FALLBACK_AVATAR = "https://github.com/shadcn.png";

@@ -13,7 +13,7 @@ export function patientAvatarSlug(name: string): string {
 
 /** Patient avatars in /dist/patients/, filename is a slug of the patient name. */
 export function getPatientImageUrl(patientName: string): string {
-	return `/dist/patients/${patientAvatarSlug(patientName)}.png`;
+	return `/dist/patients/${patientAvatarSlug(patientName)}.webp`;
 }
 
 export const PATIENT_BADGE_VARIANTS = [

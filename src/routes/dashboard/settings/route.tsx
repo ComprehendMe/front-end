@@ -74,7 +74,7 @@ function DashboardRoute() {
 										value: "/billing",
 										icon: (
 											<img
-												src="/billing.png"
+												src="/billing.webp"
 												alt=""
 												className="h-4 w-4 opacity-80"
 											/>
