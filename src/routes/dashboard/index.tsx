@@ -1,13 +1,18 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ContinueSection } from "@/components/dashboard/continue-section";
 import { RecentConversations, StartLearningSection } from "@/components/dashboard/dashboard-sections";
 import { StatsAvatar } from "@/components/dashboard/stats-avatar";
 import { WeeklyMinutesChart } from "@/components/dashboard/weekly-minutes-chart";
-import { FriendsPanel } from "@/components/dashboard/friends-panel";
 import { Button } from "@/components/ui/button";
+
+const FriendsPanel = lazy(() =>
+  import("@/components/dashboard/friends-panel").then((m) => ({
+    default: m.FriendsPanel,
+  })),
+);
 import {
   ApiError,
   createChat,
@@ -147,7 +152,9 @@ function DashboardPage() {
             ) : (
               <div className="h-[180px] rounded-xl bg-[#F0F5FA]" />
             )}
-            <FriendsPanel />
+            <Suspense fallback={<div className="h-[200px] rounded-xl bg-[#F0F5FA]" />}>
+              <FriendsPanel />
+            </Suspense>
           </div>
         </div>
       </div>
