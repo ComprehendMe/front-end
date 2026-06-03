@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { fileURLToPath, URL } from 'node:url'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -33,6 +34,15 @@ export default defineConfig({
     }),
     viteReact(),
     tailwindcss(),
+    ...(process.env.ANALYZE
+      ? [
+          visualizer({
+            open: true,
+            gzipSize: true,
+            brotliSize: true,
+          }) as import('vite').PluginOption,
+        ]
+      : []),
   ],
   resolve: {
     alias: {
