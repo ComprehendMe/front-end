@@ -116,9 +116,6 @@ export default defineConfig({
           if (id.includes('node_modules/zod') || id.includes('node_modules/@hookform')) {
             return 'vendor-validation';
           }
-          if (id.includes('node_modules/i18next') || id.includes('node_modules/react-i18next')) {
-            return 'vendor-i18n';
-          }
           if (id.includes('node_modules/tailwind-merge') || id.includes('node_modules/class-variance-authority') || id.includes('node_modules/clsx') || id.includes('node_modules/tw-animate-css')) {
             return 'vendor-utils';
           }
