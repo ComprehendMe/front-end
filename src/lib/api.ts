@@ -649,7 +649,7 @@ export async function waitForReviewReady(
 export async function waitForModelReply(
 	chatId: string,
 	previousModelCount: number,
-	maxAttempts = 15,
+	maxAttempts = 60,
 	intervalMs = 2000,
 ): Promise<string | null> {
 	for (let i = 0; i < maxAttempts; i++) {
