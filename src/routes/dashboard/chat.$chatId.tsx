@@ -123,6 +123,8 @@ function ChatPage() {
     try {
       await sendMessage(chatId, text);
       setChatPaused(false);
+      const updated = await listMessages(chatId);
+      setMessages(updated);
       setWaitingReply(true);
 
       const reply = await waitForModelReply(chatId, previousModelCount);
