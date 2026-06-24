@@ -247,7 +247,7 @@ function ChatPage() {
         loading={pausing}
       />
 
-      <div className="mt-4 flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm" style={{ minHeight: "calc(100dvh - 10rem)" }}>
+      <div className="mt-4 flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm" style={{ minHeight: "calc(100dvh - var(--chat-offset, 10rem))" }}>
         <div className="flex items-center justify-end border-b px-4 py-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

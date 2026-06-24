@@ -60,7 +60,7 @@ function NotificationsPage() {
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								{t('dashboard.settings.notifications.desktop_label')}
@@ -74,7 +74,7 @@ function NotificationsPage() {
 							onCheckedChange={(checked) => void handleDesktopToggle(checked)}
 						/>
 					</div>
-					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								{t('dashboard.settings.notifications.unread_badge_label')}
@@ -109,7 +109,7 @@ function NotificationsPage() {
 				</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								{t('dashboard.settings.notifications.email_communication_label')}
@@ -125,7 +125,7 @@ function NotificationsPage() {
 							}
 						/>
 					</div>
-					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								{t('dashboard.settings.notifications.email_announcements_label')}
@@ -147,7 +147,7 @@ function NotificationsPage() {
 				<h3 className="font-semibold text-[#4B4E58] text-[18px]">{t('dashboard.settings.notifications.sounds_section')}</h3>
 				<Separator className="mt-3.5" />
 				<div className="mt-7 flex flex-col gap-5">
-					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-col">
 							<p className="font-semibold text-[#4B4E58] text-[16px]">
 								{t('dashboard.settings.notifications.sounds_label')}

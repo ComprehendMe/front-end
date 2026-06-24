@@ -85,7 +85,7 @@ export function ContinueSection({ chats, title }: ContinueSectionProps) {
 				>
 					<CarouselContent className="-ml-4">
 						{chats.map((chat) => (
-							<CarouselItem key={chat.id} className="pl-4 basis-[calc(100%/2.5)]">
+							<CarouselItem key={chat.id} className="pl-4 basis-[calc(100%/1.5)] sm:basis-[calc(100%/2.5)] lg:basis-[calc(100%/3.5)] 4xl:basis-[calc(100%/4.5)]">
 								<Link
 									to="/dashboard/chat/$chatId"
 									params={{ chatId: chat.id }}

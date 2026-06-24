@@ -34,7 +34,7 @@ export function ChatComposer({
 
 	return (
 		<div className={cn('flex w-full flex-col items-center gap-3', className)}>
-			<div className="relative w-full max-w-3xl rounded-xl border border-[#1497D2]/50 bg-white">
+			<div className="relative w-full max-w-3xl 4xl:max-w-5xl rounded-xl border border-[#1497D2]/50 bg-white">
 				<div className="flex items-start gap-2 px-4 pt-3.5 pb-2">
 					<textarea
 						value={value}
@@ -57,13 +57,13 @@ export function ChatComposer({
 						<Send className="h-4 w-4 stroke-[1.75]" />
 					</button>
 				</div>
-				<div className="flex items-center justify-between border-t border-[#E8EEF4] px-4 py-2 text-[11px] text-muted-foreground">
+				<div className="flex items-center justify-between border-t border-[#E8EEF4] px-4 py-2 xs:text-[10px] text-[11px] 4xl:text-sm text-muted-foreground">
 					<span className="flex items-center gap-1">
 						<MessageCircle className="h-3 w-3" />
 						{t('components.chat-composer.message_count', { sent: messagesSentToday, max: MAX_MESSAGES_PER_DAY })}
 					</span>
 					<span>
-						{charCount.toLocaleString('en-US')}/{MAX_CHARS.toLocaleString('en-US')}
+						{charCount.toLocaleString()}/{MAX_CHARS.toLocaleString()}
 					</span>
 				</div>
 			</div>

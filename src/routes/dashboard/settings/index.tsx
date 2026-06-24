@@ -177,7 +177,7 @@ function SettingsPage() {
 					<p className="font-semibold text-[#4B4E58] text-[16px]">
 						{t('dashboard.settings.account.profile_photo')}
 					</p>
-					<div className="flex items-center gap-4">
+					<div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center">
 						<Avatar className="h-[120px] w-[120px]">
 							{avatar ? <AvatarImage src={avatar} alt="" loading="lazy" /> : null}
 							<AvatarFallback className="bg-primary/10 text-2xl text-primary">

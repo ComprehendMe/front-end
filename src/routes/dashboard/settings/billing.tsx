@@ -51,7 +51,7 @@ function PlanCard({
 	return (
 		<div
 			className={cn(
-				"flex flex-1 flex-col rounded-2xl border border-[#E8EDF2] bg-white p-6",
+				"flex flex-1 flex-col rounded-2xl border border-[#E8EDF2] bg-white p-6 max-w-[min(100%,32rem)]",
 				highlight && "ring-1 ring-primary/20",
 			)}
 		>
@@ -204,7 +204,7 @@ function BillingPage() {
 				<h3 className="text-lg font-semibold text-[#4B4E58]">{t('dashboard.settings.billing.title')}</h3>
 				<Separator className="mt-3.5" />
 
-				<div className="mt-6 flex flex-col gap-5 lg:flex-row">
+				<div className="mt-6 flex flex-col gap-5 lg:flex-row 4xl:gap-8">
 					<PlanCard
 						title={t('dashboard.settings.billing.basic_plan')}
 						price={t('dashboard.settings.billing.basic_price')}

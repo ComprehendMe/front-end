@@ -119,6 +119,9 @@ async function apiRequestInternal<T>(
 		headers["Authorization"] = `Bearer ${session.access}`;
 	}
 
+	const lang = typeof window !== 'undefined' ? document.documentElement.lang : 'en';
+	headers['Accept-Language'] = lang;
+
 	if (body !== undefined) {
 		headers["Content-Type"] = "application/json";
 		payload = JSON.stringify(body);

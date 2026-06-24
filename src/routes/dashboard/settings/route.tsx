@@ -35,7 +35,7 @@ function DashboardRoute() {
 					{t('dashboard.settings.route.title')}
 				</h3>
 				<Separator />
-				<div className="flex h-full w-full flex-col lg:flex-row lg:justify-between">
+				<div className="flex h-full w-full flex-col gap-0 lg:flex-row lg:justify-between lg:gap-6">
 					<aside className="w-full space-y-8 px-4 py-5 sm:px-6 sm:py-6 lg:max-w-[260px] lg:py-8 lg:pl-[30px] lg:pr-9">
 						<ListTab
 							tabs={{

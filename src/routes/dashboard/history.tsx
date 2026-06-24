@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { enUS, pt } from 'date-fns/locale';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -19,8 +19,8 @@ import {
 import { getPatientAvatar } from '@/lib/patient-avatar';
 import {
 	difficultyToLevel,
+	getPatientBadgeVariant,
 	getPatientIndex,
-	getPatientProblemLabel,
 } from '@/lib/patient-assets';
 
 export const Route = createFileRoute('/dashboard/history')({
@@ -28,7 +28,7 @@ export const Route = createFileRoute('/dashboard/history')({
 });
 
 function HistoryPage() {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const [rows, setRows] = useState<HistoryRow[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -49,12 +49,12 @@ function HistoryPage() {
 					id: item.id,
 					chatId: item.chatId,
 					name: item.name,
-					problem: patient?.problem ?? getPatientProblemLabel(idx),
+					problem: patient?.problem ?? t(`components.patient-assets.problem_label_${getPatientBadgeVariant(idx)}`),
 					difficult: difficultyToLevel(item.difficulty),
-					ended: formatDistanceToNow(new Date(item.endedAt), {
-						addSuffix: true,
-						locale: enUS,
-					}),
+				ended: formatDistanceToNow(new Date(item.endedAt), {
+					addSuffix: true,
+					locale: i18n.language === 'pt-PT' ? pt : enUS,
+				}),
 					duration: t('dashboard.history.duration_format', { duration: item.durationMinutes }),
 					analysis: t('dashboard.history.review_link'),
 					patientImageUrl: getPatientAvatar(item.name),

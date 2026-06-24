@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Menu } from 'lucide-react';
 import AuthDialog from "./auth/auth-dialog";
 import {
   NavigationMenu,
@@ -6,6 +7,11 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "./ui/sheet";
 
 function scrollToId(id: string) {
   const el = document.getElementById(id);
@@ -23,7 +29,7 @@ export default function Header() {
             {t('dashboard.layout.sidebar_app_name')}
           </h1>
         </div>
-        <div className="flex items-center">
+        <div className="hidden md:flex items-center">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -45,9 +51,33 @@ export default function Header() {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="flex items-center gap-2.5">
+        <div className="hidden md:flex items-center gap-2.5">
           <AuthDialog />
         </div>
+        <Sheet>
+          <SheetTrigger asChild className="min-tap flex items-center justify-center md:hidden">
+            <button type="button" className="min-tap flex items-center justify-center rounded-full border border-[#dbe4eb]">
+              <Menu className="size-5" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right" className="flex flex-col gap-6 pt-12">
+            <button
+              type="button"
+              onClick={() => scrollToId("benefits")}
+              className="text-fluid-lg font-medium text-left"
+            >
+              {t('landing.navigation_benefits')}
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToId("pricing")}
+              className="text-fluid-lg font-medium text-left"
+            >
+              {t('landing.navigation_pricing')}
+            </button>
+            <AuthDialog />
+          </SheetContent>
+        </Sheet>
       </nav>
     </header>
   );

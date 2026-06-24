@@ -23,7 +23,8 @@ function formatDate(iso: string, t: (key: string, options?: Record<string, unkno
 	if (diffDays === 0) return t('components.dashboard-sections.date_today');
 	if (diffDays === 1) return t('components.dashboard-sections.date_yesterday');
 	if (diffDays < 7) return t('components.dashboard-sections.date_days_ago', { days: diffDays });
-	return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+	const locale = typeof document !== 'undefined' ? document.documentElement.lang : 'en';
+	return date.toLocaleDateString(locale === 'pt-PT' ? 'pt-PT' : 'en-US', { month: 'short', day: 'numeric' });
 }
 
 type RecentConversationsProps = {

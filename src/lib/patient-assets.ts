@@ -29,16 +29,6 @@ export function getPatientBadgeVariant(index: number): PatientBadgeVariant {
 	return PATIENT_BADGE_VARIANTS[index % PATIENT_BADGE_VARIANTS.length];
 }
 
-const PROBLEM_LABELS: Record<PatientBadgeVariant, string> = {
-	problems: 'Problems at school/work',
-	adaptation: 'Adaptation problems',
-	emotional: 'Emotional problems',
-};
-
-export function getPatientProblemLabel(index: number): string {
-	return PROBLEM_LABELS[getPatientBadgeVariant(index)];
-}
-
 export function difficultyToLevel(
 	difficulty: 'EASY' | 'MEDIUM' | 'HARD',
 ): 'easy' | 'medium' | 'hard' {

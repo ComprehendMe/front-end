@@ -44,7 +44,7 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 			</DialogTrigger>
 			<DialogContent
 				showCloseButton={false}
-				className={cn('gap-6 sm:max-w-[444px]')}
+				className={cn('gap-6 max-w-[min(95vw,444px)] sm:max-w-[444px]')}
 			>
 				{mode === 'pending' ? (
 					<>
@@ -54,7 +54,7 @@ export default function AuthDialog({ trigger }: AuthDialogProps) {
 							</DialogTitle>
 							<DialogDescription className="text-base text-[#4B4E58]">
 								{t('auth.pending_description_prefix')}
-								<span className="font-medium text-foreground">
+								<span className="font-medium text-foreground break-all">
 									{pendingEmail}
 								</span>
 								{t('auth.pending_description_suffix')}

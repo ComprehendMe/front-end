@@ -47,7 +47,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
 						</AvatarFallback>
 					</Avatar>
 				</div>
-				<div className="max-w-[min(90%,42rem)] rounded-2xl bg-[#D6EBF7] px-4 py-3 text-fluid-sm leading-relaxed text-foreground">
+				<div className="max-w-[min(95%,clamp(20rem,50vw,45rem))] 4xl:max-w-[min(80%,55rem)] rounded-2xl bg-[#D6EBF7] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.5rem,1.5vw,1rem)] text-fluid-sm leading-relaxed text-foreground">
 					<p className="whitespace-pre-wrap">{message.content}</p>
 				</div>
 			</div>
@@ -71,7 +71,7 @@ export const ChatMessageRow = memo(function ChatMessageRow({
 				</div>
 				<div
 					className={cn(
-						'max-w-[min(90%,42rem)] rounded-2xl bg-[#F0F5FA] px-4 py-3 text-fluid-sm leading-relaxed text-foreground',
+						'max-w-[min(95%,clamp(20rem,50vw,45rem))] 4xl:max-w-[min(80%,55rem)] rounded-2xl bg-[#F0F5FA] px-[clamp(0.75rem,2vw,1.5rem)] py-[clamp(0.5rem,1.5vw,1rem)] text-fluid-sm leading-relaxed text-foreground',
 					)}
 				>
 					<p className="whitespace-pre-wrap">{message.content}</p>

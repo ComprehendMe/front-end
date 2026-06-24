@@ -106,7 +106,7 @@ const PricingSection = ({
 						{plans.map((plan) => (
 							<Card
 								key={plan.id}
-								className="flex w-full max-w-[420px] rounded-[20px] py-fluid-lg gap-fluid-lg flex-col justify-between text-left"
+								className="flex w-full max-w-[420px] 4xl:max-w-[540px] rounded-[20px] py-fluid-lg gap-fluid-lg flex-col justify-between text-left"
 							>
 								<CardHeader className="gap-2">
 									<p className="font-normal text-fluid-xl">{plan.name}</p>

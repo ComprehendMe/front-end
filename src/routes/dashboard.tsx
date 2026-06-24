@@ -85,7 +85,7 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="px-fluid-container py-fluid-md pt-5">
-        <div className="mx-auto flex w-full max-w-[1700px] min-w-0 flex-1 flex-col">
+        <div className="mx-auto flex w-full max-w-fluid-content min-w-0 flex-1 flex-col">
           <div className="flex items-center gap-3 md:hidden">
             <SidebarTrigger className="size-9 rounded-full border border-[#dbe4eb] text-muted-foreground" />
           </div>

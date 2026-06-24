@@ -50,7 +50,7 @@ export function createHistoryColumns({
             </Avatar>
             <div className="flex flex-col">
               <p className="text-sm font-semibold">{patient.name}</p>
-              <span className="text-xs font-normal text-muted-foreground">
+              <span className="hidden text-xs font-normal text-muted-foreground xs:block">
                 {patient.problem}
               </span>
             </div>
@@ -60,19 +60,21 @@ export function createHistoryColumns({
     },
     {
       accessorKey: "difficult",
-      header: t('dashboard.history.table_header_difficult'),
+      header: () => <span className="hidden md:table-cell">{t('dashboard.history.table_header_difficult')}</span>,
       cell: ({ row }) => {
         const { difficult } = row.original;
-        return <Badge variant={difficult} />;
+        return <div className="hidden md:table-cell"><Badge variant={difficult} /></div>;
       },
     },
     {
       accessorKey: "ended",
-      header: t('dashboard.history.table_header_ended'),
+      header: () => <span className="hidden md:table-cell">{t('dashboard.history.table_header_ended')}</span>,
+      cell: ({ row }) => <span className="hidden md:table-cell">{row.original.ended}</span>,
     },
     {
       accessorKey: "duration",
-      header: t('dashboard.history.table_header_duration'),
+      header: () => <span className="hidden md:table-cell">{t('dashboard.history.table_header_duration')}</span>,
+      cell: ({ row }) => <span className="hidden md:table-cell">{row.original.duration}</span>,
     },
     {
       accessorKey: "analysis",

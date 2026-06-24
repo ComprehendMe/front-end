@@ -46,8 +46,8 @@ export const PatientCardContent = memo(function PatientCardContent({
 	];
 	const bgColor = bgColors[patientIndex % bgColors.length];
 
-	return (
-		<div className={cn('flex flex-col gap-4', className)}>
+		return (
+		<div className={cn('flex flex-col gap-[clamp(0.5rem,1.5vw,1rem)]', className)}>
 			<div className={cn('flex justify-center rounded-[18px] py-fluid-sm', bgColor)}>
 				<Avatar className="size-[clamp(4rem,16vw,6rem)] shadow-xs border-2 border-white/20">
 					<AvatarImage

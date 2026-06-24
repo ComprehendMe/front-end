@@ -215,6 +215,7 @@
       "title": "Revisão da Conversa",
       "subtitle": "Reproduz a tua conversa passo a passo",
       "move_label": "Jogada {{current}}/{{total}}",
+      "related_to_move": "Relacionado com a jogada {{number}}/{{total}}",
       "start_title": "Bom dia, chamo-me {{name}}",
       "start_button": "Iniciar revisão",
       "performance_panel_title": "Painel de Desempenho",

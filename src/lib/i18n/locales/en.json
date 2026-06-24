@@ -215,6 +215,7 @@
       "title": "Chat Review",
       "subtitle": "Replay your conversation step-by-step",
       "move_label": "Move {{current}}/{{total}}",
+      "related_to_move": "Related to move {{number}}/{{total}}",
       "start_title": "Good morning, my name is {{name}}",
       "start_button": "Start review",
       "performance_panel_title": "Performance Panel",

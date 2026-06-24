@@ -20,6 +20,18 @@
   --breakpoint-xs: 23.4375rem;
   --breakpoint-3xl: 120rem;
   --breakpoint-4xl: 160rem;
+  --content-max-width: 1700px;
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --content-max-width: 2000px;
+  }
+}
+@media (min-width: 2560px) {
+  :root {
+    --content-max-width: min(90vw, 2400px);
+  }
 }
 
 /* --- Fluid Typography (clamp-based modular scale) ---
@@ -101,7 +113,7 @@
 /* --- Fluid Width Containers ---
    Content max-width that respects viewport padding */
 @utility max-w-fluid-content {
-  max-width: min(100% - 2rem, 1700px);
+  max-width: min(100% - 2rem, var(--content-max-width, 1700px));
 }
 
 /* --- Safe Area Insets (notched / rounded-screen devices) ---
@@ -159,8 +171,19 @@
   }
 }
 
+:root {
+  --chat-offset: 10rem;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --chat-offset: 8rem;
+  }
+}
+
 body {
   @apply m-0;
+  overscroll-behavior: none;
   font-family:
     "Poppins",
     -apple-system,

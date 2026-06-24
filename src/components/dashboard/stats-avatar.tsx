@@ -57,7 +57,7 @@ export function StatsAvatar({ user, streak, ringProgress }: StatsAvatarProps) {
 				</Avatar>
 			</div>
 
-			<div className="absolute top-2 right-1 flex items-center gap-1 rounded-full bg-[#D6EBF7] px-2.5 py-1 shadow-sm">
+			<div className="absolute top-2 right-1 xs:top-1 xs:right-0 flex items-center gap-1 rounded-full bg-[#D6EBF7] px-2.5 py-1 shadow-sm">
 				<span className="text-sm font-bold text-[#0978AA]">{streak}</span>
 				<img src="/logo.svg" alt="" className="h-5 w-5" aria-hidden loading="lazy" />
 			</div>

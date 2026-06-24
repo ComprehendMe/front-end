@@ -100,7 +100,7 @@ export function PatientsCarousel({
                 return (
                   <CarouselItem
                     key={patient.id}
-                    className="basis-[calc(100%/2.5)]"
+                    className="basis-[calc(100%/1.5)] sm:basis-[calc(100%/2.5)] lg:basis-[calc(100%/3.5)] 4xl:basis-[calc(100%/4.5)]"
                   >
                     <button
                       type="button"

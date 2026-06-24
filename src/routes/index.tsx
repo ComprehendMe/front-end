@@ -60,10 +60,10 @@ function App() {
 					<Header />
 					<main className="z-50 mt-[clamp(3rem,10vw,10rem)] flex flex-col items-center justify-center text-center">
 						<div className="flex flex-col items-center gap-5">
-							<h1 className="text-fluid-4xl font-bold text-foreground">
+							<h1 className="text-fluid-4xl 4xl:text-fluid-5xl font-bold text-foreground">
 								{t('landing.hero_title')}
 							</h1>
-							<p className="max-w-4xl text-fluid-base font-medium tracking-tight text-foreground">
+							<p className="max-w-[min(90vw,1200px)] text-fluid-base 4xl:text-fluid-xl font-medium tracking-tight text-foreground">
 								{t('landing.hero_subtitle')}
 							</p>
 							<AuthDialog

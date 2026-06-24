@@ -85,7 +85,7 @@ function OnboardingPage() {
 	}
 
 	return (
-		<div className="relative flex min-h-screen items-center justify-center bg-background px-6 py-10">
+		<div className="relative flex min-h-screen items-center justify-center bg-background px-fluid-container py-10">
 			<div
 				className={cn(
 					'pointer-events-none absolute inset-0',
@@ -93,7 +93,7 @@ function OnboardingPage() {
 					'bg-[linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]',
 				)}
 			/>
-			<div className="relative z-10 w-full max-w-[444px] rounded-md border bg-white px-fluid-lg py-fluid-xl shadow-lg">
+			<div className="relative z-10 w-full max-w-[min(95vw,444px)] rounded-md border bg-white px-fluid-lg py-fluid-xl shadow-lg">
 				{step === 2 ? (
 					<div className="flex flex-col gap-6">
 						<SignupProgress step={2} />

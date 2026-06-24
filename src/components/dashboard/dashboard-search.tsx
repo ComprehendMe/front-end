@@ -206,7 +206,7 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 	}
 
 	return (
-		<div ref={searchRef} className="relative w-full">
+			<div ref={searchRef} className="relative w-full">
 			<div className="relative w-full">
 				<Input
 					value={query}
@@ -226,14 +226,14 @@ export function DashboardSearch({ patients = [] }: DashboardSearchProps) {
 							close();
 						}
 					}}
-					className="h-12 w-full rounded-full border-[#dbe4eb] bg-white px-7 py-4 pr-12 text-[15px]"
+					className="min-tap h-12 w-full rounded-full border-[#dbe4eb] bg-white px-7 py-4 pr-12 text-[15px]"
 					placeholder={t('dashboard.search.placeholder')}
 				/>
 				<Search className="pointer-events-none absolute top-1/2 right-5 h-4.5 w-4.5 -translate-y-1/2 text-muted-foreground" />
 			</div>
 
 			{open && (
-				<div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-[#1C1F22]/10 bg-white p-2 shadow-lg">
+				<div className="absolute left-0 right-0 top-full z-50 mt-2 rounded-2xl border border-[#1C1F22]/10 bg-white p-2 shadow-lg max-h-[min(60dvh,400px)] overflow-y-auto">
 					<ul className="flex flex-col">
 						{items.length === 0 ? (
 							<li className="px-3 py-4 text-center text-sm text-muted-foreground">

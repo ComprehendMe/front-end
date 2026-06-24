@@ -256,7 +256,7 @@ function ReviewPage() {
             <span className="text-fluid-sm font-medium text-muted-foreground">
               {t('dashboard.review.move_label', { current: currentMove, total: totalMoves })}
             </span>
-            <div className="h-2 w-28 overflow-hidden rounded-full bg-[var(--dashboard-input)] sm:w-36">
+            <div className="hidden h-2 w-28 overflow-hidden rounded-full bg-[var(--dashboard-input)] sm:block sm:w-36">
               <div
                 className="h-full rounded-full bg-[var(--dashboard-primary)] transition-all duration-300"
                 style={{
@@ -301,7 +301,7 @@ function ReviewPage() {
               </div>
               <Button
                 onClick={handleNext}
-                className="rounded-full bg-[#1497D2] px-6 text-white hover:bg-[#2285B3]"
+                className="w-full rounded-full bg-[#1497D2] px-6 text-white hover:bg-[#2285B3] md:w-fit"
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 {t('dashboard.review.start_button')}
@@ -336,7 +336,7 @@ function ReviewPage() {
                       </AvatarFallback>
                     </Avatar>
                   </div>
-                  <div className="max-w-[70%] rounded-2xl bg-[var(--dashboard-input)] px-4 py-3 text-sm text-foreground">
+                  <div className="max-w-[min(90%,clamp(18rem,60vw,40rem))] rounded-2xl bg-[var(--dashboard-input)] px-4 py-3 text-sm text-foreground">
                     {msg.content}
                   </div>
                 </div>
@@ -368,12 +368,12 @@ function ReviewPage() {
                     ) : null}
                   </div>
                 </div>
-                <div className="ml-10 max-w-[70%] rounded-2xl bg-[var(--dashboard-soft)] px-4 py-3 text-sm text-foreground">
+                <div className="ml-10 max-w-[min(90%,clamp(18rem,60vw,40rem))] rounded-2xl bg-[var(--dashboard-soft)] px-4 py-3 text-sm text-foreground">
                   {msg.content}
                 </div>
                 {move ? (
                   <span className="ml-10 text-[11px] font-medium text-[var(--dashboard-primary)]">
-                    Related to move {move.moveNumber}/{totalMoves}
+                    {t('dashboard.review.related_to_move', { number: move.moveNumber, total: totalMoves })}
                   </span>
                 ) : null}
               </div>
@@ -384,7 +384,7 @@ function ReviewPage() {
         </div>
       </div>
 
-      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-fluid-md lg:max-w-[360px] xl:max-w-[390px]">
+      <div className="flex w-full shrink-0 flex-col rounded-xl border bg-white p-fluid-md lg:max-w-[min(360px,40vw)] xl:max-w-[420px]">
         <div className="mb-4">
           <h2 className="text-fluid-lg font-semibold text-foreground">
             {t('dashboard.review.performance_panel_title')}
@@ -495,7 +495,7 @@ function ReviewPage() {
           </p>
           {currentMove >= totalMoves && totalMoves > 0 && (
             <Button
-              className="w-full bg-[var(--dashboard-input)] text-[var(--dashboard-primary)] hover:bg-[#cfe5f4]"
+              className="w-full bg-[var(--dashboard-input)] text-[var(--dashboard-primary)] hover:bg-[#cfe5f4] md:w-fit"
               onClick={() => setSummaryOpen(true)}
             >
               {t('dashboard.review.view_summary')}
@@ -505,7 +505,7 @@ function ReviewPage() {
       </div>
 
       <Dialog open={summaryOpen} onOpenChange={setSummaryOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-[min(95vw,32rem)] sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{t('dashboard.review.summary_title')}</DialogTitle>
             <DialogDescription>

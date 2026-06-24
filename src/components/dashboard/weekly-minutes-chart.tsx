@@ -55,7 +55,7 @@ export function WeeklyMinutesChart({ data }: WeeklyMinutesChartProps) {
 
   return (
     <div className="rounded-[16px] bg-[var(--dashboard-soft)] p-3.5">
-      <div ref={containerRef} className="relative h-[180px] w-full">
+      <div ref={containerRef} className="relative h-[clamp(140px,30vw,180px)] w-full">
         <svg
           viewBox={`0 0 ${vbWidth} ${vbHeight}`}
           preserveAspectRatio="xMidYMid meet"

@@ -59,8 +59,8 @@ function VerifyPage() {
 	}, [token, navigate, t]);
 
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6">
-			<img src="/logo.svg" alt={t('auth.verify_alt_logo')} className="h-12 w-12" loading="lazy" />
+		<div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-fluid-container">
+			<img src="/logo.svg" alt={t('auth.verify_alt_logo')} className="h-12 w-12 4xl:h-16 4xl:w-16" loading="lazy" />
 			<h1 className="text-xl font-semibold text-foreground">
 				{status === 'loading' && t('auth.verify_loading_title')}
 				{status === 'success' && t('auth.verify_success_title')}
