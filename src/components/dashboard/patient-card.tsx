@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -6,6 +7,7 @@ import { getPatientAvatar } from '@/lib/patient-avatar';
 import {
 	getPatientBadgeVariant,
 	getPatientProgressPercent,
+	getTranslatedPatientProblem,
 } from '@/lib/patient-assets';
 
 type PatientCardContentProps = {
@@ -25,8 +27,10 @@ export const PatientCardContent = memo(function PatientCardContent({
 	subtitle,
 	className,
 }: PatientCardContentProps) {
+	const { t } = useTranslation();
 	const progress = getPatientProgressPercent(patientId);
 	const badgeVariant = getPatientBadgeVariant(patientIndex);
+	const translatedProblem = getTranslatedPatientProblem(patientName, problem, t);
 	const initials = patientName
 		.split(' ')
 		.map((n) => n[0])
@@ -73,7 +77,7 @@ export const PatientCardContent = memo(function PatientCardContent({
 				</div>
 				<div className="flex flex-col gap-1 mt-0.5">
 					<p className="line-clamp-2 text-fluid-base leading-[1.3] font-semibold text-[#1C1F22]">
-						{problem}
+						{translatedProblem}
 					</p>
 					<span className="font-semibold text-muted-foreground text-fluid-sm">
 						{subtitle ?? patientName}

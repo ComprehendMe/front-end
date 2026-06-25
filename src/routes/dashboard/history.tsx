@@ -21,6 +21,7 @@ import {
 	difficultyToLevel,
 	getPatientBadgeVariant,
 	getPatientIndex,
+	getTranslatedPatientProblem,
 } from '@/lib/patient-assets';
 
 export const Route = createFileRoute('/dashboard/history')({
@@ -49,7 +50,11 @@ function HistoryPage() {
 					id: item.id,
 					chatId: item.chatId,
 					name: item.name,
-					problem: patient?.problem ?? t(`components.patient-assets.problem_label_${getPatientBadgeVariant(idx)}`),
+					problem: getTranslatedPatientProblem(
+							patient?.name ?? '',
+							patient?.problem ?? t(`components.patient-assets.problem_label_${getPatientBadgeVariant(idx)}`),
+							t,
+						),
 					difficult: difficultyToLevel(item.difficulty),
 				ended: formatDistanceToNow(new Date(item.endedAt), {
 					addSuffix: true,

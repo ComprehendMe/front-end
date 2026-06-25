@@ -22,6 +22,19 @@
     "next_patient_aria": "Next patient",
     "loading_spinner_aria": "Loading"
   },
+  "badge": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "problems": "Problems at school/work",
+    "adaptation": "Adaptation Problems",
+    "emotional": "Emotional problems",
+    "relational": "Relational and social problems",
+    "developmental": "Developmental/Behavioral Problems",
+    "identity": "Identity and Self-Image",
+    "traumatic": "Traumatic Problems",
+    "risky": "Risky Behavior Problems"
+  },
   "landing": {
     "page_title": "ComprehendMe — Practice without fear. Serve without hesitation.",
     "meta_description": "Realistic virtual patients, immediate feedback, and a safe environment for you to grow as a therapist.",
@@ -499,6 +512,14 @@
     },
     "user-preferences": {
       "friend_request_desktop_title": "Friend request"
+    }
+  },
+  "patients": {
+    "problems": {
+      "emma_richardson": "Anxiety related to work stress and performance pressure",
+      "lucas_mendes": "Difficulty sleeping and persistent insomnia",
+      "sofia_andersson": "Relationship issues with long-term partner",
+      "james_carter": "Social anxiety in public gatherings and group settings"
     }
   },
   "pricing": {

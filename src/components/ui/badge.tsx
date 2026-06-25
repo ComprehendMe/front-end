@@ -1,52 +1,53 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
 const customBadges = {
 	easy: {
-		text: "Easy",
+		key: "badge.easy",
 		className: "bg-[#CDF8D0] text-[#07720F]",
 	},
 	medium: {
-		text: "Medium",
+		key: "badge.medium",
 		className: "bg-[#F8F8CD] text-[#726B07]",
 	},
 	hard: {
-		text: "Hard",
+		key: "badge.hard",
 		className: "bg-[#F8CDCD] text-[#722407]",
 	},
 	emotional: {
-		text: "Emotional problems",
+		key: "badge.emotional",
 		className: "bg-[#EEF5D5] text-[#576D09]",
 	},
 	problems: {
-		text: "Problems at school/work",
+		key: "badge.problems",
 		className: "bg-[#CDECF8] text-[#075472]",
 	},
 	adaptation: {
-		text: "Adaptation Problems",
+		key: "badge.adaptation",
 		className: "bg-[#CDD6F8] text-[#071672]",
 	},
 	relational: {
-		text: "Relational and social problems",
+		key: "badge.relational",
 		className: "bg-[#F8D8CD] text-[#542A0F]",
 	},
 	developmental: {
-		text: "Developmental/Behavioral Problems",
+		key: "badge.developmental",
 		className: "bg-[#CDF8D0] text-[#07720F]",
 	},
 	identity: {
-		text: "Identity and Self-Image",
+		key: "badge.identity",
 		className: "bg-[#F0CDF8] text-[#72076B]",
 	},
 	traumatic: {
-		text: "Traumatic Problems",
+		key: "badge.traumatic",
 		className: "bg-[#F8CDE8] text-[#720766]",
 	},
 	risky: {
-		text: "Risky Behavior Problems",
+		key: "badge.risky",
 		className: "bg-[#CDF8F0] text-[#075272]",
 	},
 } as const;
@@ -94,11 +95,12 @@ function Badge({
 	children,
 	...props
 }: BadgeProps) {
+	const { t } = useTranslation();
 	const Comp = asChild ? Slot : "span";
 
 	const autoText =
 		!children && variant && variant in customBadges
-			? customBadges[variant as CustomVariant].text
+			? t(customBadges[variant as CustomVariant].key)
 			: children;
 
 	return (

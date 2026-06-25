@@ -48,3 +48,20 @@ export function getPatientIndex(patients: Patient[], patientId: string): number 
 	const idx = patients.findIndex((p) => p.id === patientId);
 	return idx >= 0 ? idx : 0;
 }
+
+const PATIENT_PROBLEM_KEYS: Record<string, string> = {
+	'emma-richardson': 'patients.problems.emma_richardson',
+	'lucas-mendes': 'patients.problems.lucas_mendes',
+	'sofia-andersson': 'patients.problems.sofia_andersson',
+	'james-carter': 'patients.problems.james_carter',
+};
+
+export function getTranslatedPatientProblem(
+	patientName: string,
+	fallback: string,
+	t: (key: string, options?: { defaultValue?: string }) => string,
+): string {
+	const slug = patientAvatarSlug(patientName);
+	const key = PATIENT_PROBLEM_KEYS[slug];
+	return key ? t(key, { defaultValue: fallback }) : fallback;
+}

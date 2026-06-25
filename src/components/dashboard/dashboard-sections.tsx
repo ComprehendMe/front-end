@@ -12,7 +12,11 @@ import {
 	type Patient,
 } from '@/lib/api';
 import { getPatientAvatar } from '@/lib/patient-avatar';
-import { getPatientBadgeVariant, getPatientIndex } from '@/lib/patient-assets';
+import {
+	getPatientBadgeVariant,
+	getPatientIndex,
+	getTranslatedPatientProblem,
+} from '@/lib/patient-assets';
 
 function formatDate(iso: string, t: (key: string, options?: Record<string, unknown>) => string) {
 	const date = new Date(iso);
@@ -89,7 +93,7 @@ export function RecentConversations({ chats }: RecentConversationsProps) {
 									{chat.patient.name}
 								</p>
 								<p className="truncate text-xs text-muted-foreground">
-									{chat.patient.problem}
+									{getTranslatedPatientProblem(chat.patient.name, chat.patient.problem, t)}
 								</p>
 							</div>
 							<span className="shrink-0 text-xs text-muted-foreground">
@@ -137,6 +141,7 @@ export function StartLearningSection({
 	startingId,
 	onStart,
 }: StartLearningSectionProps) {
+	const { t } = useTranslation();
 	return (
 		<section className="space-y-3">
 			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -168,13 +173,13 @@ export function StartLearningSection({
 									{patient.name}
 								</p>
 								<p className="mt-0.5 truncate text-fluid-xs font-medium text-muted-foreground">
-									{patient.problem}
+									{getTranslatedPatientProblem(patient.name, patient.problem, t)}
 								</p>
 								<Badge
 									variant={badgeVariant}
 									className="mt-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
 								>
-									{patient.difficulty}
+									{t(`badge.${patient.difficulty.toLowerCase()}`)}
 								</Badge>
 							</div>
 						</button>

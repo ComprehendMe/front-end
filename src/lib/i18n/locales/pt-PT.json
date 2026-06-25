@@ -22,6 +22,19 @@
     "next_patient_aria": "Próximo paciente",
     "loading_spinner_aria": "A carregar"
   },
+  "badge": {
+    "easy": "Fácil",
+    "medium": "Médio",
+    "hard": "Difícil",
+    "problems": "Problemas na escola/trabalho",
+    "adaptation": "Problemas de adaptação",
+    "emotional": "Problemas emocionais",
+    "relational": "Problemas relacionais e sociais",
+    "developmental": "Problemas de desenvolvimento/comportamento",
+    "identity": "Identidade e Autoimagem",
+    "traumatic": "Problemas traumáticos",
+    "risky": "Comportamentos de risco"
+  },
   "landing": {
     "page_title": "ComprehendMe — Pratica sem medo. Serve sem hesitação.",
     "meta_description": "Pacientes virtuais realistas, feedback imediato e um ambiente seguro para cresceres como terapeuta.",
@@ -504,6 +517,14 @@
     },
     "user-preferences": {
       "friend_request_desktop_title": "Pedido de amizade"
+    }
+  },
+  "patients": {
+    "problems": {
+      "emma_richardson": "Ansiedade relacionada com stress laboral e pressão de desempenho",
+      "lucas_mendes": "Dificuldade em dormir e insónia persistente",
+      "sofia_andersson": "Problemas de relacionamento com parceiro de longa duração",
+      "james_carter": "Ansiedade social em eventos públicos e ambientes de grupo"
     }
   },
   "pricing": {

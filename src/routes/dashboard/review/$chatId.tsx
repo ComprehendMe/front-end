@@ -30,6 +30,7 @@ import {
   type ReviewResult,
 } from "@/lib/api";
 import { getPatientAvatar } from "@/lib/patient-avatar";
+import { getTranslatedPatientProblem } from "@/lib/patient-assets";
 import { formatMessageTime } from "@/lib/format-message-time";
 import { getInitials } from "@/lib/user-display";
 import { Route as DashboardRoute } from "../../dashboard";
@@ -296,7 +297,7 @@ function ReviewPage() {
                   {t('dashboard.review.start_title', { name: review.patient.name.split(" ")[0] })}
                 </h2>
                 <p className="mx-auto max-w-xl text-lg text-[#4B4E58]">
-                  {review.patient.problem}
+                  {getTranslatedPatientProblem(review.patient.name, review.patient.problem, t)}
                 </p>
               </div>
               <Button
